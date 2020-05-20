@@ -18,6 +18,11 @@ At the moment I implemented the [Lucas Kanade approach] (https://en.wikipedia.or
 
  - header :
   ```c
+  /** @brief Implement LK optical flow 8bit version Magnitude
+ * @param src1 pointer to grayscale buffer image instant t. 
+ * @param src2 pointer to grayscale buffer image instant t+1.
+ * @param out [out] image 8bit depth output of squared magnitude
+ * @return True if success False if failed somewhere*/
   bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h);
   ```
   - example : 
@@ -54,6 +59,12 @@ We can get more detailed output by using a motion vector struct composed of `V=(
 ```
   - headers:
   ```c
+  /** @brief Implement LK optical flow source from wiki and matlab:
+ * https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method
+ * @param src1 pointer to grayscale buffer image instant t. 
+ * @param src2 pointer to grayscale buffer image instant t+1.
+ * @param V [out] vector (vx, vy) and squared magnitude
+ * @return True if success False if failed somewhere*/
   bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h);
   ```
 
