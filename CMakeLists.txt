@@ -1,5 +1,5 @@
 set(COMPONENT_SRCS
-  motion.c
+  lucas_kanade_opitcal_flow..c
   deflicker.c
   convolution.c
   )

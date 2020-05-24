@@ -304,38 +304,3 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *out, in
 	free(ft); free(tmpMagArray);
 	return true;
 }
-
-
-//#TODO
-/* If we are left with enough counts for a composite vector, filter out
-|  motion vectors not pointing in the composite directon.
-|  Vectors of sufficient mag2 but not pointing in the right direction
-|  will be rejects and their count can be large for noisy frames.
-|  Dot product to allow a spread,
-|    (avoiding sqrt() to get magnitude and scale by 100 for integer math):
-|
-|  cos(a) = (v1 dot v2) / mag(v1) * mag(v2))	# cos(25) = 0.906
-|  100 * cos(25)^2 = 82 = 100 * (v1 dot v2)^2 / mag(v1)^2 * mag(v2)^2)
-*/
-// In construction ... 
-/*
-bool filterSpread(MotionVector16_t *V, uint8_t *output, int w, int h) {
-
-	MotionVector16_t *mv;
-	//int trigger[w * h];
-	int i, j;
-	// First pass, filter out any vector < mag2_limit
-	
-
-	for (i = half_window; i < h - half_window; ++i) {
-		for (j = half_window; j < w - half_window; ++j) {
-			const int mb_index = w * i + j;
-			mv = &V[mb_index];
-			const int mag2 = mv->vx * mv->vx + mv->vy * mv->vy;
-			if (mag2 >= motion_mag2_limit)
-				*(output + mb_index) = mag2;
-		}
-	}
-	return true;
-
-}*/
