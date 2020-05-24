@@ -138,10 +138,14 @@ uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
  **/
 float motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize,
  int p, MotionVector16_t *motionVect, int zmp_T) {
-    MotionVector16_t *vectors = (MotionVector16_t*) calloc((int)w * h / (float)mbSize / (float)mbSize,
+     
+    motionVect = (MotionVector16_t*) calloc((int)w * h / (float)mbSize / (float)mbSize,
          sizeof(MotionVector16_t));
-    if(!vectors) 
+
+    if(!motionVect) 
         return -1;
+    
+    MotionVector16_t *vectors = motionVect;
 
     // Error window used to computed Minimal Matching Error
     int costs[6] = {INT32_MAX}; 
@@ -160,7 +164,9 @@ float motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h
 
     // We will be storing the positions of points where the checking has been already done in an array
     // that is initialised to zero. As one point is checked, we set the corresponding element in the array to one.
-    int checkArray[2 * p + 1][2 * p + 1] = {0};
+    int checkArray[2 * p + 1][2 * p + 1];
+    memset(checkArray, 0, sizeof(checkArray[0][0]) * pow(2 * p + 1, 2));
+
     int computations = 0;
 
     //mbCount will keep track of how many blocks we have evaluated
@@ -169,7 +175,7 @@ float motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h
     // MacroBlocks (MB) used to compute Min Mathing Error (MME) and SAD
     uint8_t *currentBlk = malloc(mbSize * mbSize);
     uint8_t *refBlk = malloc(mbSize * mbSize);
-    int i, j, k, m, l;
+    int i, j, k, m, l, cost, point;
     // we start  off from the top left of image
     // we will walk in step of mbSize
     for(i = 0; i < h - mbSize + 1; i+=mbSize) {
@@ -255,7 +261,7 @@ float motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h
             }
 
             //Find the current MME point
-            int cost = costs[0], point = 0;
+            cost = costs[0], point = 0;
             for(k = 1; k < 6; k++) {
                 if (costs[k] < cost) {
                     cost = costs[k];
@@ -317,12 +323,12 @@ float motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h
                     }
                 }
 
-                if(point == 2)
+                if(point == 2) 
                     doneFlag = 1; // Point incurred at the current URP
                 else {
                     x += SDSP[point][0]; // else aligne center with SDSP
                     x += SDSP[point][1];
-                    memset(costs, INT32_MAX, 6 * sizeof(int))
+                    memset(costs, INT32_MAX, 6 * sizeof(int));
                     costs[2] = cost;
                 }
             }
