@@ -57,7 +57,7 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int 
 
 //# Adaptative Rood Pattern Search method
 float motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize,
- int p, MotionVector16_t *motionVect, int zmp_T);
+ int p, MotionVector16_t **motionVect, int zmp_T);
 
 // Compute motion compensated image
 uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect, size_t w, size_t h, size_t mbSize);
