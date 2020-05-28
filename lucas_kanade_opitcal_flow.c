@@ -16,6 +16,7 @@ static const char *TAG = "camera_httpd";
 const float NoiseThreshold = 0.01;// Lucas Kanade noise threshold
 const int half_window = WINDOW / 2;
 const int window_squared = WINDOW * WINDOW;
+const int log2_window = (int)ceil(log2(WINDOW));
 
 // define 5x5 Gaussian kernel flattened
 static const float kernel[WINDOW * WINDOW] = {1 / 256.0f, 4 / 256.0f, 6 / 256.0f, 4 / 256.0f, 1 / 256.0f, 4 / 256.0f, 16 / 256.0f,
@@ -40,16 +41,17 @@ static const float Kernel_Dxy[WINDOW] = {-1.0 / 12.0, 8.0 / 12, 0, -8.0 / 12.0, 
  * @param src2 pointer to grayscale buffer image instant t+1.
  * @param V [out] vector (vx, vy) and squared magnitude
  * @return True if success False if failed somewhere*/
-bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *V, int w, int h) {
+bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *V, int w, int h, int *mag_max2) {
 
 	const int N = w * h;
-	MotionVector16_t *mv;
+	MotionVector16_t *mv = V;
 	float *image1 = (float*)malloc(N * sizeof(float)),
 		*image2 = (float*)malloc(N * sizeof(float)),
 		*fx = (float*)malloc(N * sizeof(float)),
 		*ft = (float*)malloc(N * sizeof(float)),
 		*fy = (float*)malloc(N * sizeof(float));
 	int i, j, m;
+	*mag_max2 = 0;
 
 	if(!fx || !fy || !ft || !image1 || !image2) {
 		ESP_LOGE(TAG, "LK_optical_flow can't allocate image memory.");
@@ -72,7 +74,13 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 	for(i = N; i--; ) {
 		fx[i] = src1[i];
 		ft[i] = src2[i];
+		mv->mag2 = 0;
+		mv->vx = 0;
+		mv->vy = 0;
+		mv++;
 	}	
+	mv = &V[0];
+
 	// Gradient computation: I_{t+1} - I_{t} 
 	// and fy initialisation as smoothed input = fx
 	lk_before = esp_timer_get_time();
@@ -126,8 +134,8 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 			for(m = 0; m < window_squared; ++m) {
 				// Sum over the window W²
 				const float W = kernel[m];
-				const int i_window = m / WINDOW - half_window;
-				const int j_window = m % WINDOW - half_window;
+				const int i_window = (m >> log2_window) - half_window;
+				const int j_window = (m % WINDOW) - half_window;
                 const unsigned index = (j + j_window) + (i + i_window) * w;
 				const float Ix = (float) fx[index] * W;
 				const float Iy = (float) fy[index] * W;
@@ -140,10 +148,9 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 			}
 			
 			//const float eigenval1 = ((a + c) + sqrtf(4 * b * b + powf(a - c, 2))) /2;
-			const float eigenval2 = ((a + c) - hypotf(2 * b, a - c)) * 0.5;
+			//const float eigenval2 = ((a + c) - hypotf(2 * b, a - c)) * 0.5;
 
-			mv = &V[i * w + j];
-			if(eigenval2 >= NoiseThreshold) {
+			if(((a + c) - hypotf(2 * b, a - c)) * 0.5 >= NoiseThreshold) {
 				//Case 1: λ1≥λ2≥τ equivalent to λ2≥τ
 				//A is nonsingular, the system of equations are solved using Cramer's rule.
 				const float det = a * c - b * b;
@@ -153,14 +160,13 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 				//optical flow : [Vx Vy] = inv[AtA] . Atb
 				const float vx = iAtA[0][0] * Atb0 + iAtA[0][1] * Atb1;
 				const float vy = iAtA[1][0] * Atb0 + iAtA[1][1] * Atb1;	
+				mv = &V[i * w + j];
 				mv->vx = (int16_t)vx;
 				mv->vy = (int16_t)vy;
-				mv->mag2 = (uint16_t)(vx * vx + vy * vy);			
-			} else {
-				mv->vx = 0;
-				mv->vy = 0;
-				mv->mag2 = 0;
-			}
+				mv->mag2 = (uint16_t)(vx * vx + vy * vy);	
+				if(*mag_max2 < mv->mag2)
+					*mag_max2 = mv->mag2;		
+			} 
 		}
     }
 	lk_algo = esp_timer_get_time();
@@ -175,7 +181,7 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 	int64_t conv1D_time = (lk_convDx - lk_transform) / 1000;
 	int64_t algo_time = (lk_algo - lk_preprocess) / 1000;
 	int64_t preprocess_time = (lk_preprocess - lk_start) / 1000;
- 	ESP_LOGI(TAG, "Iso smooth = %ums | diff = %ums | conv1D = %ums| PREPROCESS = %ums | LK_LOOP = %ums ",
+ 	ESP_LOGD(TAG, "Iso smooth = %ums | diff = %ums | conv1D = %ums| PREPROCESS = %ums | LK_LOOP = %ums ",
 	 	(uint32_t)conv_time, (uint32_t)transform_time, (uint32_t)conv1D_time, (uint32_t)preprocess_time, (uint32_t)algo_time);
 
 	return true;

@@ -3,6 +3,7 @@ set(COMPONENT_SRCS
   deflicker.c
   convolution.c
   block_matching.c
+  motion.c
   )
 
 set(COMPONENT_ADD_INCLUDEDIRS

@@ -1,0 +1,159 @@
+#include "motion.h"
+#include <string.h>
+#include <math.h>
+
+bool alloc_mv(MotionEstContext *ctx) {
+    int i;
+    /* Too heavy 
+    for (i = 0; i < 3; i++) {
+        ctx->mv_table[i] = (MotionVector16_t*)calloc(ctx->b_count, 
+                                            sizeof(*ctx->mv_table[0]));
+        if (!ctx->mv_table[i])
+            return 0;
+    }*/
+    ctx->mv_table[0] = (MotionVector16_t*)calloc(ctx->b_count,  sizeof(*ctx->mv_table[0]));
+    if (!ctx->mv_table[0])
+        return 0;
+    return 1;
+}
+
+void uninit(MotionEstContext *ctx) {
+    int i;
+    ctx->data_ref = NULL;
+    ctx->data_cur = NULL;
+    ctx->method = 0;
+    /*
+    for (i = 0; i < 3; i++)
+       free(&ctx->mv_table[i]);*/
+    free(ctx->mv_table[0]);
+}
+
+bool init_context(MotionEstContext *ctx, int method, int mbSize, int search_param,
+         size_t width, size_t height) {
+    //uninit(ctx);
+    ctx->method = method;
+    ctx->search_param = search_param;
+    ctx->width = width;
+    ctx->height = height;
+
+    //if we define mbSize
+    if(mbSize > 0) {
+        // redefine as a closest 2^n size
+        /*ctx->log2_mbSize = ceil(log2f(mbSize));
+        ctx->mbSize = 1 << ctx->log2_mbSize;
+
+        ctx->b_width  = ctx->width  >> ctx->log2_mbSize;
+        ctx->b_height = ctx->height >> ctx->log2_mbSize;
+        ctx->b_count  = ctx->b_width * ctx->b_height; */
+        ctx->mbSize = mbSize;
+        ctx->b_width =  ctx->width / mbSize;
+        ctx->b_height =  ctx->height / mbSize;
+        ctx->b_count = ctx->b_height * ctx->b_width;
+    } else {
+        // Macro Block size scale the image size
+        ctx->mbSize = (max(ctx->width, ctx->height) > 100) ? 
+                    max(ctx->width, ctx->height) / 100 : 1;
+
+        ctx->b_width  = ctx->width  / ctx->mbSize;
+        ctx->b_height = ctx->height / ctx->mbSize;
+        ctx->b_count  = ctx->b_width * ctx->b_height; 
+    }
+
+    return alloc_mv(ctx);
+}
+
+static bool LK_optical_flow_wrapper(MotionEstContext *c) {
+    return LK_optical_flow(c->data_ref, c->data_cur, c->mv_table[0], c->width,
+                 c->height, &c->max);
+}
+
+static bool LK_optical_flow8_wrapper(MotionEstContext *c) {
+    return LK_optical_flow8(c->data_ref, c->data_cur, c->data_ref, c->width, c->height);
+}
+
+static bool motionEstARPS_wrapper(MotionEstContext *c) {
+    // Zero-Motion Prejudgement threshold
+    int zmp_threshold = (c->mbSize * c->mbSize) * 2;
+
+    return motionEstARPS(c->data_cur, c->data_ref, c->width, c->height, c->mbSize,
+         c->search_param, c->mv_table[0], zmp_threshold, &c->max);
+}
+
+bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur) {
+    if(ctx->method > 2) { //methods predictive
+        memcpy(ctx->mv_table[2], ctx->mv_table[1], sizeof(*ctx->mv_table[1]) * ctx->b_count);
+        memcpy(ctx->mv_table[1], ctx->mv_table[0], sizeof(*ctx->mv_table[0]) * ctx->b_count);
+    }
+    ctx->data_cur = img_cur;
+    ctx->data_ref = img_prev;
+
+    switch (ctx->method)
+    {
+    case LK_OPTICAL_FLOW        : ctx->motion_func = LK_optical_flow_wrapper;
+        strcpy(ctx->name, "lucas kanade");
+        break;
+    case LK_OPTICAL_FLOW_8BIT   : ctx->motion_func = LK_optical_flow8_wrapper;
+        strcpy(ctx->name, "lucas kanade 8b");
+        break;
+    case BLOCK_MATCHING_ARPS    : ctx->motion_func = motionEstARPS_wrapper;
+        strcpy(ctx->name, "block matching");
+        break;
+    default                     : return 0;
+    }
+
+    return ctx->motion_func(ctx);
+}
+//#TODO Post processing motion filtering
+/*
+// Limit min magnitude and number min magnitude to filter
+extern int motion_mag2_limit;
+extern int motion_mag2_limit_count;
+
+typedef struct {
+    int vx,
+        vy;
+
+    int mag2,           // Magnitude² of the composite vector
+        mag2_count;     // number of motion vect added to this composite
+
+    int box_w,          // A box around the cvec for testing
+        box_h,          // the vector concentration composing the cvec 
+        in_box_count;   // count of motion vect inside the box
+        //in_box_rejects;
+
+} CompositeVector;
+*/
+
+//#TODO in motion.c
+/* If we are left with enough counts for a composite vector, filter out
+|  motion vectors not pointing in the composite directon.
+|  Vectors of sufficient mag2 but not pointing in the right direction
+|  will be rejects and their count can be large for noisy frames.
+|  Dot product to allow a spread,
+|    (avoiding sqrt() to get magnitude and scale by 100 for integer math):
+|
+|  cos(a) = (v1 dot v2) / mag(v1) * mag(v2))	# cos(25) = 0.906
+|  100 * cos(25)^2 = 82 = 100 * (v1 dot v2)^2 / mag(v1)^2 * mag(v2)^2)
+*/
+// In construction ... 
+/*
+bool filterSpread(MotionVector16_t *V, uint8_t *output, int w, int h) {
+
+	MotionVector16_t *mv;
+	//int trigger[w * h];
+	int i, j;
+	// First pass, filter out any vector < mag2_limit
+	
+
+	for (i = half_window; i < h - half_window; ++i) {
+		for (j = half_window; j < w - half_window; ++j) {
+			const int mb_index = w * i + j;
+			mv = &V[mb_index];
+			const int mag2 = mv->vx * mv->vx + mv->vy * mv->vy;
+			if (mag2 >= motion_mag2_limit)
+				*(output + mb_index) = mag2;
+		}
+	}
+	return true;
+
+}*/
