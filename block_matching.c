@@ -15,29 +15,37 @@ static const char *TAG = "block_matching";
 
 /** @brief Computes the Sum of Absolute Difference (SAD) for the given two blocks
  * 
- * @param currentBlk : The block for which we are finding the SAD
- * @param refBlk : the block w.r.t. which the SAD is being computed
- * @param n : the side of the 2 square blcks
+ * @param currentImg    : img for which we are finding the SAD
+ * @param refImg        : img which the SAD is being computed
+ * @param offset_curr   : offset applied to img current
+ * @param offset_ref    : offset applied to ref img
+ * @param mbSize        : the side of the 2 square blcks
+ * @param w             : width of images
  * 
  * @return the SAD for the 2 blks * */
 
 //#TODO : replace currentBlk, refblk by whole images instead
-int costFuncSAD(const uint8_t *currentBlk, const uint8_t *refBlk, size_t n) {
-    int err = 0;
-    register int i = n * n;
-    while(--i) 
-        err += fabs(*(currentBlk++) - *(refBlk++));
+int costFuncSAD(const uint8_t *currentImg, const uint8_t *refImg, 
+        int offset_curr, int offset_ref, size_t mbSize, size_t w) {
+    int err = 0, i, j;
+
+    for(i = 0; i < mbSize; i++) {
+        const int ind_curr = i * w + offset_curr;
+        const int ind_ref = i * w + offset_ref;
+        for(j = 0; j < mbSize; j++) 
+            err += abs(currentImg[ind_curr + j] - refImg[ind_ref + j]);
+    } 
     return err;
 }
 
 
 /** @brief Compute motion compensated image's PSNR
  * 
- * @param imgP : original image of size w * h
- * @param imgComp : compensated image of size w * h
- * @param w : width of image
- * @param h : height of image
- * @param n : the peak value of possible of any pixel in the img
+ * @param imgP      : original image of size w * h
+ * @param imgComp   : compensated image of size w * h
+ * @param w         : width of image
+ * @param h         : height of image
+ * @param n         : the peak value of possible of any pixel in the img
  * 
  * @return motion compensated image's psnr  **/
 float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp,\
@@ -61,11 +69,11 @@ float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp,\
 
 /** @brief Computes motion compensated image using the given motion vectors
  * 
- * @param imgI : reference images
+ * @param imgI       : reference images
  * @param motionVect : the motion vectors of size = w/mbSize * h/mbSize
- * @param w : width of image
- * @param h : height of image
- * @param mbSize : size of the macroblock 
+ * @param w          : width of image
+ * @param h          : height of image
+ * @param mbSize     : size of the macroblock 
  * 
  * @return motion compensated image of size w * h **/
 uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
@@ -108,13 +116,13 @@ uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
 
 /** @brief Computes motion vectors using Adaptive Rood Pattern Search method
  * 
- * @param imgP : image of which we want to find motion vectors 
- * @param imgI : reference image 
- * @param w : width of image
- * @param h : height of image
+ * @param imgP   : image of which we want to find motion vectors 
+ * @param imgI   : reference image 
+ * @param w      : width of image
+ * @param h      : height of image
  * @param mbSize : Size of the macroblock (mbSize, mbSize)
- * @param p : Search parameter
- * @param zmp_T : Zero-Motion Prejudgement threshold enable if set superior at 0. 
+ * @param p      : Search parameter
+ * @param zmp_T  : Zero-Motion Prejudgement threshold enable if set superior at 0. 
  * improve performance at cost of precision if wrong thresold value.
  * 
  * @param [output] motionVect :  motion vector for each integral macroblock in imgP.  size = w * h/mbSize²
@@ -185,16 +193,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
             ESP_LOGD(TAG, "vector(%u, %u) = %u", i, j, vectors->mag2);
 
             // initialise macroblock  matlab : MB = img(i:i+mbSize-1, j:j+mbSize-1)
-            for(k = 0; k < mbSize; k++) {
-                const int ind_img = k * w + iw + j;
-                const int ind_blk = k * mbSize;
-                for(m = 0; m < mbSize; m++) {
-                    currentBlk[ind_blk + m] = imgP[ind_img + m];
-                    refBlk[ind_blk + m] = imgI[ind_img + m];
-                }
-            }	
-
-            costs[2] = costFuncSAD(currentBlk, refBlk, mbSize);
+            costs[2] = costFuncSAD(imgP, imgI, iw + j, iw + j, mbSize, w);
 
             if(costs[2] < zmp_T) {
                 vectors->vx = 0;  vectors->vy = 0; vectors->mag2 = 0;
@@ -248,18 +247,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
                 if (k == 2 || stepSize == 0)
                     continue; //center point already calculated
 
-                // initialise macroblock
-                const int preind_refBlk = refBlkVer * w + refBlkHor;
-                for(l = 0; l < mbSize; l++) {
-                    const int ind_blk = l * mbSize;
-                    const int ind_imgP = l * w + iw + j;
-                    const int ind_imgI = l * w + preind_refBlk;
-                    for(m = 0; m < mbSize; m++) {
-                        currentBlk[ind_blk + m] = imgP[ind_imgP + m];
-                        refBlk[ind_blk + m] = imgI[ind_imgI + m];
-                    }
-                }
-                costs[k] = costFuncSAD(currentBlk, refBlk, mbSize);
+                costs[k] = costFuncSAD(imgP, imgI, iw + j, refBlkVer * w + refBlkHor, mbSize, w);
                 //computations++;
                 checkArray[LDSP[k][1] + p + 1][LDSP[k][0] + p + 1] = 1;                
                 ESP_LOGV(TAG, "blckV = %i, blckH = %i, cost = %u", refBlkVer, refBlkHor, costs[k]);
@@ -309,19 +297,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
                     if(checkArray[y - i + SDSP[k][1] + p + 1][x - j + SDSP[k][0] + p + 1] == 1)
                         continue;
 
-                    // initialise macroblock
-                    const int preind_refBlk = refBlkVer * w + refBlkHor;
-                    for(l = 0; l < mbSize; l++) {
-                        const int ind_blk = l * mbSize;
-                        const int ind_imgP = l * w + iw + j;
-                        const int ind_imgI = l * w + preind_refBlk;
-                        for(m = 0; m < mbSize; m++) {
-                            currentBlk[ind_blk + m] = imgP[ind_imgP + m];
-                            refBlk[ind_blk + m] = imgI[ind_imgI + m];
-                        }
-                    }
-
-                    costs[k] = costFuncSAD(currentBlk, refBlk, mbSize);
+                    costs[k] = costFuncSAD(imgP, imgI, iw + j, refBlkVer * w + refBlkHor, mbSize, w);
                     checkArray[y - i + SDSP[k][1] + p + 1][x - j + SDSP[k][0] + p + 1] = 1;
                     //computations++;
                     ESP_LOGV(TAG, "blckV = %i, blckH = %i, cost = %u", refBlkVer, refBlkHor, costs[k]);
@@ -359,8 +335,5 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
 
     free(currentBlk);
     free(refBlk);
-
-    //outputs
-    //*MotionVect = output;
     return 1;
 }
