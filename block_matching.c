@@ -132,7 +132,7 @@ uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
 bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize,
  int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2) {
 
-    int blck_size = (int)w * h / (mbSize * mbSize);
+    int blck_size = w / mbSize * h / mbSize;
     MotionVector16_t *vectors = MotionVect;
 
     if(!vectors) 
@@ -174,10 +174,10 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
     //int mbCount = 0;
 
     // MacroBlocks (MB) used to compute Min Mathing Error (MME) and SAD
-    uint8_t *currentBlk = malloc(mbSize * mbSize);
-    uint8_t *refBlk = malloc(mbSize * mbSize);
+    //uint8_t *currentBlk = malloc(mbSize * mbSize);
+    //uint8_t *refBlk = malloc(mbSize * mbSize);
 
-    int i, j, k, m, l, point;
+    int i, j, k, point;
     // we start  off from the top left of image
     // we will walk in step of mbSize
     for(i = 0; i < h - mbSize + 1; i+=mbSize) {
@@ -238,6 +238,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
             //Align the center of ARP with the center point of the search window and 
             //check its 4 search points (plus the position of the predicted MV if no overlap)
             //to find out the current MME point
+            cost = costs[2], point = 2;
             for (k = 0; k < maxIndex; k++) {
                 const int refBlkVer = y + LDSP[k][1];
                 const int refBlkHor = x + LDSP[k][0];
@@ -251,16 +252,12 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
                 //computations++;
                 checkArray[LDSP[k][1] + p + 1][LDSP[k][0] + p + 1] = 1;                
                 ESP_LOGV(TAG, "blckV = %i, blckH = %i, cost = %u", refBlkVer, refBlkHor, costs[k]);
-            }            
 
-            //Find the current MME point
-            cost = costs[0], point = 0;
-            for(k = 0; k < 5; k++) {
                 if (costs[k] < cost) {
                     cost = costs[k];
                     point = k;
                 }
-            }
+            }            
 
             ESP_LOGD(TAG, "MIN : cost = %u, point = %u", cost, point);
             ESP_LOGD(TAG, "================== STEP3 =================");
@@ -284,6 +281,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
             // do the SDSP
             int doneFlag = 0;
             while(!doneFlag) {
+                cost = costs[2]; point = 2;
                 for(k = 0; k < 5; k++) {
                     const int refBlkVer = y + SDSP[k][1];
                     const int refBlkHor = x + SDSP[k][0];
@@ -294,18 +292,21 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
                         continue;
                     if(refBlkHor < j-p || refBlkHor > j+p || refBlkVer < i-p || refBlkVer > i+p)
                         continue;
-                    if(checkArray[y - i + SDSP[k][1] + p + 1][x - j + SDSP[k][0] + p + 1] == 1)
+                    if(checkArray[y - i + SDSP[k][1] + p + 1][x - j + SDSP[k][0] + p + 1] == 1) {
+                        //Find min of costs and index
+                        if (costs[k] < cost) {
+                            cost = costs[k];
+                            point = k;
+                        }
                         continue;
+                    }
 
                     costs[k] = costFuncSAD(imgP, imgI, iw + j, refBlkVer * w + refBlkHor, mbSize, w);
                     checkArray[y - i + SDSP[k][1] + p + 1][x - j + SDSP[k][0] + p + 1] = 1;
                     //computations++;
                     ESP_LOGV(TAG, "blckV = %i, blckH = %i, cost = %u", refBlkVer, refBlkHor, costs[k]);
-                }
 
-                //Find min of costs and index
-                cost = costs[0]; point = 0;
-                for(k = 0; k < 5; k++) {
+                    //Find min of costs and index
                     if (costs[k] < cost) {
                         cost = costs[k];
                         point = k;
@@ -333,7 +334,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
         }
     }
 
-    free(currentBlk);
-    free(refBlk);
+    //free(currentBlk);
+    //free(refBlk);
     return 1;
 }

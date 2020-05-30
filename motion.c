@@ -35,24 +35,26 @@ bool init_context(MotionEstContext *ctx, int method, int mbSize, int search_para
     ctx->search_param = search_param;
     ctx->width = width;
     ctx->height = height;
+    ctx->max = 0;
 
     //if we define mbSize
     if(mbSize > 0) {
         // redefine as a closest 2^n size
-        /*ctx->log2_mbSize = ceil(log2f(mbSize));
+        ctx->log2_mbSize = ceil(log2(mbSize));
         ctx->mbSize = 1 << ctx->log2_mbSize;
 
         ctx->b_width  = ctx->width  >> ctx->log2_mbSize;
         ctx->b_height = ctx->height >> ctx->log2_mbSize;
-        ctx->b_count  = ctx->b_width * ctx->b_height; */
+        ctx->b_count  = ctx->b_width * ctx->b_height; 
+/*
         ctx->mbSize = mbSize;
         ctx->b_width =  ctx->width / mbSize;
         ctx->b_height =  ctx->height / mbSize;
-        ctx->b_count = ctx->b_height * ctx->b_width;
+        ctx->b_count = ctx->b_height * ctx->b_width;*/
     } else {
         // Macro Block size scale the image size
-        ctx->mbSize = (max(ctx->width, ctx->height) > 100) ? 
-                    max(ctx->width, ctx->height) / 100 : 1;
+        ctx->mbSize = (max(ctx->width, ctx->height) > 150) ? 
+                    max(ctx->width, ctx->height) / 150 : 1;
 
         ctx->b_width  = ctx->width  / ctx->mbSize;
         ctx->b_height = ctx->height / ctx->mbSize;
@@ -73,10 +75,10 @@ static bool LK_optical_flow8_wrapper(MotionEstContext *c) {
 
 static bool motionEstARPS_wrapper(MotionEstContext *c) {
     // Zero-Motion Prejudgement threshold
-    int zmp_threshold = (c->mbSize * c->mbSize) * 2;
+    int zmp_threshold = c->mbSize << (c->log2_mbSize + 1);
 
-    return motionEstARPS(c->data_cur, c->data_ref, c->width, c->height, c->mbSize,
-         c->search_param, c->mv_table[0], zmp_threshold, &c->max);
+    return motionEstARPS(c->data_cur, c->data_ref, c->b_width << c->log2_mbSize, c->b_height << c->log2_mbSize,
+     c->mbSize, c->search_param, c->mv_table[0], zmp_threshold, &c->max);
 }
 
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur) {
