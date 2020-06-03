@@ -163,7 +163,7 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 				mv = &V[i * w + j];
 				mv->vx = (int16_t)vx;
 				mv->vy = (int16_t)vy;
-				mv->mag2 = (uint16_t)(vx * vx + vy * vy);	
+				mv->mag2 = (uint16_t)(fabs(vx) + fabs(vy));	
 				if(*mag_max2 < mv->mag2)
 					*mag_max2 = mv->mag2;		
 			} 

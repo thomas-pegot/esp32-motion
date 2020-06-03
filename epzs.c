@@ -101,7 +101,7 @@ uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int *mv)
 bool motionEstEPZS(MotionEstContext *me_ctx)
 {
     int mb_y, mb_x;
-
+    me_ctx->max = 0;
 
     memcpy(me_ctx->mv_table[2], me_ctx->mv_table[1], sizeof(*me_ctx->mv_table[1]) * me_ctx->b_count);
     memcpy(me_ctx->mv_table[1], me_ctx->mv_table[0], sizeof(*me_ctx->mv_table[0]) * me_ctx->b_count);
@@ -172,7 +172,7 @@ bool motionEstEPZS(MotionEstContext *me_ctx)
             me_ctx->mv_table[0][mb_i].vx = (int16_t) mv[0] - x_mb;
             me_ctx->mv_table[0][mb_i].vy = (int16_t) mv[1] - y_mb;
             me_ctx->mv_table[0][mb_i].mag2 = (uint16_t) pow(mv[0] - x_mb,2) + pow(mv[1] - y_mb,2);
-
+            me_ctx->max = max(me_ctx->max, me_ctx->mv_table[0][mb_i].mag2);
         }
     }
     return 1;

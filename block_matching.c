@@ -130,7 +130,6 @@ uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
 bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize,
  int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2) {
 
-    int blck_size = w / mbSize * h / mbSize;
     MotionVector16_t *vectors = MotionVect;
 
     // Error window used to computed Minimal Matching Error
