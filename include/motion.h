@@ -11,11 +11,17 @@
        __typeof__ (b) _b = (b); \
      _a > _b ? _a : _b; })
 
+#define min(a,b) \
+   ({ __typeof__ (a) _a = (a); \
+       __typeof__ (b) _b = (b); \
+     _a < _b ? _a : _b; })
+
 #define WINDOW 5 //convolution window size for lucas kanade
 
 #define LK_OPTICAL_FLOW_8BIT	0
 #define LK_OPTICAL_FLOW 		1
 #define BLOCK_MATCHING_ARPS		2
+#define BLOCK_MATCHING_EPZS     3
 
 // Motion vector
 typedef struct {
@@ -31,6 +37,11 @@ typedef struct {
     int8_t vx, vy;
 } MotionVector8_t;
 
+typedef struct MotionEstPredictor {
+    int mvs[10][2];
+    int nb;
+} MotionEstPredictor;
+
 typedef struct MotionEstContext{
 	uint8_t *data_cur, *data_ref;       ///< current & prev images
 	int method;		  					///< motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)
@@ -39,17 +50,22 @@ typedef struct MotionEstContext{
 	int b_width, b_height, b_count;     ///< blocks width and height
 	
 	//int xmin, xmax, ymin, ymax; // area mv
-	//int pred_x, pred_y; // for certain predictive bma
 
 	// for block matching algo. only
 	int mbSize, log2_mbSize; 			///< macro block size
 	int search_param; 					///< parameter p in ARPS
 
+	int pred_x,							///< median predictor
+		pred_y;
+	MotionEstPredictor preds[2];		///< predictor for EPZS
+
 	MotionVector16_t *mv_table[3];      ///< motion vectors of current & prev 2 frames
 	int max;							///< max motion vector mag²
 
+	uint64_t (*get_cost) (struct MotionEstContext *self, int x_mb, int y_mb, int x_mv, int y_mv);
 	bool (*motion_func) (struct MotionEstContext *self);	
 } MotionEstContext;
+
 
 // allocate mv_table motion vector table
 bool alloc_mv(MotionEstContext *ctx);
@@ -60,6 +76,8 @@ bool init_context(MotionEstContext *ctx, int method, int mbSize, int search_para
 
 // Motion estimation
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur);
+
+uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv);
 
 
 //						## OPTICAL FLOW
@@ -80,8 +98,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
  		int p, MotionVector16_t *motionVect, int zmp_T, int *max);
 
 //#TODO : Enhanced Predictive Zonal Search
-//bool motionEstEZPS();
-
+bool motionEstEPZS(MotionEstContext *);
 
 //						## TEST METHODS
 

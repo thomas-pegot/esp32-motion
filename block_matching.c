@@ -24,16 +24,14 @@ static const char *TAG = "block_matching";
  * 
  * @return the SAD for the 2 blks * */
 
-//#TODO : replace currentBlk, refblk by whole images instead
 int costFuncSAD(const uint8_t *currentImg, const uint8_t *refImg, 
         int offset_curr, int offset_ref, size_t mbSize, size_t w) {
     int err = 0, i, j;
 
     for(i = 0; i < mbSize; i++) {
-        const int ind_curr = i * w + offset_curr;
-        const int ind_ref = i * w + offset_ref;
+        const int iw = i * w ;
         for(j = 0; j < mbSize; j++) 
-            err += abs(currentImg[ind_curr + j] - refImg[ind_ref + j]);
+            err += abs(currentImg[iw + j + offset_curr] - refImg[iw + j + offset_ref]);
     } 
     return err;
 }
@@ -51,14 +49,7 @@ int costFuncSAD(const uint8_t *currentImg, const uint8_t *refImg,
 float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp,\
  size_t w, size_t h, const int n) {
     float err = 0.0f;
-    /*
-    for(int i = h; i--; ) {
-        for(int j = 0; j < w; j++) 
-            err += pow(imgP[j] - imgComp[j], 2);
-        imgP += w;
-        imgComp += w;
-    }
-    */
+
     register int i = w * h;
     while(--i)
         err += pow(*(imgP++) - *(imgComp++), 2);
@@ -113,6 +104,13 @@ uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
     return imgCmp;
 }
 
+// The index points for Small Diamond Search pattern
+    const int SDSP[6][2] = {{0, -1},
+                        {-1, 0},
+                        {0, 0},
+                        {1, 0},
+                        {0, 1},
+                        {1, 1}};
 
 /** @brief Computes motion vectors using Adaptive Rood Pattern Search method
  * 
@@ -135,30 +133,10 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
     int blck_size = w / mbSize * h / mbSize;
     MotionVector16_t *vectors = MotionVect;
 
-    if(!vectors) 
-        return -1;
-
-    //init output
-    for(int i = blck_size ; i--; ) {
-        vectors->vx = 0;
-        vectors->vy = 0;
-        vectors->mag2 = 0;
-        vectors++;
-    }
-    vectors = &MotionVect[0]; // reposition to start of vector
-
     // Error window used to computed Minimal Matching Error
     uint costs[6] = {UINT32_MAX}; 
     uint cost;
     int stepSize = 0, maxIndex = -1;
-
-    // The index points for Small Diamond Search pattern
-    const int SDSP[6][2] = {{0, -1},
-                        {-1, 0},
-                        {0, 0},
-                        {1, 0},
-                        {0, 1},
-                        {1, 1}};
 
     // The index points for Large Diamond Search pattern
     int LDSP[6][2];

@@ -4,17 +4,27 @@
 
 bool alloc_mv(MotionEstContext *ctx) {
     int i;
-    /* Too heavy 
-    for (i = 0; i < 3; i++) {
-        ctx->mv_table[i] = (MotionVector16_t*)calloc(ctx->b_count, 
-                                            sizeof(*ctx->mv_table[0]));
-        if (!ctx->mv_table[i])
+    if(ctx->method == BLOCK_MATCHING_EPZS) {
+        for (i = 0; i < 3; i++) {
+            ctx->mv_table[i] = (MotionVector16_t*)calloc(ctx->b_count, sizeof(*ctx->mv_table[0]));
+            if (!ctx->mv_table[i])
+                return 0;
+        }
+    } else {
+        ctx->mv_table[0] = (MotionVector16_t*)calloc(ctx->b_count,  sizeof(*ctx->mv_table[0]));
+        if (!ctx->mv_table[0])
             return 0;
-    }*/
-    ctx->mv_table[0] = (MotionVector16_t*)calloc(ctx->b_count,  sizeof(*ctx->mv_table[0]));
-    if (!ctx->mv_table[0])
-        return 0;
+    }
     return 1;
+}
+
+
+void freep(void *arg) {
+        void *val;
+
+        memcpy(&val, arg, sizeof(val));
+        memcpy(arg, &(void *){ NULL }, sizeof(val));
+        free(val);
 }
 
 void uninit(MotionEstContext *ctx) {
@@ -22,10 +32,9 @@ void uninit(MotionEstContext *ctx) {
     ctx->data_ref = NULL;
     ctx->data_cur = NULL;
     ctx->method = 0;
-    /*
+    
     for (i = 0; i < 3; i++)
-       free(&ctx->mv_table[i]);*/
-    free(ctx->mv_table[0]);
+       freep(&ctx->mv_table[i]);
 }
 
 bool init_context(MotionEstContext *ctx, int method, int mbSize, int search_param,
@@ -35,6 +44,7 @@ bool init_context(MotionEstContext *ctx, int method, int mbSize, int search_para
     ctx->search_param = search_param;
     ctx->width = width;
     ctx->height = height;
+    ctx->get_cost = &me_comp_sad;
     ctx->max = 0;
 
     //if we define mbSize
@@ -46,11 +56,7 @@ bool init_context(MotionEstContext *ctx, int method, int mbSize, int search_para
         ctx->b_width  = ctx->width  >> ctx->log2_mbSize;
         ctx->b_height = ctx->height >> ctx->log2_mbSize;
         ctx->b_count  = ctx->b_width * ctx->b_height; 
-/*
-        ctx->mbSize = mbSize;
-        ctx->b_width =  ctx->width / mbSize;
-        ctx->b_height =  ctx->height / mbSize;
-        ctx->b_count = ctx->b_height * ctx->b_width;*/
+
     } else {
         // Macro Block size scale the image size
         ctx->mbSize = (max(ctx->width, ctx->height) > 150) ? 
@@ -82,29 +88,47 @@ static bool motionEstARPS_wrapper(MotionEstContext *c) {
 }
 
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur) {
-    if(ctx->method > 2) { //methods predictive
-        memcpy(ctx->mv_table[2], ctx->mv_table[1], sizeof(*ctx->mv_table[1]) * ctx->b_count);
-        memcpy(ctx->mv_table[1], ctx->mv_table[0], sizeof(*ctx->mv_table[0]) * ctx->b_count);
-    }
     ctx->data_cur = img_cur;
     ctx->data_ref = img_prev;
 
     switch (ctx->method)
     {
-    case LK_OPTICAL_FLOW        : ctx->motion_func = LK_optical_flow_wrapper;
+    case LK_OPTICAL_FLOW        : ctx->motion_func = &LK_optical_flow_wrapper;
         strcpy(ctx->name, "lucas kanade");
         break;
-    case LK_OPTICAL_FLOW_8BIT   : ctx->motion_func = LK_optical_flow8_wrapper;
+    case LK_OPTICAL_FLOW_8BIT   : ctx->motion_func = &LK_optical_flow8_wrapper;
         strcpy(ctx->name, "lucas kanade 8b");
         break;
-    case BLOCK_MATCHING_ARPS    : ctx->motion_func = motionEstARPS_wrapper;
-        strcpy(ctx->name, "block matching");
+    case BLOCK_MATCHING_ARPS    : ctx->motion_func = &motionEstARPS_wrapper;
+        strcpy(ctx->name, "ARPS");
+        break;    
+    case BLOCK_MATCHING_EPZS    : ctx->motion_func = &motionEstEPZS;
+        strcpy(ctx->name, "EPZS");
         break;
     default                     : return 0;
     }
 
     return ctx->motion_func(ctx);
 }
+
+uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv) {
+    uint8_t *data_ref = me_ctx->data_ref;
+    uint8_t *data_cur = me_ctx->data_cur;
+    int linesize = me_ctx->width;
+    uint64_t sad = 0;
+    int i, j;
+
+    data_ref += y_mv * linesize;
+    data_cur += y_mb * linesize;
+
+    for (j = 0; j < me_ctx->mbSize; j++) {
+        const int jlinesize = j * linesize;
+        for (i = 0; i < me_ctx->mbSize; i++)
+            sad += abs(data_ref[x_mv + i + jlinesize] - data_cur[x_mb + i + jlinesize]);
+    }
+    return sad;
+}
+
 //#TODO Post processing motion filtering
 /*
 // Limit min magnitude and number min magnitude to filter

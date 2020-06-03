@@ -4,6 +4,7 @@ set(COMPONENT_SRCS
   convolution.c
   block_matching.c
   motion.c
+  epzs.c
   )
 
 set(COMPONENT_ADD_INCLUDEDIRS
