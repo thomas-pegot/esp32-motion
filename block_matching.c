@@ -5,14 +5,6 @@
 #include "esp_timer.h"
 
 
-#if defined(ARDUINO_ARCH_ESP32) && defined(CONFIG_ARDUHAL_ESP_LOG)
-#include "esp32-hal-log.h"
-#define TAG ""
-#else
-#include "esp_log.h"
-static const char *TAG = "block_matching";
-#endif
-
 /** @brief Computes the Sum of Absolute Difference (SAD) for the given two blocks
  * 
  * @param currentImg    : img for which we are finding the SAD
@@ -76,10 +68,8 @@ uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
     uint8_t *imgCmp = calloc(w * h, sizeof(uint8_t));
     uint8_t *imageComp = imgCmp;
 
-    if(!imageComp) {
-        ESP_LOGE(TAG, "motionComp can't allocate memory");
+    if(!imageComp) 
         return NULL;
-    }
 
     for( int i = 0; i < h - mbSize + 1; i+=mbSize) {
         for( int j = 0; j < w - mbSize + 1; i+=mbSize) {
@@ -167,7 +157,6 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
             //                           ##  STEP1:  ##
             //Compute the matching error (SAD) between the current block and the block at the same 
             //location in the ref-erence frame (i.e., the center of the current search window
-            ESP_LOGD(TAG, "vector(%u, %u) = %u", i, j, vectors->mag2);
 
             // initialise macroblock  matlab : MB = img(i:i+mbSize-1, j:j+mbSize-1)
             costs[2] = costFuncSAD(imgP, imgI, iw + j, iw + j, mbSize, w);
@@ -179,8 +168,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
             }
 
             checkArray[p + 1][p + 1] = 1;
-            //computations++;            
-            ESP_LOGD(TAG, "================== STEP1 =================");
+
             // if we are in the left most column then we have to make sure that
             // we just do the LDSP with stepSize = 2
             if (!j) {
@@ -188,7 +176,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
                 maxIndex = 4;
             } else {
                 vectors--;
-                stepSize = max(abs(vectors->vx),  abs(vectors->vy));
+                stepSize = mmax(abs(vectors->vx),  abs(vectors->vy));
                 // We check if prediction overlap LDSP in that case we dont recompute
                 if( (abs(vectors->vx) == stepSize && vectors->vy == 0)
                     || (abs(vectors->vy) == stepSize && vectors->vx == 0))
@@ -208,8 +196,6 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
             LDSP[3][0] =  stepSize  ; LDSP[3][1] = 0;
             LDSP[4][0] = 0          ; LDSP[4][1] = stepSize;
             
-            ESP_LOGD(TAG, "stepSize = %u", stepSize);
-            ESP_LOGD(TAG, "================== STEP2 =================");
             // do the LDSP
             //                          ##  STEP 2: ##
             //Align the center of ARP with the center point of the search window and 
@@ -228,7 +214,6 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
                 costs[k] = costFuncSAD(imgP, imgI, iw + j, refBlkVer * w + refBlkHor, mbSize, w);
                 //computations++;
                 checkArray[LDSP[k][1] + p + 1][LDSP[k][0] + p + 1] = 1;                
-                ESP_LOGV(TAG, "blckV = %i, blckH = %i, cost = %u", refBlkVer, refBlkHor, costs[k]);
 
                 if (costs[k] < cost) {
                     cost = costs[k];
@@ -236,8 +221,6 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
                 }
             }            
 
-            ESP_LOGD(TAG, "MIN : cost = %u, point = %u", cost, point);
-            ESP_LOGD(TAG, "================== STEP3 =================");
             //                         ## STEP 3 ##: 
             //Set  the  center  point  of  the  unit-size  rood  pattern
             //(URP) at the MME point found in the previous step and check its points.
@@ -280,8 +263,6 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
 
                     costs[k] = costFuncSAD(imgP, imgI, iw + j, refBlkVer * w + refBlkHor, mbSize, w);
                     checkArray[y - i + SDSP[k][1] + p + 1][x - j + SDSP[k][0] + p + 1] = 1;
-                    //computations++;
-                    ESP_LOGV(TAG, "blckV = %i, blckH = %i, cost = %u", refBlkVer, refBlkHor, costs[k]);
 
                     //Find min of costs and index
                     if (costs[k] < cost) {
@@ -290,7 +271,6 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
                     }
                 }
 
-                ESP_LOGD(TAG, "MIN : cost = %u, point = %u", cost, point);
                 if(point == 2) 
                     doneFlag = 1; // Point incurred at the current URP
                 else {
@@ -304,14 +284,12 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
             vectors->vx = y - i;
             vectors->vy = x - j;
             vectors->mag2 = powf(vectors->vx, 2) + powf(vectors->vx, 2);
-            *max_mag2 = max(*max_mag2, vectors->mag2);
+            *max_mag2 = mmax(*max_mag2, vectors->mag2);
             vectors++;
             memset(costs, UINT32_MAX, 6 * sizeof(int));
             memset(checkArray, 0, sizeof(checkArray[0][0]) * pow(2 * p + 1, 2));
         }
     }
 
-    //free(currentBlk);
-    //free(refBlk);
     return 1;
 }

@@ -57,10 +57,10 @@ static const int8_t dia1[4][2]  = {{-1, 0}, { 0,-1}, { 1, 0}, { 0, 1}};
 uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int *mv)
 {
     int x, y;
-    int x_min = max(0, x_mb - me_ctx->search_param);
-    int y_min = max(0, y_mb - me_ctx->search_param);
-    int x_max = min(x_mb + me_ctx->search_param, (me_ctx->b_width - 1) << me_ctx->log2_mbSize);
-    int y_max = min(y_mb + me_ctx->search_param, (me_ctx->b_height - 1) << me_ctx->log2_mbSize);
+    int x_min = mmax(0, x_mb - me_ctx->search_param);
+    int y_min = mmax(0, y_mb - me_ctx->search_param);
+    int x_max = mmin(x_mb + me_ctx->search_param, (me_ctx->b_width - 1) << me_ctx->log2_mbSize);
+    int y_max = mmin(y_mb + me_ctx->search_param, (me_ctx->b_height - 1) << me_ctx->log2_mbSize);
     uint64_t cost, cost_min;
     int i;
 
@@ -172,7 +172,7 @@ bool motionEstEPZS(MotionEstContext *me_ctx)
             me_ctx->mv_table[0][mb_i].vx = (int16_t) mv[0] - x_mb;
             me_ctx->mv_table[0][mb_i].vy = (int16_t) mv[1] - y_mb;
             me_ctx->mv_table[0][mb_i].mag2 = (uint16_t) pow(mv[0] - x_mb,2) + pow(mv[1] - y_mb,2);
-            me_ctx->max = max(me_ctx->max, me_ctx->mv_table[0][mb_i].mag2);
+            me_ctx->max = mmax(me_ctx->max, me_ctx->mv_table[0][mb_i].mag2);
         }
     }
     return 1;

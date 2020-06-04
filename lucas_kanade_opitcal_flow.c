@@ -3,20 +3,11 @@
 #include <stdbool.h>
 #include <math.h>
 #include <string.h>
-#include "esp_timer.h"
 
-#if defined(ARDUINO_ARCH_ESP32) && defined(CONFIG_ARDUHAL_ESP_LOG)
-#include "esp32-hal-log.h"
-#define TAG ""
-#else
-#include "esp_log.h"
-static const char *TAG = "camera_httpd";
-#endif
-
-const float NoiseThreshold = 0.01;// Lucas Kanade noise threshold
-const int half_window = WINDOW / 2;
-const int window_squared = WINDOW * WINDOW;
-const int log2_window = (int)ceil(log2(WINDOW));
+static const float NoiseThreshold = 0.01;// Lucas Kanade noise threshold
+static const int half_window = WINDOW / 2;
+static const int window_squared = WINDOW * WINDOW;
+static const int log2_window = (int)ceil(log2(WINDOW));
 
 // define 5x5 Gaussian kernel flattened
 static const float kernel[WINDOW * WINDOW] = {1 / 256.0f, 4 / 256.0f, 6 / 256.0f, 4 / 256.0f, 1 / 256.0f, 4 / 256.0f, 16 / 256.0f,
@@ -28,11 +19,6 @@ static const float Kernel_isotropic[WINDOW] = {1.0 / 16.0, 4.0 / 16.0, 6.0 / 16.
 
 // Differentiate Lucas Kanade kernel https://www.cs.toronto.edu/~fleet/research/Papers/ijcv-94.pdf
 static const float Kernel_Dxy[WINDOW] = {-1.0 / 12.0, 8.0 / 12, 0, -8.0 / 12.0, 1.0 / 12.0};
-
-// TODO: for further dev
-//static int motion_mag2_limit = 1600;
-//static int motion_mag2_limit_count = 5;
-
 
 /// Optical flow Lucas-Kanade
 /** @brief Implement LK optical flow source from wiki and matlab:
@@ -53,22 +39,12 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 	int i, j, m;
 	*mag_max2 = 0;
 
-	if(!fx || !fy || !ft || !image1 || !image2) {
-		ESP_LOGE(TAG, "LK_optical_flow can't allocate image memory.");
+	if(!fx || !fy || !ft || !image1 || !image2) 
 		return false;
-	} else if(!N) {
-		ESP_LOGE(TAG, "width or height null");
+	else if(!N) 
 		return false;
-	} else if(!src1 || !src2) {
-		ESP_LOGE(TAG, "empty pointer src1 or/and src2");
+	else if(!src1 || !src2) 
 		return false;
-	}
-
-	int64_t lk_start = 0, lk_conv = 0, lk_convDx = 0, 
-	lk_transform = 0, lk_preprocess = 0, lk_algo = 0, lk_before = 0;
-    lk_start = esp_timer_get_time();
-	lk_conv = lk_start, lk_before = lk_start, lk_convDx = lk_start,
-	lk_transform = lk_start, lk_preprocess = lk_start, lk_algo = lk_start;
 
 	// init input
 	for(i = N; i--; ) {
@@ -83,48 +59,31 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 
 	// Gradient computation: I_{t+1} - I_{t} 
 	// and fy initialisation as smoothed input = fx
-	lk_before = esp_timer_get_time();
 	for(i = N; --i; ) {
 		const float x = fx[i];
 		ft[i] -= x;
 		fy[i] = x;
 	}
-	lk_transform = esp_timer_get_time();
 
 	// Derivate Dx : 1D convolution horizontal
-	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) {
-		ESP_LOGW(TAG, "convH error");		
+	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) 
 		return false;
-	}
 	
-	lk_convDx = esp_timer_get_time();
 	// Derivate Dy : 1D convolution vertical
-	if(!convV(fy, image2, w, h, Kernel_Dxy, 5)) {
-		ESP_LOGW(TAG, "convV error");
+	if(!convV(fy, image2, w, h, Kernel_Dxy, 5)) 
 		return false;
-	}
-	lk_conv = esp_timer_get_time();
-	// ##Isotropic smooth
-	if(!convolve2DSeparable(image1, fx, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
-		ESP_LOGW(TAG, "convolve2DSeparable error");
-		return false;
-	}
 
-	if(!convolve2DSeparable(image2, fy, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
-		ESP_LOGW(TAG, "convolve2DSeparable error");
+	// ##Isotropic smooth
+	if(!convolve2DSeparable(image1, fx, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) 
 		return false;
-	}
-	
-	if(!convolve2DSeparable(ft, image2, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
-		ESP_LOGW(TAG, "convolve2DSeparable error");
+
+	if(!convolve2DSeparable(image2, fy, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5))
 		return false;
-	}
+
+	if(!convolve2DSeparable(ft, image2, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) 
+		return false;
 	
 	memcpy(ft, image2, N * sizeof(float));
-
-	lk_preprocess = esp_timer_get_time();
-
-    //TODO: Create a function for all above : Mag = opticalflow(fx, fy, ft, window=3)
 
 	// Lucas Kanade optical flow algorithm
 	for(i = half_window; i < h - half_window; ++i) {
@@ -169,20 +128,10 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 			} 
 		}
     }
-	lk_algo = esp_timer_get_time();
 
 	free(fx); free(image1);
 	free(fy); free(image2);
 	free(ft);
-
-	// Display time processing
-	int64_t conv_time = (lk_preprocess - lk_conv) / 1000;
-	int64_t transform_time = (lk_transform - lk_before) / 1000;
-	int64_t conv1D_time = (lk_convDx - lk_transform) / 1000;
-	int64_t algo_time = (lk_algo - lk_preprocess) / 1000;
-	int64_t preprocess_time = (lk_preprocess - lk_start) / 1000;
- 	ESP_LOGD(TAG, "Iso smooth = %ums | diff = %ums | conv1D = %ums| PREPROCESS = %ums | LK_LOOP = %ums ",
-	 	(uint32_t)conv_time, (uint32_t)transform_time, (uint32_t)conv1D_time, (uint32_t)preprocess_time, (uint32_t)algo_time);
 
 	return true;
 }
@@ -206,13 +155,10 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *out, in
 	int i, j, m;
 
 	if(!fx || !fy || !ft || !image1 || !image2) {
-		ESP_LOGE(TAG, "LK_optical_flow can't allocate image memory.");
 		return false;
 	} else if(!N) {
-		ESP_LOGE(TAG, "width or height null");
 		return false;
 	} else if(!src1 || !src2) {
-		ESP_LOGE(TAG, "empty pointer src1 or/and src2");
 		return false;
 	}
 
@@ -231,29 +177,24 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *out, in
 
 	// Derivate Dx : 1D convolution horizontal
 	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) {
-		ESP_LOGW(TAG, "convH error");		
 		return false;
 	}
 	
 	// Derivate Dy : 1D convolution vertical
 	if(!convV(fy, image2, w, h, Kernel_Dxy, 5)) {
-		ESP_LOGW(TAG, "convV error");
 		return false;
 	}
 
 	// ##Isotropic smooth
 	if(!convolve2DSeparable(image1, fx, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
-		ESP_LOGW(TAG, "convolve2DSeparable error");
 		return false;
 	}
 
 	if(!convolve2DSeparable(image2, fy, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
-		ESP_LOGW(TAG, "convolve2DSeparable error");
 		return false;
 	}
 	
 	if(!convolve2DSeparable(ft, image2, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
-		ESP_LOGW(TAG, "convolve2DSeparable error");
 		return false;
 	}
 	
