@@ -37,21 +37,15 @@ First thing first create a _motion estimation context_ :
 
 ```c
 MotionEstContext *me_ctx = {.method = LK_OPTICAL_FLOW,    // algorithm used
-                           .width  = 240,  .height = 240 // size of your image
+                           .width  = 96,  .height = 96 // size of your image
                            };
 
 MotionEstContext *me_ctx2 = {
 .method = BLOCK_MATCHING_ARPS,  // algo used 
-                       mbSize,  // block size for block matching algo
-                 search_param,  // search parameter value for block matching algo
-                    240, 240); // images size
+                  .mbSize = 8,  // block size for block matching algo
+            .search_param = 7,  // search parameter value for block matching algo
+  .width = 640, .height = 480); // images size
                             }
-```
-
-Next allocate motion vectors:
-
-```c
-init_context(me_ctx);
 ```
 
 table of correspondance :
@@ -61,15 +55,20 @@ table of correspondance :
 |LK_OPTICAL_FLOW_8BIT| 0 |lucas kanade (out 8-bit uchar)|
 |LK_OPTICAL_FLOW | 1 | lucas kanade (out 16-bit vector)|
 |BLOCK_MATCHING_ARPS| 2 | ARPS (out 16-bit vector)|
-|BLOCK_MATCHING_EPZS| 3 | EPZS (out 16-bit vector)
+|BLOCK_MATCHING_EPZS| 3 | EPZS (out 16-bit vector)|
 
+Next allocate motion vectors:
+
+```c
+init_context(me_ctx);
+```
 
 ### 0.2.2. Estimate motion :
 
 Now you can call `motion_estimation` method and pass current and previous images buffer.
 
 ```c
-if(!motion_estimation(&ctx, (uint8_t *)img_prev, (uint8_t *)img_cur))
+if(!motion_estimation(me_ctx, (uint8_t *)img_prev, (uint8_t *)img_cur))
     Serial.println("motion estimtion failed!")!
 ```
 
