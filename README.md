@@ -1,10 +1,32 @@
 <H1> Motion detection library (for ESP32cam) </H1>
 
+The purpose of this library is to implement **robust motion estimation** algorithm for the **ESP32cam** and other embedded chip.
+
+**Contents :**
+
+- [0.1. Introduction](#01-introduction)
+- [0.2. Basic usage](#02-basic-usage)
+  - [0.2.1. Declaration and initialisation :](#021-declaration-and-initialisation-)
+  - [0.2.2. Estimate motion :](#022-estimate-motion-)
+  - [0.2.3. Free memory :](#023-free-memory-)
+- [0.3. More in depth](#03-more-in-depth)
+  - [0.3.1. Block matching (Adaptative Rood Pattern Search)](#031-block-matching-adaptative-rood-pattern-search)
+  - [0.3.2. Lucas Kanade algorithm](#032-lucas-kanade-algorithm)
+    - [0.3.2.1. Simple case](#0321-simple-case)
+  - [0.3.3. More control :](#033-more-control-)
+- [0.4. TODOs](#04-todos)
+- [0.5. Refs](#05-refs)
 
 ## 0.1. Introduction
 
-The purpose of this library is to implement **robust motion detection** algorithm for the **ESP32cam** and other embedded chip.
+_Motion estimation_ is the process of finding motion vectors that define the translation from one image to another. This can be resolved by differennt approach:
 
+ - block matching algorithms ( ES, TSS, ARPS, EPZS)
+ - optical flow (Lucas-Kanade, Horn-Schunk)
+ - pixel recursive algorithm (RANSAC)
+ - phase correlation (FFT based)
+
+At the moment, I have implemented Lucas-kanade, ARPS and EPZS.
 
 
 ## 0.2. Basic usage
@@ -14,29 +36,33 @@ The purpose of this library is to implement **robust motion detection** algorith
 First thing first create a _motion estimation context_ :
 
 ```c
-MotionEstContext me_ctx = {.method = LK_OPTICAL_FLOW,    // algorithm used
+MotionEstContext *me_ctx = {.method = LK_OPTICAL_FLOW,    // algorithm used
                            .width  = 240,  .height = 240 // size of your image
                            };
+
+MotionEstContext *me_ctx2 = {
+.method = BLOCK_MATCHING_ARPS,  // algo used 
+                       mbSize,  // block size for block matching algo
+                 search_param,  // search parameter value for block matching algo
+                    240, 240); // images size
+                            }
 ```
 
 Next allocate motion vectors:
 
 ```c
-if(!alloc_mv(&mec_ctx))
-    Serial.println("Failed to allocate vectors!");
+init_context(me_ctx);
 ```
 
-Other way :
+table of correspondance :
 
-```c
-MotionEstContext me_ctx;
-init_context(        &ctx,
-          LK_OPTICAL_FLOW,  // algo used 
-                   mbSize,  // block size for block matching algo
-             search_param,  // search parameter value for block matching algo
-                 240, 240); // images size
+| macro  | val  |  function called  |
+|---|---|---|
+|LK_OPTICAL_FLOW_8BIT| 0 |lucas kanade (out 8-bit uchar)|
+|LK_OPTICAL_FLOW | 1 | lucas kanade (out 16-bit vector)|
+|BLOCK_MATCHING_ARPS| 2 | ARPS (out 16-bit vector)|
+|BLOCK_MATCHING_EPZS| 3 | EPZS (out 16-bit vector)
 
-```
 
 ### 0.2.2. Estimate motion :
 
@@ -49,12 +75,15 @@ if(!motion_estimation(&ctx, (uint8_t *)img_prev, (uint8_t *)img_cur))
 
 Now motion vectors will be stored in `me_ctx.mv_table[0]` with the maximum being `me_ctx.max`.
 
-Note : `mv_table` acts as a FIFO which means each time you perform an estimation it will push the FIFO :
+Note : in case of EZPS algorithm, `mv_table` acts as a FIFO which means each time you perform an estimation it will push the FIFO :
 ```mermaid
 graph LR;
 motion_estimation --> mv_table0 --> mv_table1 --> mv_table2 --> NULL;
 
 ```
+
+EZPS algorithm need previous motion vectors as a way of prediction to the next generated.
+
 
 ### 0.2.3. Free memory :
 
@@ -211,15 +240,15 @@ We can get more detailed output by using a motion vector struct composed of `V=(
     - [ ] remove isolated vector (by using a cluster min of vector parameter)
     - [ ] remove vector whose direction are too spread compared to the avge vector from cluster.
 
- - [ ] Alternate motion detection methods implementation:
-    - [ ] block matching algorithm
+ - [x] Alternate motion detection methods implementation:
+    - [x] block matching algorithm
       - [x] Adaptative Rood Pattern Search
-      - [ ] Enhanced Predictive Zonal Search
+      - [x] Enhanced Predictive Zonal Search
     - [ ] Lucas Kanade DoG (Difference of gaussian)
 
 
 
 
 ## 0.5. Refs
-
-convolution credits to  http://www.songho.ca/dsp/convolution/convolution.html
+ - convolution credits to  http://www.songho.ca/dsp/convolution/convolution.html
+- EPZS credits to https://github.com/FFmpeg/FFmpeg/

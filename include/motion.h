@@ -71,7 +71,7 @@ typedef struct MotionEstContext{
 bool alloc_mv(MotionEstContext *ctx);
 void uninit(MotionEstContext *ctx);
 // initialisation TODO generic
-bool init_context(MotionEstContext *ctx, int method, int mbSize, int search_param, size_t width, size_t height);
+bool init_context(MotionEstContext *ctx);
 
 
 // Motion estimation

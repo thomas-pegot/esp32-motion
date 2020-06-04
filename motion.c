@@ -1,23 +1,9 @@
 #include "motion.h"
 #include <string.h>
 #include <math.h>
+#include <assert.h>
 
-bool alloc_mv(MotionEstContext *ctx) {
-    int i;
-    if(ctx->method == BLOCK_MATCHING_EPZS) {
-        for (i = 0; i < 3; i++) {
-            ctx->mv_table[i] = (MotionVector16_t*)calloc(ctx->b_count, sizeof(*ctx->mv_table[0]));
-            if (!ctx->mv_table[i])
-                return 0;
-        }
-    } else {
-        ctx->mv_table[0] = (MotionVector16_t*)calloc(ctx->b_count,  sizeof(*ctx->mv_table[0]));
-        if (!ctx->mv_table[0])
-            return 0;
-    }
-    return 1;
-}
-
+static int mv_allocated = 0;
 
 void freep(void *arg) {
         void *val;
@@ -31,43 +17,64 @@ void uninit(MotionEstContext *ctx) {
     int i;
     ctx->data_ref = NULL;
     ctx->data_cur = NULL;
-    ctx->method = 0;
-    
+
+    if(!mv_allocated)
+        return;
+
     for (i = 0; i < 3; i++)
        freep(&ctx->mv_table[i]);
+    mv_allocated = 0;
 }
 
-bool init_context(MotionEstContext *ctx, int method, int mbSize, int search_param,
-         size_t width, size_t height) {
-    //uninit(ctx);
-    ctx->method = method;
-    ctx->search_param = search_param;
-    ctx->width = width;
-    ctx->height = height;
+bool init_context(MotionEstContext *ctx) {
+    int i;
+    if(mv_allocated)
+        uninit(&ctx);
+        
+    switch (ctx->method) {
+        case LK_OPTICAL_FLOW_8BIT:
+        case LK_OPTICAL_FLOW:
+            ctx->mv_table[0] = (MotionVector16_t*)calloc(ctx->width*ctx->height, sizeof(*ctx->mv_table[0]));
+            if (!ctx->mv_table[0])
+                return 0;
+            break;
+        case BLOCK_MATCHING_ARPS:
+            assert(ctx->width > 4 * ctx->mbSize);
+            assert(ctx->width > 3 * ctx->mbSize);
+            // redefine as a closest 2^n size
+            ctx->log2_mbSize = ceil(log2(ctx->mbSize));
+            ctx->mbSize = 1 << ctx->log2_mbSize;
+
+            ctx->b_width  = ctx->width  >> ctx->log2_mbSize;
+            ctx->b_height = ctx->height >> ctx->log2_mbSize;
+            ctx->b_count  = ctx->b_width * ctx->b_height; 
+            ctx->mv_table[0] = (MotionVector16_t*)calloc(ctx->b_count, sizeof(*ctx->mv_table[0]));
+            if (!ctx->mv_table[0])
+                return 0;
+            break;
+        case BLOCK_MATCHING_EPZS:
+            assert(ctx->width > 4 * ctx->mbSize);
+            assert(ctx->width > 3 * ctx->mbSize);
+            // redefine as a closest 2^n size
+            ctx->log2_mbSize = ceil(log2(ctx->mbSize));
+            ctx->mbSize = 1 << ctx->log2_mbSize;
+
+            ctx->b_width  = ctx->width  >> ctx->log2_mbSize;
+            ctx->b_height = ctx->height >> ctx->log2_mbSize;
+            ctx->b_count  = ctx->b_width * ctx->b_height; 
+            for (i = 0; i < 3; i++) {
+                ctx->mv_table[i] = (MotionVector16_t*)calloc(ctx->b_count, sizeof(*ctx->mv_table[0]));
+                if (!ctx->mv_table[i])
+                    return 0;
+            }
+            break;    
+        default:  return 0;
+    }
+    mv_allocated = 1;
     ctx->get_cost = &me_comp_sad;
     ctx->max = 0;
 
-    //if we define mbSize
-    if(mbSize > 0) {
-        // redefine as a closest 2^n size
-        ctx->log2_mbSize = ceil(log2(mbSize));
-        ctx->mbSize = 1 << ctx->log2_mbSize;
-
-        ctx->b_width  = ctx->width  >> ctx->log2_mbSize;
-        ctx->b_height = ctx->height >> ctx->log2_mbSize;
-        ctx->b_count  = ctx->b_width * ctx->b_height; 
-
-    } else {
-        // Macro Block size scale the image size
-        ctx->mbSize = (max(ctx->width, ctx->height) > 150) ? 
-                    max(ctx->width, ctx->height) / 150 : 1;
-
-        ctx->b_width  = ctx->width  / ctx->mbSize;
-        ctx->b_height = ctx->height / ctx->mbSize;
-        ctx->b_count  = ctx->b_width * ctx->b_height; 
-    }
-
-    return alloc_mv(ctx);
+    return 1;
 }
 
 static bool LK_optical_flow_wrapper(MotionEstContext *c) {
