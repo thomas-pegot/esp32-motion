@@ -87,7 +87,7 @@ EZPS algorithm need previous motion vectors as a way of prediction to the next g
 ### 0.2.3. Free memory :
 
 ```c
-uninit(&ctx);
+uninit(me_ctx);
 ```
 
 

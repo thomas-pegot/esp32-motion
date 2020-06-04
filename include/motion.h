@@ -66,19 +66,13 @@ typedef struct MotionEstContext{
 	bool (*motion_func) (struct MotionEstContext *self);	
 } MotionEstContext;
 
-
-// allocate mv_table motion vector table
-bool alloc_mv(MotionEstContext *ctx);
 void uninit(MotionEstContext *ctx);
-// initialisation TODO generic
 bool init_context(MotionEstContext *ctx);
-
 
 // Motion estimation
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur);
 
 uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv);
-
 
 //						## OPTICAL FLOW
 
@@ -88,8 +82,6 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int 
 
 //#TODO Lucas Kanade DoG (Diff. of Gaussian)
 //#TODO Horn-Schunck optical flow algorithm 
-//bool HS_optical_flow();
-
 
 //						## Block matching 
 
@@ -97,7 +89,7 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int 
 bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize,
  		int p, MotionVector16_t *motionVect, int zmp_T, int *max);
 
-//#TODO : Enhanced Predictive Zonal Search
+// Enhanced Predictive Zonal Search
 bool motionEstEPZS(MotionEstContext *);
 
 //						## TEST METHODS

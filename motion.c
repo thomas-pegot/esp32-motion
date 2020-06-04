@@ -18,18 +18,28 @@ void uninit(MotionEstContext *ctx) {
     ctx->data_ref = NULL;
     ctx->data_cur = NULL;
 
-    if(!mv_allocated)
+    if(!mv_allocated || !ctx)
         return;
-
-    for (i = 0; i < 3; i++)
-       freep(&ctx->mv_table[i]);
+    
+    switch (ctx->method)
+    {
+        case LK_OPTICAL_FLOW_8BIT:
+        case LK_OPTICAL_FLOW:
+        case BLOCK_MATCHING_ARPS:
+            freep(&ctx->mv_table[0]);        
+            break;    
+        case BLOCK_MATCHING_EPZS:
+            for (i = 0; i < 3; i++)
+                freep(&ctx->mv_table[i]);
+        default: return;
+    }
     mv_allocated = 0;
 }
 
 bool init_context(MotionEstContext *ctx) {
     int i;
     if(mv_allocated)
-        uninit(&ctx);
+        uninit(ctx);
         
     switch (ctx->method) {
         case LK_OPTICAL_FLOW_8BIT:
