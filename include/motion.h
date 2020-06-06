@@ -2,6 +2,10 @@
 #ifndef MOTION_H
 #define MOTION_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -100,5 +104,7 @@ uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect, siz
 // Compute PSNR of image compensated
 float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp, size_t w, size_t h, const int n);
 
-
+#ifdef __cplusplus
+}
+#endif
 #endif
