@@ -1,9 +1,18 @@
 <H1> Motion detection library (for ESP32cam) </H1>
+---
+
+<H2> Examples: </H2> 
+
+ - [ All in one security camera :new: ](https://github.com/thomas-pegot/ESP32-CAM_Motion)
+ - [ Motion vector stream for testing](https://github.com/thomas-pegot/camera_web_server)
+---
 
 The purpose of this library is to implement **robust motion estimation** algorithm for the **ESP32cam** and other embedded chip.
 
-**Contents :**
+**<H3>Contents :</H3>**
 
+- [<H1> Motion detection library (for ESP32cam) </H1>](#h1-motion-detection-library-for-esp32cam-h1)
+- [-  Motion vector stream for testing](#ulli-motion-vector-stream-for-testingliul)
 - [0.1. Introduction](#01-introduction)
 - [0.2. Basic usage](#02-basic-usage)
   - [0.2.1. Declaration and initialisation :](#021-declaration-and-initialisation-)
@@ -16,6 +25,7 @@ The purpose of this library is to implement **robust motion estimation** algorit
   - [0.3.3. More control :](#033-more-control-)
 - [0.4. TODOs](#04-todos)
 - [0.5. Refs](#05-refs)
+
 
 ## 0.1. Introduction
 
