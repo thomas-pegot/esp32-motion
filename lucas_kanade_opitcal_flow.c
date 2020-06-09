@@ -1,13 +1,23 @@
 #include "motion.h"
 #include "convolution.h"
 #include <stdbool.h>
+#include "assert.h"
 #include <math.h>
-#include <string.h>
+#include "esp_heap_caps.h" 
+#include <string.h> //memcpy, memset
+
+#if defined(ARDUINO_ARCH_ESP32) && defined(CONFIG_ARDUHAL_ESP_LOG)
+#include "esp32-hal-log.h"
+#define TAG ""
+#else
+#include "esp_log.h"
+static const char *TAG = "LK_OPTICAL_FLOW";
+#endif
 
 static const float NoiseThreshold = 0.01;// Lucas Kanade noise threshold
 static const int half_window = WINDOW / 2;
 static const int window_squared = WINDOW * WINDOW;
-static const int log2_window = (int)ceil(log2(WINDOW));
+static const int log2_window = (int const)ceil(log2(WINDOW));
 
 // define 5x5 Gaussian kernel flattened
 static const float kernel[WINDOW * WINDOW] = {1 / 256.0f, 4 / 256.0f, 6 / 256.0f, 4 / 256.0f, 1 / 256.0f, 4 / 256.0f, 16 / 256.0f,
@@ -20,6 +30,13 @@ static const float Kernel_isotropic[WINDOW] = {1.0 / 16.0, 4.0 / 16.0, 6.0 / 16.
 // Differentiate Lucas Kanade kernel https://www.cs.toronto.edu/~fleet/research/Papers/ijcv-94.pdf
 static const float Kernel_Dxy[WINDOW] = {-1.0 / 12.0, 8.0 / 12, 0, -8.0 / 12.0, 1.0 / 12.0};
 
+static void *_malloc(size_t size) {
+    void *res = malloc(size);
+    if(res)
+        return res;
+    return heap_caps_malloc(size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+}
+
 /// Optical flow Lucas-Kanade
 /** @brief Implement LK optical flow source from wiki and matlab:
  * https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method
@@ -29,22 +46,23 @@ static const float Kernel_Dxy[WINDOW] = {-1.0 / 12.0, 8.0 / 12, 0, -8.0 / 12.0, 
  * @return True if success False if failed somewhere*/
 bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *V, int w, int h, int *mag_max2) {
 
+	assert(w > 0 || h > 0);
+	assert(src1 != NULL);
+	assert(src2 != NULL);
 	const int N = w * h;
 	MotionVector16_t *mv = V;
-	float *image1 = (float*)malloc(N * sizeof(float)),
-		*image2 = (float*)malloc(N * sizeof(float)),
-		*fx = (float*)malloc(N * sizeof(float)),
-		*ft = (float*)malloc(N * sizeof(float)),
-		*fy = (float*)malloc(N * sizeof(float));
+	float *image1 = (float*)_malloc(N * sizeof(float)),
+		*image2 = (float*)_malloc(N * sizeof(float)),
+		*fx = (float*)_malloc(N * sizeof(float)),
+		*ft = (float*)_malloc(N * sizeof(float)),
+		*fy = (float*)_malloc(N * sizeof(float));
 	int i, j, m;
 	*mag_max2 = 0;
 
-	if(!fx || !fy || !ft || !image1 || !image2) 
+	if(!fx || !fy || !ft || !image1 || !image2) {
+		ESP_LOGE(TAG, "allocation failed!");
 		return false;
-	else if(!N) 
-		return false;
-	else if(!src1 || !src2) 
-		return false;
+	}
 
 	// init input
 	for(i = N; i--; ) {
@@ -66,22 +84,32 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 	}
 
 	// Derivate Dx : 1D convolution horizontal
-	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) 
+	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) {
+		ESP_LOGE(TAG, "convH failed!");
 		return false;
+	}
 	
 	// Derivate Dy : 1D convolution vertical
-	if(!convV(fy, image2, w, h, Kernel_Dxy, 5)) 
+	if(!convV(fy, image2, w, h, Kernel_Dxy, 5)) {
+		ESP_LOGE(TAG, "convV failed!");
 		return false;
+	}
 
 	// ##Isotropic smooth
-	if(!convolve2DSeparable(image1, fx, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) 
+	if(!convolve2DSeparable(image1, fx, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
+		ESP_LOGE(TAG, "convolve2DSeparable failed!") ;
 		return false;
+	}
 
-	if(!convolve2DSeparable(image2, fy, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5))
+	if(!convolve2DSeparable(image2, fy, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
+		ESP_LOGE(TAG, "convolve2DSeparable failed!") ;
 		return false;
+	}
 
-	if(!convolve2DSeparable(ft, image2, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) 
+	if(!convolve2DSeparable(ft, image2, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
+		ESP_LOGE(TAG, "convolve2DSeparable failed!") ;
 		return false;
+	}
 	
 	memcpy(ft, image2, N * sizeof(float));
 
@@ -147,11 +175,11 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *out, in
 	uint16_t *tmpMagArray = (uint16_t*)calloc(N, sizeof(uint16_t));
 	uint16_t *pMag = tmpMagArray;
 	uint16_t maxMag = 0;
-	float *image1 = (float*)malloc(N * sizeof(float)),
-		*image2 = (float*)malloc(N * sizeof(float)),
-		*fx = (float*)malloc(N * sizeof(float)),
-		*ft = (float*)malloc(N * sizeof(float)),
-		*fy = (float*)malloc(N * sizeof(float));
+	float *image1 = (float*)_malloc(N * sizeof(float)),
+		*image2 = (float*)_malloc(N * sizeof(float)),
+		*fx = (float*)_malloc(N * sizeof(float)),
+		*ft = (float*)_malloc(N * sizeof(float)),
+		*fy = (float*)_malloc(N * sizeof(float));
 	int i, j, m;
 
 	if(!fx || !fy || !ft || !image1 || !image2) {

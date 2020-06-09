@@ -1,11 +1,20 @@
 #include "motion.h"
-#include <string.h>
 #include <math.h>
 #include <assert.h>
+#include <string.h> //malloc, strcpy
+#include "esp_heap_caps.h"
+
+#if defined(ARDUINO_ARCH_ESP32) && defined(CONFIG_ARDUHAL_ESP_LOG)
+#include "esp32-hal-log.h"
+#define TAG ""
+#else
+#include "esp_log.h"
+static const char *TAG = "motion";
+#endif
 
 static int mv_allocated = 0;
 
-void freep(void *arg) {
+static void freep(void *arg) {
         void *val;
 
         memcpy(&val, arg, sizeof(val));
@@ -21,19 +30,18 @@ void uninit(MotionEstContext *ctx) {
     if(!mv_allocated || !ctx)
         return;
     
-    switch (ctx->method)
-    {
-        case LK_OPTICAL_FLOW_8BIT:
-        case LK_OPTICAL_FLOW:
-        case BLOCK_MATCHING_ARPS:
-            freep(&ctx->mv_table[0]);        
-            break;    
-        case BLOCK_MATCHING_EPZS:
-            for (i = 0; i < 3; i++)
-                freep(&ctx->mv_table[i]);
-        default: return;
-    }
+    for (i = 0; i < 3; i++)
+        freep(&ctx->mv_table[i]);
     mv_allocated = 0;
+}
+
+static void *_calloc(size_t nb, size_t size) {
+    void *res = calloc(nb, size);
+    
+    if(res)
+        return res;
+    
+    return heap_caps_calloc(nb, size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
 }
 
 bool init_context(MotionEstContext *ctx) {
@@ -44,9 +52,11 @@ bool init_context(MotionEstContext *ctx) {
     switch (ctx->method) {
         case LK_OPTICAL_FLOW_8BIT:
         case LK_OPTICAL_FLOW:
-            ctx->mv_table[0] = (MotionVector16_t*)calloc(ctx->width*ctx->height, sizeof(*ctx->mv_table[0]));
-            if (!ctx->mv_table[0])
+            ctx->mv_table[0] = (MotionVector16_t*)_calloc(ctx->width * ctx->height, sizeof(*ctx->mv_table[0]));
+            if (!ctx->mv_table[0]) {
+                ESP_LOGE(TAG, "alloction mv_table failed!");
                 return 0;
+            }
             break;
         case BLOCK_MATCHING_ARPS:
             assert(ctx->width > 4 * ctx->mbSize);
@@ -58,9 +68,11 @@ bool init_context(MotionEstContext *ctx) {
             ctx->b_width  = ctx->width  >> ctx->log2_mbSize;
             ctx->b_height = ctx->height >> ctx->log2_mbSize;
             ctx->b_count  = ctx->b_width * ctx->b_height; 
-            ctx->mv_table[0] = (MotionVector16_t*)calloc(ctx->b_count, sizeof(*ctx->mv_table[0]));
-            if (!ctx->mv_table[0])
+            ctx->mv_table[0] = (MotionVector16_t*)_calloc(ctx->b_count, sizeof(*ctx->mv_table[0]));
+            if (!ctx->mv_table[0]){
+                ESP_LOGE(TAG, "alloction mv_table failed!");
                 return 0;
+            }
             break;
         case BLOCK_MATCHING_EPZS:
             assert(ctx->width > 4 * ctx->mbSize);
@@ -73,12 +85,14 @@ bool init_context(MotionEstContext *ctx) {
             ctx->b_height = ctx->height >> ctx->log2_mbSize;
             ctx->b_count  = ctx->b_width * ctx->b_height; 
             for (i = 0; i < 3; i++) {
-                ctx->mv_table[i] = (MotionVector16_t*)calloc(ctx->b_count, sizeof(*ctx->mv_table[0]));
-                if (!ctx->mv_table[i])
+                ctx->mv_table[i] = (MotionVector16_t*)_calloc(ctx->b_count, sizeof(*ctx->mv_table[0]));
+                if (!ctx->mv_table[i]) {
+                    ESP_LOGE(TAG, "alloction mv_table failed!");
                     return 0;
+                }
             }
             break;    
-        default:  return 0;
+        default:  ESP_LOGE(TAG, "wrong method value"); return 0;
     }
     mv_allocated = 1;
     ctx->get_cost = &me_comp_sad;
@@ -122,7 +136,7 @@ bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cu
     case BLOCK_MATCHING_EPZS    : ctx->motion_func = &motionEstEPZS;
         strcpy(ctx->name, "EPZS");
         break;
-    default                     : return 0;
+    default:  ESP_LOGE(TAG, "wrong method value"); return 0;
     }
 
     return ctx->motion_func(ctx);
