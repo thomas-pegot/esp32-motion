@@ -1,34 +1,27 @@
 <H1> Motion detection library (for ESP32cam) </H1>
----
-
-<H2> Examples: </H2> 
 
  - [ All in one security camera :new: ](https://github.com/thomas-pegot/ESP32-CAM_Motion)
  - [ Motion vector stream for testing](https://github.com/thomas-pegot/camera_web_server)
----
+
+<H3>Contents :</H3>
+
+- [Introduction](#introduction)
+- [Basic usage](#basic-usage)
+  - [Declaration and initialisation :](#declaration-and-initialisation-)
+  - [Estimate motion :](#estimate-motion-)
+  - [Free memory :](#free-memory-)
+- [More in depth](#more-in-depth)
+  - [Block matching (Adaptative Rood Pattern Search)](#block-matching-adaptative-rood-pattern-search)
+  - [Lucas Kanade algorithm](#lucas-kanade-algorithm)
+    - [Simple case](#simple-case)
+  - [More control :](#more-control-)
+- [TODOs](#todos)
+- [Refs](#refs)
+
+
+## Introduction
 
 The purpose of this library is to implement **robust motion estimation** algorithm for the **ESP32cam** and other embedded chip.
-
-**<H3>Contents :</H3>**
-
-- [<H1> Motion detection library (for ESP32cam) </H1>](#h1-motion-detection-library-for-esp32cam-h1)
-- [-  Motion vector stream for testing](#ulli-motion-vector-stream-for-testingliul)
-- [0.1. Introduction](#01-introduction)
-- [0.2. Basic usage](#02-basic-usage)
-  - [0.2.1. Declaration and initialisation :](#021-declaration-and-initialisation-)
-  - [0.2.2. Estimate motion :](#022-estimate-motion-)
-  - [0.2.3. Free memory :](#023-free-memory-)
-- [0.3. More in depth](#03-more-in-depth)
-  - [0.3.1. Block matching (Adaptative Rood Pattern Search)](#031-block-matching-adaptative-rood-pattern-search)
-  - [0.3.2. Lucas Kanade algorithm](#032-lucas-kanade-algorithm)
-    - [0.3.2.1. Simple case](#0321-simple-case)
-  - [0.3.3. More control :](#033-more-control-)
-- [0.4. TODOs](#04-todos)
-- [0.5. Refs](#05-refs)
-
-
-## 0.1. Introduction
-
 _Motion estimation_ is the process of finding motion vectors that define the translation from one image to another. This can be resolved by differennt approach:
 
  - block matching algorithms ( ES, TSS, ARPS, EPZS)
@@ -39,9 +32,9 @@ _Motion estimation_ is the process of finding motion vectors that define the tra
 At the moment, I have implemented Lucas-kanade, ARPS and EPZS.
 
 
-## 0.2. Basic usage
+## Basic usage
 
-### 0.2.1. Declaration and initialisation :
+### Declaration and initialisation :
 
 First thing first create a _motion estimation context_ :
 
@@ -73,7 +66,7 @@ Next allocate motion vectors:
 init_context(me_ctx);
 ```
 
-### 0.2.2. Estimate motion :
+### Estimate motion :
 
 Now you can call `motion_estimation` method and pass current and previous images buffer.
 
@@ -94,16 +87,16 @@ motion_estimation --> mv_table0 --> mv_table1 --> mv_table2 --> NULL;
 EZPS algorithm need previous motion vectors as a way of prediction to the next generated.
 
 
-### 0.2.3. Free memory :
+### Free memory :
 
 ```c
 uninit(me_ctx);
 ```
 
 
-## 0.3. More in depth 
+## More in depth 
 
-### 0.3.1. [Block matching (Adaptative Rood Pattern Search)](https://en.wikipedia.org/wiki/Block-matching_algorithm#cite_note-8)
+### [Block matching (Adaptative Rood Pattern Search)](https://en.wikipedia.org/wiki/Block-matching_algorithm#cite_note-8)
 
  - header :
     ```c
@@ -150,9 +143,9 @@ uninit(me_ctx);
 
 
 
-### 0.3.2. [Lucas Kanade algorithm](https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method)
+### [Lucas Kanade algorithm](https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method)
 
-#### 0.3.2.1. Simple case
+#### Simple case
 
  - header :
   
@@ -185,7 +178,7 @@ uninit(me_ctx);
     free(image_motion);
     ```
 
-### 0.3.3. More control :
+### More control :
 
 We can get more detailed output by using a motion vector struct composed of `V=(vx, vy)` motion vector and `mag2` the squared magnitude:
 
@@ -243,7 +236,7 @@ We can get more detailed output by using a motion vector struct composed of `V=(
     free(image_buf_next);
     ```
 
-## 0.4. TODOs 
+## TODOs 
 
  - [ ]  Add function to filter non relevant vector from optical flow :
     - [ ] remove isolated vector (by using a cluster min of vector parameter)
@@ -258,6 +251,6 @@ We can get more detailed output by using a motion vector struct composed of `V=(
 
 
 
-## 0.5. Refs
+## Refs
  - convolution credits to  http://www.songho.ca/dsp/convolution/convolution.html
 - EPZS credits to https://github.com/FFmpeg/FFmpeg/
