@@ -275,7 +275,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
                     doneFlag = 1; // Point incurred at the current URP
                 else {
                     x += SDSP[point][0]; // else align center with SDSP
-                    x += SDSP[point][1];
+                    y += SDSP[point][1];
                     memset(costs, UINT32_MAX, 6 * sizeof(int));
                     costs[2] = cost;
                 }
