@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['mag2_35',['mag2',['../struct_motion_vector16__t.html#a455d7d824573c7567e5b10baf69fa99d',1,'MotionVector16_t']]],
+  ['max_36',['max',['../struct_motion_est_context.html#ae1e1dde676c120fa6d10f3bb2c14059e',1,'MotionEstContext']]],
+  ['maxsize_37',['MAXSIZE',['../deflicker_8h.html#a2a37b4217917105aac7557862ccc19c3',1,'deflicker.h']]],
+  ['mbsize_38',['mbSize',['../struct_motion_est_context.html#a3c36258fb799ca3c417c0cb54201b0b0',1,'MotionEstContext']]],
+  ['me_5fcomp_5fsad_39',['me_comp_sad',['../motion_8h.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b',1,'me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv):&#160;motion.c'],['../motion_8c.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b',1,'me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv):&#160;motion.c']]],
+  ['me_5fsearch_5fepzs_40',['me_search_epzs',['../epzs_8c.html#aa2320d382d580905731b4cc266acb641',1,'epzs.c']]],
+  ['method_41',['method',['../struct_motion_est_context.html#adcc9a19ad3119f823a658f6a49a24e64',1,'MotionEstContext']]],
+  ['mid_5fpred_42',['mid_pred',['../epzs_8c.html#a6948a24017ba60d76640f7587429a9f6',1,'epzs.c']]],
+  ['mmax_43',['mmax',['../motion_8h.html#a9493c4e06606c94612e05c772d5c9b2a',1,'motion.h']]],
+  ['mmin_44',['mmin',['../motion_8h.html#ad7cf61b6843c3ed06b7b1399d5e2fd21',1,'motion.h']]],
+  ['motion_2ec_45',['motion.c',['../motion_8c.html',1,'']]],
+  ['motion_2eh_46',['motion.h',['../motion_8h.html',1,'']]],
+  ['motion_5festimation_47',['motion_estimation',['../motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd',1,'motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur):&#160;motion.c'],['../motion_8c.html#a8ba35bcbf89a11452927cc1ce2710edd',1,'motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur):&#160;motion.c']]],
+  ['motion_5ffunc_48',['motion_func',['../struct_motion_est_context.html#a39fec975bf311f28b25f382081df44f9',1,'MotionEstContext']]],
+  ['motioncomp_49',['motionComp',['../block__matching_8c.html#ab20800573c64806040b0a171f72351de',1,'motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect, size_t w, size_t h, size_t mbSize):&#160;block_matching.c'],['../motion_8h.html#ab20800573c64806040b0a171f72351de',1,'motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect, size_t w, size_t h, size_t mbSize):&#160;block_matching.c']]],
+  ['motionestarps_50',['motionEstARPS',['../block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495',1,'motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2):&#160;block_matching.c'],['../motion_8h.html#ab67e09e5e540362dd4b2977bfecfa225',1,'motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *motionVect, int zmp_T, int *max):&#160;block_matching.c']]],
+  ['motionestcontext_51',['MotionEstContext',['../struct_motion_est_context.html',1,'MotionEstContext'],['../motion_8h.html#aa57e3c5e4be6c035e9a43836d347ca08',1,'MotionEstContext():&#160;motion.h']]],
+  ['motionestepzs_52',['motionEstEPZS',['../epzs_8c.html#ab3f9864e9b028e2006fb9060c2dfc3be',1,'motionEstEPZS(MotionEstContext *me_ctx):&#160;epzs.c'],['../motion_8h.html#ae2365b293dadd7e0d7e97ce3e88febd1',1,'motionEstEPZS(MotionEstContext *):&#160;epzs.c']]],
+  ['motionestpredictor_53',['MotionEstPredictor',['../struct_motion_est_predictor.html',1,'MotionEstPredictor'],['../motion_8h.html#a391f2c743c3eeb29412bed5612d6fd38',1,'MotionEstPredictor():&#160;motion.h']]],
+  ['motionvector16_5ft_54',['MotionVector16_t',['../struct_motion_vector16__t.html',1,'']]],
+  ['motionvector8_5ft_55',['MotionVector8_t',['../struct_motion_vector8__t.html',1,'']]],
+  ['mv_5ftable_56',['mv_table',['../struct_motion_est_context.html#afa96721b41560c6c57b19fd53395e47a',1,'MotionEstContext']]],
+  ['mvs_57',['mvs',['../struct_motion_est_predictor.html#abebc0e880b936580933f38d58239e2c5',1,'MotionEstPredictor']]]
+];
