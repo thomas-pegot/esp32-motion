@@ -100,6 +100,7 @@ uninit(me_ctx);
 
  - header :
     ```c
+    
     /** @brief Computes motion vectors using Adaptive Rood Pattern Search method
     * 
     * @param imgP   : image of which we want to find motion vectors 
@@ -120,6 +121,7 @@ uninit(me_ctx);
 
  - example :
       ```c
+      
     // image_buf image you capture from a stream or else
     int N = w * h;
     int max;
@@ -150,6 +152,7 @@ uninit(me_ctx);
  - header :
   
     ```c
+    
     /** @brief Implement LK optical flow 8bit version Magnitude
      * @param src1 pointer to grayscale buffer image instant t. 
      * @param src2 pointer to grayscale buffer image instant t+1.
@@ -160,6 +163,7 @@ uninit(me_ctx);
  - example : 
 
     ```c
+    
     // image_buf image you capture from a stream or else
     int N = w * h;
     uint8_t *image_buf_next = calloc(N, 1); 
@@ -191,6 +195,7 @@ We can get more detailed output by using a motion vector struct composed of `V=(
 ```
   - headers:
     ```c
+    
     /** @brief Implement LK optical flow source from wiki and matlab:
     * https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method
     * @param src1 pointer to grayscale buffer image instant t. 
@@ -203,6 +208,7 @@ We can get more detailed output by using a motion vector struct composed of `V=(
   - example :
 
     ```c
+    
     // image_buf image you capture from a stream or else
     int N = w * h;
     uint8_t *image_buf_next = calloc(N, 1); 
