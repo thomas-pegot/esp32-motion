@@ -1,7 +1,4 @@
-<H1> Motion detection library (for ESP32cam) </H1>
-
- - [ All in one security camera :new: ](https://github.com/thomas-pegot/ESP32-CAM_Motion)
- - [ Motion vector stream for testing](https://github.com/thomas-pegot/camera_web_server)
+# [Motion estimation lib (ESP32cam)](https://thomas-pegot.github.io/esp32-motion)
 
 <H3>Contents :</H3>
 
@@ -15,6 +12,7 @@
   - [Lucas Kanade algorithm](#lucas-kanade-algorithm)
     - [Simple case](#simple-case)
   - [More control :](#more-control-)
+- [Example project](#example-project)
 - [TODOs](#todos)
 - [Refs](#refs)
 
@@ -241,6 +239,10 @@ We can get more detailed output by using a motion vector struct composed of `V=(
     free(image_buf);
     free(image_buf_next);
     ```
+## Example project
+
+ - [ Motion vector stream for testing](https://github.com/thomas-pegot/camera_web_server)
+ - [ All in one security camera ](https://github.com/thomas-pegot/ESP32-CAM_Motion)
 
 ## TODOs 
 
