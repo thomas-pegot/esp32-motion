@@ -161,7 +161,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!-- fragment --><h2>More in depth</h2>
 <h3><a href="https://en.wikipedia.org/wiki/Block-matching_algorithm#cite_note-8">Block matching (Adaptative Rood Pattern Search)</a></h3>
 <ul>
-<li>header : ```c /** *<ul>
+<li><p class="startli">header : ```c</p>
+<p class="startli">/** *</p><ul>
 <li><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">imgP</td><td>: image of which we want to find motion vectors</td></tr>
@@ -227,17 +228,20 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   </dd>
 </dl>
 </li>
-<li><dl class="section return"><dt>Returns</dt><dd>success/fail **/ bool motionEstARPS(const uint8_t &lt;em&gt;imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2) ```</dd></dl>
+<li><dl class="section return"><dt>Returns</dt><dd>success/fail **/ bool <a class="el" href="motion_8h.html#ab67e09e5e540362dd4b2977bfecfa225" title="Computes motion vectors using Adaptive Rood Pattern Search method.">motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2)</a> ```</dd></dl>
 </li>
 </ul>
 </li>
-<li>example : ```c // image_buf image you capture from a stream or else int N = w * h; int max; uint8_t *image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *vecor_motion = (<a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a>)calloc(N, sizeof(MotionVector16_t)); while(1) { capture(img_buf); // Your algorithm if(!motionEstARPS(image_buf, image_buf_next, w, h, 8, 6, vector_motion, 256, &amp;max)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N); display(vector_motion); Serial.printf("max motion: %u \n", a); } free(image_buf_next); free(image_buf); free(image_motion); ```</li>
+<li><p class="startli">example : ```c</p>
+<p class="startli">// image_buf image you capture from a stream or else int N = w * h; int max; uint8_t <em>image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *vecor_motion = (<a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a></em>)calloc(N, sizeof(MotionVector16_t)); while(1) { capture(img_buf); // Your algorithm if(!motionEstARPS(image_buf, image_buf_next, w, h, 8, 6, vector_motion, 256, &amp;max)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N); display(vector_motion); Serial.printf("max motion: %u \n", a); } free(image_buf_next); free(image_buf); free(image_motion); ```</p>
+</li>
 </ul>
 <h3><a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method">Lucas Kanade algorithm</a></h3>
 <h4>Simple case</h4>
 <ul>
 <li><p class="startli">header :</p>
-<p class="startli">```c /** Implement LK optical flow 8bit version Magnitude</p><ul>
+<p class="startli">```c</p>
+<p class="startli">/** Implement LK optical flow 8bit version Magnitude</p><ul>
 <li><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src1</td><td>pointer to grayscale buffer image instant t.</td></tr>
@@ -264,7 +268,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </ul>
 </li>
 <li><p class="startli">example :</p>
-<p class="startli">```c // image_buf image you capture from a stream or else int N = w * h; uint8_t *image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); while(1) { capture(img_buf); // Your algorithm if(!LK_optical_flow8(image_buf, image_buf_next, image_motion, w, h)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N); display(image_motion); } free(image_buf_next); free(image_buf); free(image_motion); ```</p>
+<p class="startli">```c</p>
+<p class="startli">// image_buf image you capture from a stream or else int N = w * h; uint8_t *image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); while(1) { capture(img_buf); // Your algorithm if(!LK_optical_flow8(image_buf, image_buf_next, image_motion, w, h)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N); display(image_motion); } free(image_buf_next); free(image_buf); free(image_motion); ```</p>
 </li>
 </ul>
 <h3>More control :</h3>
@@ -275,7 +280,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="line">    uint16_t mag2; <span class="comment">// squared magnitude</span></div>
 <div class="line">} <a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a>;</div>
 </div><!-- fragment --><ul>
-<li>headers: ```c /** Implement LK optical flow source from wiki and matlab:<ul>
+<li><p class="startli">headers: ```c</p>
+<p class="startli">/** Implement LK optical flow source from wiki and matlab:</p><ul>
 <li><a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method">https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method</a></li>
 <li><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -298,12 +304,13 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   </dd>
 </dl>
 </li>
-<li><dl class="section return"><dt>Returns</dt><dd>True if success False if failed somewhere*/ bool LK_optical_flow(const uint8_t &lt;em&gt;src1, const uint8_t *src2, MotionVector16_t *v, int w, int h); ```</dd></dl>
+<li><dl class="section return"><dt>Returns</dt><dd>True if success False if failed somewhere*/ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h); ```</dd></dl>
 </li>
 </ul>
 </li>
 <li><p class="startli">example :</p>
-<p class="startli">```c // image_buf image you capture from a stream or else int N = w * h; uint8_t *image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> vector = (MotionVector16_t*) calloc(count, sizeof(MotionVector16_t));</p>
+<p class="startli">```c</p>
+<p class="startli">// image_buf image you capture from a stream or else int N = w * h; uint8_t <em>image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a></em> vector = (MotionVector16_t*) calloc(count, sizeof(MotionVector16_t));</p>
 <p class="startli">float max = 0; int half_window = (int)WINDOW / 2.0; // WINDOW &gt;&gt; 1</p>
 <p class="startli">while(1) { capture(img_buf); // Your algorithm if(!LK_optical_flow(image_buf, image_buf_next, vector, w, h)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N);</p>
 <p class="startli">// Extract max squared magnitude mv = &amp;vector[half_window * w + half_window]; for(int i = h - WINDOW; i&ndash;; ) { // same as for(int i = half_window; i &lt; h - half_window; i++) but faster for(int j = half_window; j &lt; w - half_window; j++, mv++) { if (mv-&gt;mag2 &gt; max) <br  />
