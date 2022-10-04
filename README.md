@@ -34,7 +34,7 @@ At the moment, I have implemented Lucas-kanade, ARPS and EPZS.
 
 ### Declaration and initialisation :
 
-First thing first create a _motion estimation context_ :
+First thing first create a [_motion estimation context_](https://thomas-pegot.github.io/esp32-motion/struct_motion_est_context.html) :
 
 ```c
 MotionEstContext *me_ctx = {.method = LK_OPTICAL_FLOW,    // algorithm used
@@ -97,25 +97,11 @@ uninit(me_ctx);
 ### [Block matching (Adaptative Rood Pattern Search)](https://en.wikipedia.org/wiki/Block-matching_algorithm#cite_note-8)
 
  - header :
+    <a href="https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495">
     ```c
-    
-    /** @brief Computes motion vectors using Adaptive Rood Pattern Search method
-    * 
-    * @param imgP   : image of which we want to find motion vectors 
-    * @param imgI   : reference image 
-    * @param w      : width of image
-    * @param h      : height of image
-    * @param mbSize : Size of the macroblock (mbSize, mbSize)
-    * @param p      : Search parameter
-    * @param zmp_T  : Zero-Motion Prejudgement threshold enable if set superior at 0. 
-    * improve performance at cost of precision if wrong thresold value.
-    * 
-    * @param [output] motionVect :  motion vector for each integral macroblock in imgP.  size = w * h/mbSize²
-    * @param [output] max_mag2 :  max mag2 in motionVect 
-    * @return success/fail
-    **/
     bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2)
     ```
+    </a>
 
  - example :
       ```c
@@ -148,16 +134,12 @@ uninit(me_ctx);
 #### Simple case
 
  - header :
-  
+    <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39">
     ```c
-    
-    /** @brief Implement LK optical flow 8bit version Magnitude
-     * @param src1 pointer to grayscale buffer image instant t. 
-     * @param src2 pointer to grayscale buffer image instant t+1.
-     * @param out [out] image 8bit depth output of squared magnitude
-     * @return True if success False if failed somewhere*/
     bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h);
     ```
+    </a>
+   
  - example : 
 
     ```c
@@ -185,24 +167,19 @@ uninit(me_ctx);
 We can get more detailed output by using a motion vector struct composed of `V=(vx, vy)` motion vector and `mag2` the squared magnitude:
 
   ```c
- typedef struct {
-    int16_t vx,
-            vy;
-    uint16_t mag2; // squared magnitude
-} MotionVector16_t;
-```
+   typedef struct {
+      int16_t vx,
+              vy;
+      uint16_t mag2; // squared magnitude
+   } MotionVector16_t;
+  ```
   - headers:
+    <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a7ad704813ba20d078981b59a8dbd6c2e">
     ```c
-    
-    /** @brief Implement LK optical flow source from wiki and matlab:
-    * https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method
-    * @param src1 pointer to grayscale buffer image instant t. 
-    * @param src2 pointer to grayscale buffer image instant t+1.
-    * @param V [out] vector (vx, vy) and squared magnitude
-    * @return True if success False if failed somewhere*/
     bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h);
     ```
-
+    </a>
+  
   - example :
 
     ```c
@@ -235,7 +212,7 @@ We can get more detailed output by using a motion vector struct composed of `V=(
             }
             Serial.printf("max motion = %u", (short)max);
     }
-    free(vector)
+    free(vector);
     free(image_buf);
     free(image_buf_next);
     ```
@@ -260,5 +237,5 @@ We can get more detailed output by using a motion vector struct composed of `V=(
 
 
 ## Refs
- - convolution credits to  http://www.songho.ca/dsp/convolution/convolution.html
-- EPZS credits to https://github.com/FFmpeg/FFmpeg/
+  - convolution credits to  http://www.songho.ca/dsp/convolution/convolution.html
+  - EPZS credits to https://github.com/FFmpeg/FFmpeg/
