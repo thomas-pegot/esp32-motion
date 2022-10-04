@@ -1,3 +1,5 @@
+/** @file */
+
 #include "motion.h"
 #include <stdbool.h>
 #include <math.h>

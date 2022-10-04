@@ -1,3 +1,5 @@
+/** @file */
+
 #include "convolution.h"
 #include "deflicker.h"
 #include <math.h>

@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef DEFLICKER_H
 #define DEFLICKER_H
 

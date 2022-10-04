@@ -1,3 +1,5 @@
+/** @file */
+
 #include "motion.h"
 #include "convolution.h"
 #include <stdbool.h>

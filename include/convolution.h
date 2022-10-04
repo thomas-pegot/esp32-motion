@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef CONVOLUTION_H
 #define CONVOLUTION_H
 

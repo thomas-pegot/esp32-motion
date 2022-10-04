@@ -1,3 +1,5 @@
+/** @file */
+
 #include "motion.h"
 #include <math.h>
 #include <assert.h>
@@ -44,6 +46,9 @@ static void *_calloc(size_t nb, size_t size) {
     return heap_caps_calloc(nb, size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
 }
 
+/** @brief Init & allocate context ctx accordingly to the method used 
+	@param ctx : motion estimation context object
+ */
 bool init_context(MotionEstContext *ctx) {
     int i;
     if(mv_allocated)
@@ -118,6 +123,7 @@ static bool motionEstARPS_wrapper(MotionEstContext *c) {
      c->mbSize, c->search_param, c->mv_table[0], zmp_threshold, &c->max);
 }
 
+/** @brief Wrapper to specified method defined in ctx MotionEstContext*/
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur) {
     ctx->data_cur = img_cur;
     ctx->data_ref = img_prev;

@@ -1,3 +1,5 @@
+/** @file */
+
 // Code extracted from : http://www.songho.ca/dsp/convolution/convolution.html
 
 #include "convolution.h"
