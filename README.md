@@ -59,14 +59,15 @@ table of correspondance :
 |BLOCK_MATCHING_EPZS| 3 | EPZS (out 16-bit vector)|
 
 Next allocate motion vectors:
-
+<a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">
 ```c
 init_context(me_ctx);
 ```
-
+</a>
+  
 ### Estimate motion :
 
-Now you can call `motion_estimation` method and pass current and previous images buffer.
+Now you can call [`motion_estimation`](https://thomas-pegot.github.io/esp32-motion/motion_8c.html#a8ba35bcbf89a11452927cc1ce2710edd) method and pass current and previous images buffer.
 
 ```c
 if(!motion_estimation(me_ctx, (uint8_t *)img_prev, (uint8_t *)img_cur))
