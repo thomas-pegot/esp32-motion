@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="title"><a href="https://thomas-pegot.github.io/esp32-motion">Motion estimation lib (ESP32cam)</a> </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Computes motion vectors using Adaptive Rood Pattern Search method </p><h3>Contents :</h3>
+<div class="textblock"><h3>Contents :</h3>
 <ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#basic-usage">Basic usage</a><ul>
@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <p>At the moment, I have implemented Lucas-kanade, ARPS and EPZS.</p>
 <h1>Basic usage</h1>
 <h2>Declaration and initialisation :</h2>
-<p>First thing first create a <em>motion estimation context</em> :</p>
+<p>First thing first create a <a href="https://thomas-pegot.github.io/esp32-motion/struct_motion_est_context.html"><em>motion estimation context</em></a> :</p>
 <div class="fragment"><div class="line"><a class="code" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx = {.<a class="code" href="struct_motion_est_context.html#adcc9a19ad3119f823a658f6a49a24e64">method</a> = <a class="code" href="motion_8h.html#a42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a>,    <span class="comment">// algorithm used</span></div>
 <div class="line">                           .width  = 96,  .height = 96 <span class="comment">// size of your image</span></div>
 <div class="line">                           };</div>
@@ -143,10 +143,9 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">BLOCK_MATCHING_EPZS </td><td class="markdownTableBodyNone">3 </td><td class="markdownTableBodyNone">EPZS (out 16-bit vector)  </td></tr>
 </table>
-<p>Next allocate motion vectors:</p>
-<div class="fragment"><div class="line"><a class="code" href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">init_context</a>(me_ctx);</div>
-</div><!-- fragment --><h2>Estimate motion :</h2>
-<p>Now you can call <code>motion_estimation</code> method and pass current and previous images buffer.</p>
+<p>Next allocate motion vectors: <a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">@code{c} init_context(me_ctx); @endcode </a></p>
+<h2>Estimate motion :</h2>
+<p>Now you can call <a href="https://thomas-pegot.github.io/esp32-motion/motion_8c.html#a8ba35bcbf89a11452927cc1ce2710edd"><code>motion_estimation</code></a> method and pass current and previous images buffer.</p>
 <div class="fragment"><div class="line"><span class="keywordflow">if</span>(!<a class="code" href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a>(me_ctx, (<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *)img_prev, (<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *)img_cur))</div>
 <div class="line">    Serial.println(<span class="stringliteral">&quot;motion estimtion failed!&quot;</span>)!</div>
 </div><!-- fragment --><p>Now motion vectors will be stored in <code>me_ctx.mv_table[0]</code> with the maximum being <code>me_ctx.max</code>.</p>
@@ -158,77 +157,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!-- fragment --><h1>More in depth</h1>
 <h2><a href="https://en.wikipedia.org/wiki/Block-matching_algorithm#cite_note-8">Block matching (Adaptative Rood Pattern Search)</a></h2>
 <ul>
-<li><p class="startli">header : ```c</p>
-<p class="startli">/** *</p><ul>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">imgP</td><td>: image of which we want to find motion vectors</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">imgI</td><td>: reference image</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">w</td><td>: width of image</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">h</td><td>: height of image</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mbSize</td><td>: Size of the macroblock (mbSize, mbSize)</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">p</td><td>: Search parameter</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">zmp_T</td><td>: Zero-Motion Prejudgement threshold enable if set superior at 0.</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li>improve performance at cost of precision if wrong thresold value.</li>
-<li></li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">[output]</td><td>motionVect : motion vector for each integral macroblock in imgP. size = w * h/mbSize²</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">[output]</td><td>max_mag2 : max mag2 in motionVect</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="section return"><dt>Returns</dt><dd>success/fail **/ bool <a class="el" href="motion_8h.html#ab67e09e5e540362dd4b2977bfecfa225" title="Computes motion vectors using Adaptive Rood Pattern Search method.">motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2)</a> ```</dd></dl>
-</li>
-</ul>
-</li>
+<li>header : <a href="https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495">```c bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2) ``` </a></li>
 <li><p class="startli">example : ```c</p>
 <p class="startli">// image_buf image you capture from a stream or else int N = w * h; int max; uint8_t <em>image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *vecor_motion = (<a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a></em>)calloc(N, sizeof(MotionVector16_t)); while(1) { capture(img_buf); // Your algorithm if(!motionEstARPS(image_buf, image_buf_next, w, h, 8, 6, vector_motion, 256, &amp;max)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N); display(vector_motion); Serial.printf("max motion: %u \n", a); } free(image_buf_next); free(image_buf); free(image_motion); ```</p>
 </li>
@@ -236,34 +165,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <h2><a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method">Lucas Kanade algorithm</a></h2>
 <h3>Simple case</h3>
 <ul>
-<li><p class="startli">header :</p>
-<p class="startli">```c</p>
-<p class="startli">/** Implement LK optical flow 8bit version Magnitude</p><ul>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src1</td><td>pointer to grayscale buffer image instant t.</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src2</td><td>pointer to grayscale buffer image instant t+1.</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">out</td><td>[out] image 8bit depth output of squared magnitude</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="section return"><dt>Returns</dt><dd>True if success False if failed somewhere*/ bool <a class="el" href="lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39" title="Implement LK optical flow 8bit version Magnitude.">LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h)</a>; ```</dd></dl>
-</li>
-</ul>
-</li>
+<li>header : <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39">```c bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h); ``` </a></li>
 <li><p class="startli">example :</p>
 <p class="startli">```c</p>
 <p class="startli">// image_buf image you capture from a stream or else int N = w * h; uint8_t *image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); while(1) { capture(img_buf); // Your algorithm if(!LK_optical_flow8(image_buf, image_buf_next, image_motion, w, h)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N); display(image_motion); } free(image_buf_next); free(image_buf); free(image_motion); ```</p>
@@ -271,47 +173,20 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </ul>
 <h2>More control :</h2>
 <p>We can get more detailed output by using a motion vector struct composed of <code>V=(vx, vy)</code> motion vector and <code>mag2</code> the squared magnitude:</p>
-<div class="fragment"><div class="line"> <span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line">    int16_t vx,</div>
-<div class="line">            vy;</div>
-<div class="line">    uint16_t mag2; <span class="comment">// squared magnitude</span></div>
+<div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line">   int16_t vx,</div>
+<div class="line">           vy;</div>
+<div class="line">   uint16_t mag2; <span class="comment">// squared magnitude</span></div>
 <div class="line">} <a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a>;</div>
 </div><!-- fragment --><ul>
-<li><p class="startli">headers: ```c</p>
-<p class="startli">/** Implement LK optical flow source from wiki and matlab:</p><ul>
-<li><a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method">https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method</a></li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src1</td><td>pointer to grayscale buffer image instant t.</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src2</td><td>pointer to grayscale buffer image instant t+1.</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">V</td><td>[out] vector (vx, vy) and squared magnitude</td></tr>
-  </table>
-  </dd>
-</dl>
-</li>
-<li><dl class="section return"><dt>Returns</dt><dd>True if success False if failed somewhere*/ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h); ```</dd></dl>
-</li>
-</ul>
-</li>
+<li>headers: <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a7ad704813ba20d078981b59a8dbd6c2e">```c bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h); ``` </a></li>
 <li><p class="startli">example :</p>
 <p class="startli">```c</p>
 <p class="startli">// image_buf image you capture from a stream or else int N = w * h; uint8_t <em>image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a></em> vector = (MotionVector16_t*) calloc(count, sizeof(MotionVector16_t));</p>
 <p class="startli">float max = 0; int half_window = (int)WINDOW / 2.0; // WINDOW &gt;&gt; 1</p>
 <p class="startli">while(1) { capture(img_buf); // Your algorithm if(!LK_optical_flow(image_buf, image_buf_next, vector, w, h)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N);</p>
 <p class="startli">// Extract max squared magnitude mv = &amp;vector[half_window * w + half_window]; for(int i = h - WINDOW; i&ndash;; ) { // same as for(int i = half_window; i &lt; h - half_window; i++) but faster for(int j = half_window; j &lt; w - half_window; j++, mv++) { if (mv-&gt;mag2 &gt; max) <br  />
- max = mv-&gt;mag2; } mv += WINDOW; } Serial.printf("max motion = %u", (short)max); } free(vector) free(image_buf); free(image_buf_next); ``` </p><h1>Example project</h1>
+ max = mv-&gt;mag2; } mv += WINDOW; } Serial.printf("max motion = %u", (short)max); } free(vector); free(image_buf); free(image_buf_next); ``` </p><h1>Example project</h1>
 </li>
 </ul>
 <p><a href="https://github.com/thomas-pegot/camera_web_server">Motion vector stream for testing</a></p><ul>
@@ -337,8 +212,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <h1>Refs</h1>
 <ul>
 <li>convolution credits to <a href="http://www.songho.ca/dsp/convolution/convolution.html">http://www.songho.ca/dsp/convolution/convolution.html</a></li>
+<li>EPZS credits to <a href="https://github.com/FFmpeg/FFmpeg/">https://github.com/FFmpeg/FFmpeg/</a> </li>
 </ul>
-<p>EPZS credits to <a href="https://github.com/FFmpeg/FFmpeg/">https://github.com/FFmpeg/FFmpeg/</a> </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -349,7 +224,6 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="ttc" id="astruct_motion_est_context_html"><div class="ttname"><a href="struct_motion_est_context.html">MotionEstContext</a></div><div class="ttdef"><b>Definition:</b> motion.h:50</div></div>
 <div class="ttc" id="adeflicker_8h_html_aba7bc1797add20fe3efdf37ced1182c5"><div class="ttname"><a href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a></div><div class="ttdeci">unsigned char uint8_t</div><div class="ttdef"><b>Definition:</b> deflicker.h:8</div></div>
 <div class="ttc" id="amotion_8h_html_a42bbfda998ebcff6218f13097a2b751a"><div class="ttname"><a href="motion_8h.html#a42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a></div><div class="ttdeci">#define LK_OPTICAL_FLOW</div><div class="ttdef"><b>Definition:</b> motion.h:27</div></div>
-<div class="ttc" id="amotion_8h_html_a307035191f24ff24a02add340d8b4efa"><div class="ttname"><a href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">init_context</a></div><div class="ttdeci">bool init_context(MotionEstContext *ctx)</div><div class="ttdoc">Init &amp; allocate context ctx accordingly to the method used.</div><div class="ttdef"><b>Definition:</b> motion.c:52</div></div>
 <div class="ttc" id="amotion_8h_html_a8ba35bcbf89a11452927cc1ce2710edd"><div class="ttname"><a href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a></div><div class="ttdeci">bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur)</div><div class="ttdoc">Wrapper to specified method defined in ctx MotionEstContext.</div><div class="ttdef"><b>Definition:</b> motion.c:127</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
