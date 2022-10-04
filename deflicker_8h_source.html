@@ -86,34 +86,35 @@ $(document).ready(function(){initNavTree('deflicker_8h_source.html',''); initRes
 <div class="title">deflicker.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="deflicker_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef DEFLICKER_H</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define DEFLICKER_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="deflicker_8h.html#a2a37b4217917105aac7557862ccc19c3">    4</a></span>&#160;<span class="preprocessor">#define MAXSIZE 10</span></div>
+<a href="deflicker_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#ifndef DEFLICKER_H</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#define DEFLICKER_H</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">    6</a></span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a>;</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="deflicker_8h.html#a2a37b4217917105aac7557862ccc19c3">    6</a></span>&#160;<span class="preprocessor">#define MAXSIZE 10</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="structqueue.html">    8</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structqueue.html">queue</a> {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="structqueue.html#a54275c3a84b8b717db2c8e060e8e9fa7">    9</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="structqueue.html#a54275c3a84b8b717db2c8e060e8e9fa7">brightness</a>[<a class="code" href="deflicker_8h.html#a2a37b4217917105aac7557862ccc19c3">MAXSIZE</a>];  <span class="comment">// rolling brightness</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="structqueue.html#a6a37485bfdca8f2d8b517b6b08cde1b3">   11</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structqueue.html#a6a37485bfdca8f2d8b517b6b08cde1b3">available</a>;</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">    8</a></span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a>;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structqueue.html">   10</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structqueue.html">queue</a> {</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="structqueue.html#a54275c3a84b8b717db2c8e060e8e9fa7">   11</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="structqueue.html#a54275c3a84b8b717db2c8e060e8e9fa7">brightness</a>[<a class="code" href="deflicker_8h.html#a2a37b4217917105aac7557862ccc19c3">MAXSIZE</a>];  <span class="comment">// rolling brightness</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;} <a class="code" href="deflicker_8h.html#aa8acf648f3b0c69d7e132fcc61dc58c7">queue_t</a>;  </div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structqueue.html#a6a37485bfdca8f2d8b517b6b08cde1b3">   13</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structqueue.html#a6a37485bfdca8f2d8b517b6b08cde1b3">available</a>;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">float</span> <a class="code" href="deflicker_8h.html#a52621e7c3e6c02b23b8c10f1cdad1842">get_factor</a>();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="deflicker_8h.html#a99860dcea040d2909bdd0b6604ea44af">deflicker</a>(<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;} <a class="code" href="deflicker_8h.html#aa8acf648f3b0c69d7e132fcc61dc58c7">queue_t</a>;  </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">float</span> <a class="code" href="deflicker_8h.html#a52621e7c3e6c02b23b8c10f1cdad1842">get_factor</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="deflicker_8h.html#a99860dcea040d2909bdd0b6604ea44af">deflicker</a>(<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="adeflicker_8h_html_a2a37b4217917105aac7557862ccc19c3"><div class="ttname"><a href="deflicker_8h.html#a2a37b4217917105aac7557862ccc19c3">MAXSIZE</a></div><div class="ttdeci">#define MAXSIZE</div><div class="ttdef"><b>Definition:</b> deflicker.h:4</div></div>
-<div class="ttc" id="adeflicker_8h_html_a52621e7c3e6c02b23b8c10f1cdad1842"><div class="ttname"><a href="deflicker_8h.html#a52621e7c3e6c02b23b8c10f1cdad1842">get_factor</a></div><div class="ttdeci">float get_factor()</div><div class="ttdef"><b>Definition:</b> deflicker.c:28</div></div>
+<div class="ttc" id="adeflicker_8h_html_a2a37b4217917105aac7557862ccc19c3"><div class="ttname"><a href="deflicker_8h.html#a2a37b4217917105aac7557862ccc19c3">MAXSIZE</a></div><div class="ttdeci">#define MAXSIZE</div><div class="ttdef"><b>Definition:</b> deflicker.h:6</div></div>
+<div class="ttc" id="adeflicker_8h_html_a52621e7c3e6c02b23b8c10f1cdad1842"><div class="ttname"><a href="deflicker_8h.html#a52621e7c3e6c02b23b8c10f1cdad1842">get_factor</a></div><div class="ttdeci">float get_factor()</div><div class="ttdef"><b>Definition:</b> deflicker.c:30</div></div>
 <div class="ttc" id="adeflicker_8h_html_aa8acf648f3b0c69d7e132fcc61dc58c7"><div class="ttname"><a href="deflicker_8h.html#aa8acf648f3b0c69d7e132fcc61dc58c7">queue_t</a></div><div class="ttdeci">struct queue queue_t</div></div>
-<div class="ttc" id="astructqueue_html_a6a37485bfdca8f2d8b517b6b08cde1b3"><div class="ttname"><a href="structqueue.html#a6a37485bfdca8f2d8b517b6b08cde1b3">queue::available</a></div><div class="ttdeci">int available</div><div class="ttdef"><b>Definition:</b> deflicker.h:11</div></div>
-<div class="ttc" id="astructqueue_html_a54275c3a84b8b717db2c8e060e8e9fa7"><div class="ttname"><a href="structqueue.html#a54275c3a84b8b717db2c8e060e8e9fa7">queue::brightness</a></div><div class="ttdeci">float brightness[MAXSIZE]</div><div class="ttdef"><b>Definition:</b> deflicker.h:9</div></div>
-<div class="ttc" id="astructqueue_html"><div class="ttname"><a href="structqueue.html">queue</a></div><div class="ttdef"><b>Definition:</b> deflicker.h:8</div></div>
-<div class="ttc" id="adeflicker_8h_html_aba7bc1797add20fe3efdf37ced1182c5"><div class="ttname"><a href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a></div><div class="ttdeci">unsigned char uint8_t</div><div class="ttdef"><b>Definition:</b> deflicker.h:6</div></div>
-<div class="ttc" id="adeflicker_8h_html_a99860dcea040d2909bdd0b6604ea44af"><div class="ttname"><a href="deflicker_8h.html#a99860dcea040d2909bdd0b6604ea44af">deflicker</a></div><div class="ttdeci">bool deflicker(uint8_t *img, int w, int h)</div><div class="ttdef"><b>Definition:</b> deflicker.c:38</div></div>
+<div class="ttc" id="astructqueue_html_a6a37485bfdca8f2d8b517b6b08cde1b3"><div class="ttname"><a href="structqueue.html#a6a37485bfdca8f2d8b517b6b08cde1b3">queue::available</a></div><div class="ttdeci">int available</div><div class="ttdef"><b>Definition:</b> deflicker.h:13</div></div>
+<div class="ttc" id="astructqueue_html_a54275c3a84b8b717db2c8e060e8e9fa7"><div class="ttname"><a href="structqueue.html#a54275c3a84b8b717db2c8e060e8e9fa7">queue::brightness</a></div><div class="ttdeci">float brightness[MAXSIZE]</div><div class="ttdef"><b>Definition:</b> deflicker.h:11</div></div>
+<div class="ttc" id="astructqueue_html"><div class="ttname"><a href="structqueue.html">queue</a></div><div class="ttdef"><b>Definition:</b> deflicker.h:10</div></div>
+<div class="ttc" id="adeflicker_8h_html_aba7bc1797add20fe3efdf37ced1182c5"><div class="ttname"><a href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a></div><div class="ttdeci">unsigned char uint8_t</div><div class="ttdef"><b>Definition:</b> deflicker.h:8</div></div>
+<div class="ttc" id="adeflicker_8h_html_a99860dcea040d2909bdd0b6604ea44af"><div class="ttname"><a href="deflicker_8h.html#a99860dcea040d2909bdd0b6604ea44af">deflicker</a></div><div class="ttdeci">bool deflicker(uint8_t *img, int w, int h)</div><div class="ttdef"><b>Definition:</b> deflicker.c:40</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

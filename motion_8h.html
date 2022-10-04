@@ -139,8 +139,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aa1377b3e199556519cb8a43a11dd24bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#aa1377b3e199556519cb8a43a11dd24bf">uninit</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *ctx)</td></tr>
 <tr class="separator:aa1377b3e199556519cb8a43a11dd24bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a307035191f24ff24a02add340d8b4efa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">init_context</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *ctx)</td></tr>
+<tr class="memdesc:a307035191f24ff24a02add340d8b4efa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init &amp; allocate context ctx accordingly to the method used.  <a href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">More...</a><br /></td></tr>
 <tr class="separator:a307035191f24ff24a02add340d8b4efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ba35bcbf89a11452927cc1ce2710edd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *ctx, <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img_prev, <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img_cur)</td></tr>
+<tr class="memdesc:a8ba35bcbf89a11452927cc1ce2710edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to specified method defined in ctx <a class="el" href="struct_motion_est_context.html">MotionEstContext</a>.  <a href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">More...</a><br /></td></tr>
 <tr class="separator:a8ba35bcbf89a11452927cc1ce2710edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b">me_comp_sad</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv)</td></tr>
 <tr class="separator:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -401,6 +403,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Init &amp; allocate context ctx accordingly to the method used. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ctx</td><td>: motion estimation context object </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a6016829c94a054f83ef3d7f5dfaae76f"></a>
@@ -600,6 +610,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Wrapper to specified method defined in ctx <a class="el" href="struct_motion_est_context.html">MotionEstContext</a>. </p>
 
 </div>
 </div>
