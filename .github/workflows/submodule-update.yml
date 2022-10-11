@@ -26,6 +26,12 @@ jobs:
       OWNER: 'thomas-pegot'
  
     steps:
+    
+      - name: fix
+        shell: bash
+        run: |
+          git config --global --add url."git@github.com:".insteadOf "https://github.com/"
+          
       ##########################
       # Checkout the code base #
       ##########################
