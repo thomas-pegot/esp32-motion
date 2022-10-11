@@ -16,8 +16,10 @@ on:
 jobs:
   build:
     name: Submodule update
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-la
+    
     env:
+      url: 'git@github.com'
       PARENT_REPOSITORY: 'thomas-pegot/camera_web_server'
       CHECKOUT_BRANCH: 'master'
       PR_AGAINST_BRANCH: 'master'
