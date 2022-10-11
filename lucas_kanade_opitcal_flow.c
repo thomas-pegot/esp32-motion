@@ -48,7 +48,6 @@ static void *_malloc(size_t size) {
  * @return True if success False if failed somewhere*/
 bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *V, int w, int h, int *mag_max2) {
 
-	assert(w > 0 || h > 0);
 	assert(src1 != NULL);
 	assert(src2 != NULL);
 	const int N = w * h;
@@ -68,22 +67,17 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 
 	// init input
 	for(i = N; i--; ) {
-		fx[i] = src1[i];
-		ft[i] = src2[i];
+		const float tmp_fX = src1[i];
+		fx[i] = tmp_fX;
+		ft[i] = src2[i] - tmp_fX;  /* Gradient computation: I_{t+1} - I_{t} */
+		fy[i] = tmp_fX;   /* fy initialisation as smoothed input = fx */
+
 		mv->mag2 = 0;
 		mv->vx = 0;
 		mv->vy = 0;
 		mv++;
 	}	
 	mv = &V[0];
-
-	// Gradient computation: I_{t+1} - I_{t} 
-	// and fy initialisation as smoothed input = fx
-	for(i = N; --i; ) {
-		const float x = fx[i];
-		ft[i] -= x;
-		fy[i] = x;
-	}
 
 	// Derivate Dx : 1D convolution horizontal
 	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) {
@@ -184,26 +178,16 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *out, in
 		*fy = (float*)_malloc(N * sizeof(float));
 	int i, j, m;
 
-	if(!fx || !fy || !ft || !image1 || !image2) {
+	if(!fx || !fy || !ft || !image1 || !image2 || !N || !src1 || !src2) 
 		return false;
-	} else if(!N) {
-		return false;
-	} else if(!src1 || !src2) {
-		return false;
-	}
 
 	// init input
 	for(i = N; i--; ) {
-		fx[i] = src1[i];
-		ft[i] = src2[i];
+		const float tmp_fX = src1[i];
+		fx[i] = tmp_fX;
+		ft[i] = src2[i] - tmp_fX;  /* Gradient computation: I_{t+1} - I_{t} */
+		fy[i] = tmp_fX;   /* fy initialisation as smoothed input = fx */
 	}	
-	// Gradient computation: I_{t+1} - I_{t} 
-	// and fy initialisation as smoothed input = fx
-	for(i = N; --i; ) {
-		const float x = fx[i];
-		ft[i] -= x;
-		fy[i] = x;
-	}
 
 	// Derivate Dx : 1D convolution horizontal
 	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) {
