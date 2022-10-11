@@ -16,7 +16,7 @@ on:
 jobs:
   build:
     name: Submodule update
-    runs-on: ubuntu-la
+    runs-on: ubuntu-latest
     
     env:
       url: 'git@github.com'
