@@ -1,5 +1,5 @@
 # [Motion estimation lib (ESP32cam)](https://thomas-pegot.github.io/esp32-motion)
-
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/thomas-pegot/camera_web_server)
 <H3>Contents :</H3>
 
 - [Introduction](#introduction)
