@@ -66,6 +66,8 @@ static void *_malloc(size_t size) {
 	\vdots \\[10pt]
 	-I_t(q_n)
 	\end{bmatrix} \f]
+	
+ \f$\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}\f$
  * Then the solution can be reduced as : \f$ A^T A v=A^T b \f$ or \f$ \mathrm{v}=(A^T A)^{-1}A^T b \f$
  * @param src1 pointer to grayscale buffer image instant t. 
  * @param src2 pointer to grayscale buffer image instant t+1.
