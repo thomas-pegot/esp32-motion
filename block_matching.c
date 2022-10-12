@@ -7,8 +7,10 @@
 #include "esp_timer.h"
 
 
-/** @brief Computes the Sum of Absolute Difference (SAD) for the given two blocks
+/** @brief Computes the Sum of Absolute Difference (SAD) for the given two blocks \n
  * 
+ * \f[ SAD = \sum_{i=0}^{n-1}\sum_{j=0}^{n-1} |Cur_{ij}-Ref_{ij}| \f]
+ *
  * @param currentImg    : img for which we are finding the SAD
  * @param refImg        : img which the SAD is being computed
  * @param offset_curr   : offset applied to img current
@@ -31,8 +33,8 @@ int costFuncSAD(const uint8_t *currentImg, const uint8_t *refImg,
 }
 
 
-/** @brief Compute motion compensated image's PSNR
- * 
+/** @brief Compute motion compensated image's PSNR  \n
+ *  \f[ text{PSNR} = 10 \log_{10}\frac {(\text{peak to peak value of original data})^2}{\text{MSE}}  \f]
  * @param imgP      : original image of size w * h
  * @param imgComp   : compensated image of size w * h
  * @param w         : width of image
