@@ -40,8 +40,33 @@ static void *_malloc(size_t size) {
 }
 
 /// Optical flow Lucas-Kanade
-/** @brief Implement LK optical flow source from wiki and matlab:
- * https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method
+/** @brief Implement LK optical flow source from wiki and matlab:https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method
+ * This method is based on Taylor series resolution:
+ * $$ I(x+\Delta x,y+\Delta y,t+\Delta t) = I(x,y,t) + \frac{\partial I}{\partial x}\,\Delta x+\frac{\partial I}{\partial y}\,\Delta y+\frac{\partial I}{\partial t} \, \Delta t+{} $$
+ * Which can be rewritten:
+ * $$ \frac{\partial I}{\partial x}V_x+\frac{\partial I}{\partial y}V_y+\frac{\partial I}{\partial t} = 0 $$
+ * Lucas Kanade reorder this equation as matrix such as:
+    $$ A = \begin{bmatrix}
+	I_x(q_1) & I_y(q_1) \\[10pt]
+	I_x(q_2) & I_y(q_2) \\[10pt]
+	\vdots & \vdots \\[10pt]
+	I_x(q_n) & I_y(q_n) 
+	\end{bmatrix}
+	\quad\quad\quad
+	v = 
+	\begin{bmatrix}
+	V_x\\[10pt]
+	V_y
+	\end{bmatrix}
+	\quad\quad\quad
+	b = 
+	\begin{bmatrix}
+	-I_t(q_1) \\[10pt]
+	-I_t(q_2) \\[10pt]
+	\vdots \\[10pt]
+	-I_t(q_n)
+	\end{bmatrix} $$
+ * Then the solution can be reduced as : $ A^T A v=A^T b $ or $ \mathrm{v}=(A^T A)^{-1}A^T b $
  * @param src1 pointer to grayscale buffer image instant t. 
  * @param src2 pointer to grayscale buffer image instant t+1.
  * @param V [out] vector (vx, vy) and squared magnitude
