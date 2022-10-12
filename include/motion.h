@@ -21,8 +21,8 @@ extern "C"{
        __typeof__ (b) _b = (b); \
      _a < _b ? _a : _b; })
 
-#define WINDOW 5 //convolution window size for lucas kanade
-
+/** \brief convolution window size for lucas kanade*/
+#define WINDOW 5 
 
 /**
  * @{ \name Algorithm names
@@ -34,17 +34,25 @@ extern "C"{
 #define LK_OPTICAL_FLOW 		1
 #define BLOCK_MATCHING_ARPS		2
 #define BLOCK_MATCHING_EPZS     3
-
-// Motion vector
+/**
+ * @}
+ */
+	
 typedef struct {
 	int16_t x, y;
 } Vector16_t;
 
+/** @struct MotionVector16_t
+* @brief MotionVector 2D with amplitude squared (for speed)
+*/
 typedef struct {
     int16_t vx, vy;
-    uint16_t mag2; // squared magnitude
+    uint16_t mag2;
 } MotionVector16_t;
 
+/** @struct MotionVector8_t
+* @brief MotionVector 2D 8bit
+*/
 typedef struct {
     int8_t vx, vy;
 } MotionVector8_t;
@@ -105,7 +113,7 @@ uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int
 
 //						## OPTICAL FLOW
 
-// Lucas Kanade optical flow algorithm
+/** Lucas Kanade optical flow algorithm */
 bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h, int *max);
 bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h);
 
@@ -114,19 +122,19 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int 
 
 //						## Block matching 
 
-// Adaptative Rood Pattern Search method
+/** Adaptative Rood Pattern Search method */
 bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize,
  		int p, MotionVector16_t *motionVect, int zmp_T, int *max);
 
-// Enhanced Predictive Zonal Search
+/** Enhanced Predictive Zonal Search */
 bool motionEstEPZS(MotionEstContext *);
 
 //						## TEST METHODS
 
-// Compute motion compensated image
+/** Compute motion compensated image */
 uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect, size_t w, size_t h, 
 		size_t mbSize);
-// Compute PSNR of image compensated
+/** Compute PSNR of image compensated */
 float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp, size_t w, size_t h, const int n);
 
 #ifdef __cplusplus
