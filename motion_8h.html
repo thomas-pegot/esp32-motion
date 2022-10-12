@@ -91,9 +91,7 @@ $(document).ready(function(){initNavTree('motion_8h.html',''); initResizable(); 
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">motion.h File Reference</div>  </div>
 </div><!--header-->
@@ -115,6 +113,7 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_motion_est_predictor.html">MotionEstPredictor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_motion_est_context.html">MotionEstContext</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exhaustive struct representing all parameter needed for all motion estimation type.  <a href="struct_motion_est_context.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -125,7 +124,11 @@ Macros</h2></td></tr>
 <tr class="separator:ad7cf61b6843c3ed06b7b1399d5e2fd21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58dde5b4c75245b4660a165318cac36b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a58dde5b4c75245b4660a165318cac36b">WINDOW</a>&#160;&#160;&#160;5</td></tr>
 <tr class="separator:a58dde5b4c75245b4660a165318cac36b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
+Algorithm names</h2></td></tr>
 <tr class="memitem:acd51ce5bd1b2e154555271d0f45ac4b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#acd51ce5bd1b2e154555271d0f45ac4b6">LK_OPTICAL_FLOW_8BIT</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:acd51ce5bd1b2e154555271d0f45ac4b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used during <a class="el" href="struct_motion_est_context.html" title="Exhaustive struct representing all parameter needed for all motion estimation type.">MotionEstContext</a> declaration to specify method used.  <a href="motion_8h.html#acd51ce5bd1b2e154555271d0f45ac4b6">More...</a><br /></td></tr>
 <tr class="separator:acd51ce5bd1b2e154555271d0f45ac4b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42bbfda998ebcff6218f13097a2b751a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a42bbfda998ebcff6218f13097a2b751a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,23 +136,17 @@ Macros</h2></td></tr>
 <tr class="separator:a4cac996d722232e12c7ba86c65dd048e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13b7f7d520ed0639d65413732d674d98"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a13b7f7d520ed0639d65413732d674d98">BLOCK_MATCHING_EPZS</a>&#160;&#160;&#160;3</td></tr>
 <tr class="separator:a13b7f7d520ed0639d65413732d674d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
 <tr class="memitem:a391f2c743c3eeb29412bed5612d6fd38"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_motion_est_predictor.html">MotionEstPredictor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a391f2c743c3eeb29412bed5612d6fd38">MotionEstPredictor</a></td></tr>
 <tr class="separator:a391f2c743c3eeb29412bed5612d6fd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa57e3c5e4be6c035e9a43836d347ca08"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_motion_est_context.html">MotionEstContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#aa57e3c5e4be6c035e9a43836d347ca08">MotionEstContext</a></td></tr>
 <tr class="separator:aa57e3c5e4be6c035e9a43836d347ca08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
 <tr class="memitem:aa1377b3e199556519cb8a43a11dd24bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#aa1377b3e199556519cb8a43a11dd24bf">uninit</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *ctx)</td></tr>
 <tr class="separator:aa1377b3e199556519cb8a43a11dd24bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a307035191f24ff24a02add340d8b4efa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">init_context</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *ctx)</td></tr>
 <tr class="memdesc:a307035191f24ff24a02add340d8b4efa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init &amp; allocate context ctx accordingly to the method used.  <a href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">More...</a><br /></td></tr>
 <tr class="separator:a307035191f24ff24a02add340d8b4efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ba35bcbf89a11452927cc1ce2710edd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *ctx, <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img_prev, <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img_cur)</td></tr>
-<tr class="memdesc:a8ba35bcbf89a11452927cc1ce2710edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to specified method defined in ctx <a class="el" href="struct_motion_est_context.html">MotionEstContext</a>.  <a href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">More...</a><br /></td></tr>
+<tr class="memdesc:a8ba35bcbf89a11452927cc1ce2710edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">motion estimation wrapper  <a href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">More...</a><br /></td></tr>
 <tr class="separator:a8ba35bcbf89a11452927cc1ce2710edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b">me_comp_sad</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv)</td></tr>
 <tr class="separator:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,6 +160,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ab67e09e5e540362dd4b2977bfecfa225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes motion vectors using Adaptive Rood Pattern Search method.  <a href="motion_8h.html#ab67e09e5e540362dd4b2977bfecfa225">More...</a><br /></td></tr>
 <tr class="separator:ab67e09e5e540362dd4b2977bfecfa225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2365b293dadd7e0d7e97ce3e88febd1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#ae2365b293dadd7e0d7e97ce3e88febd1">motionEstEPZS</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *)</td></tr>
+<tr class="memdesc:ae2365b293dadd7e0d7e97ce3e88febd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enhance Predictive Zonal Search block matching algo.  <a href="motion_8h.html#ae2365b293dadd7e0d7e97ce3e88febd1">More...</a><br /></td></tr>
 <tr class="separator:ae2365b293dadd7e0d7e97ce3e88febd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab20800573c64806040b0a171f72351de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#ab20800573c64806040b0a171f72351de">motionComp</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgI, const <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *motionVect, size_t w, size_t h, size_t mbSize)</td></tr>
 <tr class="memdesc:ab20800573c64806040b0a171f72351de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes motion compensated image using the given motion vectors.  <a href="motion_8h.html#ab20800573c64806040b0a171f72351de">More...</a><br /></td></tr>
@@ -226,6 +224,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Used during <a class="el" href="struct_motion_est_context.html" title="Exhaustive struct representing all parameter needed for all motion estimation type.">MotionEstContext</a> declaration to specify method used. </p>
 
 </div>
 </div>
@@ -496,7 +496,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if success False if failed somewhere </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Big if True </dd></dl>
 
 </div>
 </div>
@@ -635,7 +635,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Wrapper to specified method defined in ctx <a class="el" href="struct_motion_est_context.html">MotionEstContext</a>. </p>
+<p>motion estimation wrapper </p>
+<ul>
+<li>Will update ctx-&gt;name representation of the motion estimation algo used.</li>
+<li>Will call motion estimation algo accordingly (motionEstARPS, motionEstEPS, LK...) <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ctx</td><td>ctx-&gt;method will define which function would be called</td></tr>
+  </table>
+  </dd>
+</dl>
+motion estimation wrapper </li>
+</ul>
 
 </div>
 </div>
@@ -795,11 +805,20 @@ Functions</h2></td></tr>
           <td class="memname">bool motionEstEPZS </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><em>me_ctx</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Enhance Predictive Zonal Search block matching algo. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">me_ctx</td><td>: Motion estimation context with me_ctx-&gt;method = 'BLOCK_MATCHING_EPZS'</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>big if true </dd></dl>
 
 </div>
 </div>
