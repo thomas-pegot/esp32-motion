@@ -158,7 +158,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Optical flow Lucas-Kanade. </p>
-<p>Implement LK optical flow source from wiki and matlab: <a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method">https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method</a> </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Implement LK optical flow source from wiki and matlab:https://en.wikipedia.org/wiki/LucasE2%80%93Kanade_method This method is based on Taylor series resolution: $$ I(x+\Delta x,y+\Delta y,t+\Delta t) = I(x,y,t) + \frac{\partial I}{\partial x}\,\Delta x+\frac{\partial I}{\partial y}\,\Delta y+\frac{\partial I}{\partial t} \, \Delta t+{} $$ Which can be rewritten: $$ \frac{\partial I}{\partial x}V_x+\frac{\partial I}{\partial y}V_y+\frac{\partial I}{\partial t} = 0 $$ Lucas Kanade reorder this equation as matrix such as: $$ A = \begin{bmatrix} I_x(q_1) &amp; I_y(q_1) \[10pt] I_x(q_2) &amp; I_y(q_2) \[10pt] \vdots &amp; \vdots \[10pt] I_x(q_n) &amp; I_y(q_n) \end{bmatrix} \quad\quad\quad v = \begin{bmatrix} V_x\[10pt] V_y \end{bmatrix} \quad\quad\quad b = \begin{bmatrix} -I_t(q_1) \[10pt] -I_t(q_2) \[10pt] \vdots \[10pt] -I_t(q_n) \end{bmatrix} $$ Then the solution can be reduced as : $ A^T A v=A^T b $ or $ \mathrm{v}=(A^T A)^{-1}A^T b $ </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src1</td><td>pointer to grayscale buffer image instant t. </td></tr>
     <tr><td class="paramname">src2</td><td>pointer to grayscale buffer image instant t+1. </td></tr>
