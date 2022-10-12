@@ -25,22 +25,16 @@ extern "C"{
 #define WINDOW 5 
 
 /**
- * @{ \name Algorithm names
- */
-/**
- * \brief Used during MotionEstContext declaration to specify method used.
+ * @defgroup ALGO_GROUP motion algo
+ * @{ \name Algorithm selector
  */
 #define LK_OPTICAL_FLOW_8BIT	0
-#define LK_OPTICAL_FLOW 		1
-#define BLOCK_MATCHING_ARPS		2
+#define LK_OPTICAL_FLOW 	1
+#define BLOCK_MATCHING_ARPS	2
 #define BLOCK_MATCHING_EPZS     3
-/**
- * @}
- */
+/** @} */
 	
-typedef struct {
-	int16_t x, y;
-} Vector16_t;
+typedef struct { int16_t x, y; } Vector16_t;
 
 /** @struct MotionVector16_t
 * @brief MotionVector 2D with amplitude squared (for speed)
@@ -111,8 +105,12 @@ bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cu
 
 uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv);
 
+	
 //						## OPTICAL FLOW
-
+/**
+ * @addtogroup ALGO_GROUP 
+ * @{ \name Algorithm methods
+ */
 /** Lucas Kanade optical flow algorithm */
 bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h, int *max);
 bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h);
@@ -129,6 +127,8 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
 /** Enhanced Predictive Zonal Search */
 bool motionEstEPZS(MotionEstContext *);
 
+/** @} */
+	
 //						## TEST METHODS
 
 /** Compute motion compensated image */
