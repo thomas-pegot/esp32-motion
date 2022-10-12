@@ -23,6 +23,13 @@ extern "C"{
 
 #define WINDOW 5 //convolution window size for lucas kanade
 
+
+/**
+ * @{ \name Algorithm names
+ */
+/**
+ * \brief Used during MotionEstContext declaration to specify method used.
+ */
 #define LK_OPTICAL_FLOW_8BIT	0
 #define LK_OPTICAL_FLOW 		1
 #define BLOCK_MATCHING_ARPS		2
@@ -47,21 +54,29 @@ typedef struct MotionEstPredictor {
     int nb;
 } MotionEstPredictor;
 
-typedef struct MotionEstContext{
-	uint8_t *data_cur, *data_ref;       ///< current & prev images
-	int method;		  					///< motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)
+
+/** @struct MotionEstContext
+ *  @brief Exhaustive struct representing all parameter needed for all motion estimation type 
+ */
+typedef struct MotionEstContext{	
 	char name[20];
-	int width, height; 					///< images width and height
-	int b_width, b_height, b_count;     ///< blocks width and height
+	uint8_t *data_cur,					///< current image
+	        *data_ref;       			///< prev image
+	int method;		  					///< motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)
+	int width,							///< images width 
+	    height, 						///< images height
+	    b_width,     					///< blocks width
+		b_height, 					    ///< blocks height
+		b_count;   	  					///< nb of blocks
 	
 	//int xmin, xmax, ymin, ymax; // area mv
 
-	// for block matching algo. only
-	int mbSize, log2_mbSize; 			///< macro block size
+	int mbSize,							///< macro block size
+	    log2_mbSize; 					///< log2 of macro block size
 	int search_param; 					///< parameter p in ARPS
 
 	int pred_x,							///< median predictor
-		pred_y;
+		pred_y;                         ///< median predictor
 	MotionEstPredictor preds[2];		///< predictor for EPZS
 
 	MotionVector16_t *mv_table[3];      ///< motion vectors of current & prev 2 frames
@@ -72,9 +87,18 @@ typedef struct MotionEstContext{
 } MotionEstContext;
 
 void uninit(MotionEstContext *ctx);
+
+/** @brief Init & allocate context ctx accordingly to the method used 
+	@param ctx : motion estimation context object
+ */
 bool init_context(MotionEstContext *ctx);
 
-// Motion estimation
+/**
+ * @brief motion estimation wrapper
+ *  - Will update ctx->name representation of the motion estimation algo used.
+ *  - Will call motion estimation algo accordingly (motionEstARPS, motionEstEPS, LK...)
+ * \param ctx ctx->method will define which function would be called
+ */
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur);
 
 uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv);

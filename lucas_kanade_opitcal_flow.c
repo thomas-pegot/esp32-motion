@@ -74,7 +74,7 @@ static void *_malloc(size_t size) {
  * @param src1 pointer to grayscale buffer image instant t. 
  * @param src2 pointer to grayscale buffer image instant t+1.
  * @param V [out] vector (vx, vy) and squared magnitude
- * @return True if success False if failed somewhere*/
+ * @return Big if True*/
 bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *V, int w, int h, int *mag_max2) {
 
 	assert(src1 != NULL);
