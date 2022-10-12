@@ -91,7 +91,9 @@ $(document).ready(function(){initNavTree('motion_8h.html',''); initResizable(); 
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">motion.h File Reference</div>  </div>
 </div><!--header-->
@@ -107,8 +109,10 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_vector16__t.html">Vector16_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">MotionVector 2D with amplitude squared (for speed)  <a href="struct_motion_vector16__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_motion_vector8__t.html">MotionVector8_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">MotionVector 2D 8bit.  <a href="struct_motion_vector8__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_motion_est_predictor.html">MotionEstPredictor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,10 +127,9 @@ Macros</h2></td></tr>
 <tr class="memitem:ad7cf61b6843c3ed06b7b1399d5e2fd21"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#ad7cf61b6843c3ed06b7b1399d5e2fd21">mmin</a>(a,  b)</td></tr>
 <tr class="separator:ad7cf61b6843c3ed06b7b1399d5e2fd21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58dde5b4c75245b4660a165318cac36b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a58dde5b4c75245b4660a165318cac36b">WINDOW</a>&#160;&#160;&#160;5</td></tr>
+<tr class="memdesc:a58dde5b4c75245b4660a165318cac36b"><td class="mdescLeft">&#160;</td><td class="mdescRight">convolution window size for lucas kanade  <a href="motion_8h.html#a58dde5b4c75245b4660a165318cac36b">More...</a><br /></td></tr>
 <tr class="separator:a58dde5b4c75245b4660a165318cac36b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Algorithm names</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Algorithm names</div></td></tr>
 <tr class="memitem:acd51ce5bd1b2e154555271d0f45ac4b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#acd51ce5bd1b2e154555271d0f45ac4b6">LK_OPTICAL_FLOW_8BIT</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memdesc:acd51ce5bd1b2e154555271d0f45ac4b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used during <a class="el" href="struct_motion_est_context.html" title="Exhaustive struct representing all parameter needed for all motion estimation type.">MotionEstContext</a> declaration to specify method used.  <a href="motion_8h.html#acd51ce5bd1b2e154555271d0f45ac4b6">More...</a><br /></td></tr>
 <tr class="separator:acd51ce5bd1b2e154555271d0f45ac4b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,10 +139,16 @@ Algorithm names</h2></td></tr>
 <tr class="separator:a4cac996d722232e12c7ba86c65dd048e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13b7f7d520ed0639d65413732d674d98"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a13b7f7d520ed0639d65413732d674d98">BLOCK_MATCHING_EPZS</a>&#160;&#160;&#160;3</td></tr>
 <tr class="separator:a13b7f7d520ed0639d65413732d674d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
 <tr class="memitem:a391f2c743c3eeb29412bed5612d6fd38"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_motion_est_predictor.html">MotionEstPredictor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a391f2c743c3eeb29412bed5612d6fd38">MotionEstPredictor</a></td></tr>
 <tr class="separator:a391f2c743c3eeb29412bed5612d6fd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa57e3c5e4be6c035e9a43836d347ca08"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_motion_est_context.html">MotionEstContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#aa57e3c5e4be6c035e9a43836d347ca08">MotionEstContext</a></td></tr>
 <tr class="separator:aa57e3c5e4be6c035e9a43836d347ca08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
 <tr class="memitem:aa1377b3e199556519cb8a43a11dd24bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#aa1377b3e199556519cb8a43a11dd24bf">uninit</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *ctx)</td></tr>
 <tr class="separator:aa1377b3e199556519cb8a43a11dd24bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a307035191f24ff24a02add340d8b4efa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">init_context</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *ctx)</td></tr>
@@ -151,23 +160,22 @@ Algorithm names</h2></td></tr>
 <tr class="memitem:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b">me_comp_sad</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv)</td></tr>
 <tr class="separator:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6016829c94a054f83ef3d7f5dfaae76f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a6016829c94a054f83ef3d7f5dfaae76f">LK_optical_flow</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src1, const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src2, <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *v, int w, int h, int *max)</td></tr>
-<tr class="memdesc:a6016829c94a054f83ef3d7f5dfaae76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optical flow Lucas-Kanade.  <a href="motion_8h.html#a6016829c94a054f83ef3d7f5dfaae76f">More...</a><br /></td></tr>
+<tr class="memdesc:a6016829c94a054f83ef3d7f5dfaae76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lucas Kanade optical flow algorithm.  <a href="motion_8h.html#a6016829c94a054f83ef3d7f5dfaae76f">More...</a><br /></td></tr>
 <tr class="separator:a6016829c94a054f83ef3d7f5dfaae76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2228c954598efba02837f168f0cf9132"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#a2228c954598efba02837f168f0cf9132">LK_optical_flow8</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src1, const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src2, <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *V, int w, int h)</td></tr>
 <tr class="memdesc:a2228c954598efba02837f168f0cf9132"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement LK optical flow 8bit version Magnitude.  <a href="motion_8h.html#a2228c954598efba02837f168f0cf9132">More...</a><br /></td></tr>
 <tr class="separator:a2228c954598efba02837f168f0cf9132"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab67e09e5e540362dd4b2977bfecfa225"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#ab67e09e5e540362dd4b2977bfecfa225">motionEstARPS</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgP, const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgI, size_t w, size_t h, size_t mbSize, int p, <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *motionVect, int zmp_T, int *max)</td></tr>
-<tr class="memdesc:ab67e09e5e540362dd4b2977bfecfa225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes motion vectors using Adaptive Rood Pattern Search method.  <a href="motion_8h.html#ab67e09e5e540362dd4b2977bfecfa225">More...</a><br /></td></tr>
+<tr class="memdesc:ab67e09e5e540362dd4b2977bfecfa225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adaptative Rood Pattern Search method.  <a href="motion_8h.html#ab67e09e5e540362dd4b2977bfecfa225">More...</a><br /></td></tr>
 <tr class="separator:ab67e09e5e540362dd4b2977bfecfa225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2365b293dadd7e0d7e97ce3e88febd1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#ae2365b293dadd7e0d7e97ce3e88febd1">motionEstEPZS</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *)</td></tr>
-<tr class="memdesc:ae2365b293dadd7e0d7e97ce3e88febd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enhance Predictive Zonal Search block matching algo.  <a href="motion_8h.html#ae2365b293dadd7e0d7e97ce3e88febd1">More...</a><br /></td></tr>
+<tr class="memdesc:ae2365b293dadd7e0d7e97ce3e88febd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enhanced Predictive Zonal Search.  <a href="motion_8h.html#ae2365b293dadd7e0d7e97ce3e88febd1">More...</a><br /></td></tr>
 <tr class="separator:ae2365b293dadd7e0d7e97ce3e88febd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab20800573c64806040b0a171f72351de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#ab20800573c64806040b0a171f72351de">motionComp</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgI, const <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *motionVect, size_t w, size_t h, size_t mbSize)</td></tr>
-<tr class="memdesc:ab20800573c64806040b0a171f72351de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes motion compensated image using the given motion vectors.  <a href="motion_8h.html#ab20800573c64806040b0a171f72351de">More...</a><br /></td></tr>
+<tr class="memdesc:ab20800573c64806040b0a171f72351de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute motion compensated image.  <a href="motion_8h.html#ab20800573c64806040b0a171f72351de">More...</a><br /></td></tr>
 <tr class="separator:ab20800573c64806040b0a171f72351de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac60096222a1bd9dce72594f8394ea6b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8h.html#aac60096222a1bd9dce72594f8394ea6b">imgPSNR</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgP, const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgComp, size_t w, size_t h, const int n)</td></tr>
-<tr class="memdesc:aac60096222a1bd9dce72594f8394ea6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute motion compensated image's PSNR <br  />
-.  <a href="motion_8h.html#aac60096222a1bd9dce72594f8394ea6b">More...</a><br /></td></tr>
+<tr class="memdesc:aac60096222a1bd9dce72594f8394ea6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute PSNR of image compensated.  <a href="motion_8h.html#aac60096222a1bd9dce72594f8394ea6b">More...</a><br /></td></tr>
 <tr class="separator:aac60096222a1bd9dce72594f8394ea6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -303,6 +311,8 @@ Algorithm names</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>convolution window size for lucas kanade </p>
+
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -379,8 +389,8 @@ Algorithm names</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compute motion compensated image's PSNR <br  />
-. </p>
+<p>Compute PSNR of image compensated. </p>
+<p>Compute PSNR of image compensated.</p>
 <p class="formulaDsp">
 \[ text{PSNR} = 10 \log_{10}\frac {(\text{peak to peak value of original data})^2}{\text{MSE}} \]
 </p>
@@ -475,7 +485,8 @@ Algorithm names</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Optical flow Lucas-Kanade. </p>
+<p>Lucas Kanade optical flow algorithm. </p>
+<p>Lucas Kanade optical flow algorithm.</p>
 <p>Implement LK optical flow source from wiki and matlab : <a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method">https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method</a> <br  />
  This method is based on <em>Taylor series</em> resolution: <br  />
  </p><p class="formulaDsp">
@@ -693,7 +704,8 @@ motion estimation wrapper </li>
       </table>
 </div><div class="memdoc">
 
-<p>Computes motion compensated image using the given motion vectors. </p>
+<p>Compute motion compensated image. </p>
+<p>Compute motion compensated image.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">imgI</td><td>: reference images </td></tr>
@@ -776,7 +788,8 @@ motion estimation wrapper </li>
       </table>
 </div><div class="memdoc">
 
-<p>Computes motion vectors using Adaptive Rood Pattern Search method. </p>
+<p>Adaptative Rood Pattern Search method. </p>
+<p>Adaptative Rood Pattern Search method.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">imgP</td><td>: image of which we want to find motion vectors </td></tr>
@@ -811,7 +824,8 @@ motion estimation wrapper </li>
       </table>
 </div><div class="memdoc">
 
-<p>Enhance Predictive Zonal Search block matching algo. </p>
+<p>Enhanced Predictive Zonal Search. </p>
+<p>Enhanced Predictive Zonal Search.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">me_ctx</td><td>: Motion estimation context with me_ctx-&gt;method = 'BLOCK_MATCHING_EPZS'</td></tr>
