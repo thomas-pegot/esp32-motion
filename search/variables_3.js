@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['get_5fcost_119',['get_cost',['../struct_motion_est_context.html#a873b506420978fe62a2f576a140ab489',1,'MotionEstContext']]]
+  ['get_5fcost_120',['get_cost',['../group___a_l_g_o___g_r_o_u_p.html#ga873b506420978fe62a2f576a140ab489',1,'MotionEstContext']]]
 ];

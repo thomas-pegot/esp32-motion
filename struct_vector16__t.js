@@ -1,5 +1,5 @@
 var struct_vector16__t =
 [
-    [ "x", "struct_vector16__t.html#ae1c2d516777e6b42af0d281c9ecc7375", null ],
-    [ "y", "struct_vector16__t.html#af77b1a54442f2443cf64a4766f916bcd", null ]
+    [ "x", "group___a_l_g_o___g_r_o_u_p.html#gae1c2d516777e6b42af0d281c9ecc7375", null ],
+    [ "y", "group___a_l_g_o___g_r_o_u_p.html#gaf77b1a54442f2443cf64a4766f916bcd", null ]
 ];

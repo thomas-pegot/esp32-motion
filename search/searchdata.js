@@ -6,7 +6,8 @@ var indexSectionsWithContent =
   3: "cdgilmu",
   4: "abdghlmnpsvwxy",
   5: "mqu",
-  6: "abclmw"
+  6: "acmw",
+  7: "m"
 };
 
 var indexSectionNames =
@@ -17,7 +18,8 @@ var indexSectionNames =
   3: "functions",
   4: "variables",
   5: "typedefs",
-  6: "defines"
+  6: "defines",
+  7: "groups"
 };
 
 var indexSectionLabels =
@@ -28,6 +30,7 @@ var indexSectionLabels =
   3: "Functions",
   4: "Variables",
   5: "Typedefs",
-  6: "Macros"
+  6: "Macros",
+  7: "Modules"
 };
 

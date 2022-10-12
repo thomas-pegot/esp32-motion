@@ -127,12 +127,12 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <h1>Basic usage</h1>
 <h2>Declaration and initialisation :</h2>
 <p>First thing first create a <a href="https://thomas-pegot.github.io/esp32-motion/struct_motion_est_context.html"><em>motion estimation context</em></a> :</p>
-<div class="fragment"><div class="line"><a class="code" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx = {.<a class="code" href="struct_motion_est_context.html#adcc9a19ad3119f823a658f6a49a24e64">method</a> = <a class="code" href="motion_8h.html#a42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a>,    <span class="comment">// algorithm used</span></div>
+<div class="fragment"><div class="line"><a class="code" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx = {.<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64">method</a> = <a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a>,    <span class="comment">// algorithm used</span></div>
 <div class="line">                           .width  = 96,  .height = 96 <span class="comment">// size of your image</span></div>
 <div class="line">                           };</div>
 <div class="line"> </div>
 <div class="line"><a class="code" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx2 = {</div>
-<div class="line">.<a class="code" href="struct_motion_est_context.html#adcc9a19ad3119f823a658f6a49a24e64">method</a> = <a class="code" href="motion_8h.html#a4cac996d722232e12c7ba86c65dd048e">BLOCK_MATCHING_ARPS</a>,  <span class="comment">// algo used </span></div>
+<div class="line">.<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64">method</a> = <a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga4cac996d722232e12c7ba86c65dd048e">BLOCK_MATCHING_ARPS</a>,  <span class="comment">// algo used </span></div>
 <div class="line">                  .mbSize = 8,  <span class="comment">// block size for block matching algo</span></div>
 <div class="line">            .search_param = 7,  <span class="comment">// search parameter value for block matching algo</span></div>
 <div class="line">  .width = 640, .height = 480); <span class="comment">// images size</span></div>
@@ -153,14 +153,14 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <p>Next allocate motion vectors: <a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">@code{c} init_context(me_ctx); @endcode </a></p>
 <h2>Estimate motion :</h2>
 <p>Now you can call <a href="https://thomas-pegot.github.io/esp32-motion/motion_8c.html#a8ba35bcbf89a11452927cc1ce2710edd"><code>motion_estimation</code></a> method and pass current and previous images buffer.</p>
-<div class="fragment"><div class="line"><span class="keywordflow">if</span>(!<a class="code" href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a>(me_ctx, (<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *)img_prev, (<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *)img_cur))</div>
+<div class="fragment"><div class="line"><span class="keywordflow">if</span>(!<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a>(me_ctx, (<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *)img_prev, (<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *)img_cur))</div>
 <div class="line">    Serial.println(<span class="stringliteral">&quot;motion estimtion failed!&quot;</span>)!</div>
 </div><!-- fragment --><p>Now motion vectors will be stored in <code>me_ctx.mv_table[0]</code> with the maximum being <code>me_ctx.max</code>.</p>
 <p>Note : in case of EZPS algorithm, <code>mv_table</code> acts as a FIFO which means each time you perform an estimation it will push the FIFO : </p><div class="fragment"><div class="line">graph LR;</div>
 <div class="line">motion_estimation --&gt; mv_table0 --&gt; mv_table1 --&gt; mv_table2 --&gt; NULL;</div>
 </div><!-- fragment --><p>EZPS algorithm need previous motion vectors as a way of prediction to the next generated.</p>
 <h2>Free memory :</h2>
-<div class="fragment"><div class="line"><a class="code" href="motion_8h.html#aa1377b3e199556519cb8a43a11dd24bf">uninit</a>(me_ctx);</div>
+<div class="fragment"><div class="line"><a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gaa1377b3e199556519cb8a43a11dd24bf">uninit</a>(me_ctx);</div>
 </div><!-- fragment --><h1>More in depth</h1>
 <h2><a href="https://en.wikipedia.org/wiki/Block-matching_algorithm#cite_note-8">Block matching (Adaptative Rood Pattern Search)</a></h2>
 <ul>
@@ -224,14 +224,14 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astruct_motion_est_context_html_adcc9a19ad3119f823a658f6a49a24e64"><div class="ttname"><a href="struct_motion_est_context.html#adcc9a19ad3119f823a658f6a49a24e64">MotionEstContext::method</a></div><div class="ttdeci">int method</div><div class="ttdoc">motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)</div><div class="ttdef"><b>Definition:</b> motion.h:73</div></div>
-<div class="ttc" id="amotion_8h_html_a4cac996d722232e12c7ba86c65dd048e"><div class="ttname"><a href="motion_8h.html#a4cac996d722232e12c7ba86c65dd048e">BLOCK_MATCHING_ARPS</a></div><div class="ttdeci">#define BLOCK_MATCHING_ARPS</div><div class="ttdef"><b>Definition:</b> motion.h:35</div></div>
-<div class="ttc" id="amotion_8h_html_aa1377b3e199556519cb8a43a11dd24bf"><div class="ttname"><a href="motion_8h.html#aa1377b3e199556519cb8a43a11dd24bf">uninit</a></div><div class="ttdeci">void uninit(MotionEstContext *ctx)</div><div class="ttdef"><b>Definition:</b> motion.c:27</div></div>
-<div class="ttc" id="astruct_motion_vector16__t_html"><div class="ttname"><a href="struct_motion_vector16__t.html">MotionVector16_t</a></div><div class="ttdoc">MotionVector 2D with amplitude squared (for speed)</div><div class="ttdef"><b>Definition:</b> motion.h:48</div></div>
-<div class="ttc" id="astruct_motion_est_context_html"><div class="ttname"><a href="struct_motion_est_context.html">MotionEstContext</a></div><div class="ttdoc">Exhaustive struct representing all parameter needed for all motion estimation type.</div><div class="ttdef"><b>Definition:</b> motion.h:69</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga8ba35bcbf89a11452927cc1ce2710edd"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a></div><div class="ttdeci">bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur)</div><div class="ttdoc">motion estimation wrapper</div><div class="ttdef"><b>Definition:</b> motion.c:127</div></div>
+<div class="ttc" id="astruct_motion_vector16__t_html"><div class="ttname"><a href="struct_motion_vector16__t.html">MotionVector16_t</a></div><div class="ttdoc">MotionVector 2D with amplitude squared (for speed)</div><div class="ttdef"><b>Definition:</b> motion.h:42</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gaa1377b3e199556519cb8a43a11dd24bf"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gaa1377b3e199556519cb8a43a11dd24bf">uninit</a></div><div class="ttdeci">void uninit(MotionEstContext *ctx)</div><div class="ttdef"><b>Definition:</b> motion.c:27</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga42bbfda998ebcff6218f13097a2b751a"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a></div><div class="ttdeci">#define LK_OPTICAL_FLOW</div><div class="ttdef"><b>Definition:</b> motion.h:32</div></div>
+<div class="ttc" id="astruct_motion_est_context_html"><div class="ttname"><a href="struct_motion_est_context.html">MotionEstContext</a></div><div class="ttdoc">Exhaustive struct representing all parameter needed for all motion estimation type.</div><div class="ttdef"><b>Definition:</b> motion.h:63</div></div>
 <div class="ttc" id="adeflicker_8h_html_aba7bc1797add20fe3efdf37ced1182c5"><div class="ttname"><a href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a></div><div class="ttdeci">unsigned char uint8_t</div><div class="ttdef"><b>Definition:</b> deflicker.h:8</div></div>
-<div class="ttc" id="amotion_8h_html_a42bbfda998ebcff6218f13097a2b751a"><div class="ttname"><a href="motion_8h.html#a42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a></div><div class="ttdeci">#define LK_OPTICAL_FLOW</div><div class="ttdef"><b>Definition:</b> motion.h:34</div></div>
-<div class="ttc" id="amotion_8h_html_a8ba35bcbf89a11452927cc1ce2710edd"><div class="ttname"><a href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a></div><div class="ttdeci">bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur)</div><div class="ttdoc">motion estimation wrapper</div><div class="ttdef"><b>Definition:</b> motion.c:127</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gadcc9a19ad3119f823a658f6a49a24e64"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64">MotionEstContext::method</a></div><div class="ttdeci">int method</div><div class="ttdoc">motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)</div><div class="ttdef"><b>Definition:</b> motion.h:67</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga4cac996d722232e12c7ba86c65dd048e"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga4cac996d722232e12c7ba86c65dd048e">BLOCK_MATCHING_ARPS</a></div><div class="ttdeci">#define BLOCK_MATCHING_ARPS</div><div class="ttdef"><b>Definition:</b> motion.h:33</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

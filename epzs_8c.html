@@ -115,9 +115,9 @@ Macros</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:aa2320d382d580905731b4cc266acb641"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epzs_8c.html#aa2320d382d580905731b4cc266acb641">me_search_epzs</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx, int x_mb, int y_mb, int *mv)</td></tr>
 <tr class="separator:aa2320d382d580905731b4cc266acb641"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3f9864e9b028e2006fb9060c2dfc3be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epzs_8c.html#ab3f9864e9b028e2006fb9060c2dfc3be">motionEstEPZS</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx)</td></tr>
-<tr class="memdesc:ab3f9864e9b028e2006fb9060c2dfc3be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enhance Predictive Zonal Search block matching algo.  <a href="epzs_8c.html#ab3f9864e9b028e2006fb9060c2dfc3be">More...</a><br /></td></tr>
-<tr class="separator:ab3f9864e9b028e2006fb9060c2dfc3be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae2365b293dadd7e0d7e97ce3e88febd1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1">motionEstEPZS</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx)</td></tr>
+<tr class="memdesc:gae2365b293dadd7e0d7e97ce3e88febd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enhance Predictive Zonal Search block matching algo.  <a href="group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1">More...</a><br /></td></tr>
+<tr class="separator:gae2365b293dadd7e0d7e97ce3e88febd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a1f4f07498361a68bf88ebc69faa0fa58"></a>
@@ -152,8 +152,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {\</div>
-<div class="line">        preds.mvs[<a class="code" href="struct_motion_est_context.html#a08f145570c138274b3aea7c821299429">preds</a>.<a class="code" href="struct_motion_est_predictor.html#ab310c6afcc676eab3930dce2650511c0">nb</a>][0] = px;\</div>
-<div class="line">        preds.mvs[<a class="code" href="struct_motion_est_context.html#a08f145570c138274b3aea7c821299429">preds</a>.<a class="code" href="struct_motion_est_predictor.html#ab310c6afcc676eab3930dce2650511c0">nb</a>][1] = py;\</div>
+<div class="line">        preds.mvs[<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga08f145570c138274b3aea7c821299429">preds</a>.<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gab310c6afcc676eab3930dce2650511c0">nb</a>][0] = px;\</div>
+<div class="line">        preds.mvs[<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga08f145570c138274b3aea7c821299429">preds</a>.<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gab310c6afcc676eab3930dce2650511c0">nb</a>][1] = py;\</div>
 <div class="line">        preds.nb++;\</div>
 <div class="line">    } <span class="keywordflow">while</span>(0)</div>
 </div><!-- fragment -->
@@ -280,38 +280,10 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab3f9864e9b028e2006fb9060c2dfc3be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3f9864e9b028e2006fb9060c2dfc3be">&#9670;&nbsp;</a></span>motionEstEPZS()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool motionEstEPZS </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *&#160;</td>
-          <td class="paramname"><em>me_ctx</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Enhance Predictive Zonal Search block matching algo. </p>
-<p>Enhanced Predictive Zonal Search.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">me_ctx</td><td>: Motion estimation context with me_ctx-&gt;method = 'BLOCK_MATCHING_EPZS'</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>big if true </dd></dl>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astruct_motion_est_predictor_html_ab310c6afcc676eab3930dce2650511c0"><div class="ttname"><a href="struct_motion_est_predictor.html#ab310c6afcc676eab3930dce2650511c0">MotionEstPredictor::nb</a></div><div class="ttdeci">int nb</div><div class="ttdef"><b>Definition:</b> motion.h:62</div></div>
-<div class="ttc" id="astruct_motion_est_context_html_a08f145570c138274b3aea7c821299429"><div class="ttname"><a href="struct_motion_est_context.html#a08f145570c138274b3aea7c821299429">MotionEstContext::preds</a></div><div class="ttdeci">MotionEstPredictor preds[2]</div><div class="ttdoc">predictor for EPZS</div><div class="ttdef"><b>Definition:</b> motion.h:88</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga08f145570c138274b3aea7c821299429"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga08f145570c138274b3aea7c821299429">MotionEstContext::preds</a></div><div class="ttdeci">MotionEstPredictor preds[2]</div><div class="ttdoc">predictor for EPZS</div><div class="ttdef"><b>Definition:</b> motion.h:82</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gab310c6afcc676eab3930dce2650511c0"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gab310c6afcc676eab3930dce2650511c0">MotionEstPredictor::nb</a></div><div class="ttdeci">int nb</div><div class="ttdef"><b>Definition:</b> motion.h:56</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

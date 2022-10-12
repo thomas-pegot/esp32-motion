@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['y_76',['y',['../struct_vector16__t.html#af77b1a54442f2443cf64a4766f916bcd',1,'Vector16_t']]]
+  ['y_77',['y',['../group___a_l_g_o___g_r_o_u_p.html#gaf77b1a54442f2443cf64a4766f916bcd',1,'Vector16_t']]]
 ];
