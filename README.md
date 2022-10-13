@@ -58,12 +58,12 @@ table of correspondance :
 |BLOCK_MATCHING_ARPS| 2 | ARPS (out 16-bit vector)|
 |BLOCK_MATCHING_EPZS| 3 | EPZS (out 16-bit vector)|
 
-Next allocate motion vectors:
-<a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">
+Next 
+<a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">allocate motion</a> vectors:
 ```c
 init_context(me_ctx);
 ```
-</a>
+
   
 ### Estimate motion :
 
@@ -95,14 +95,12 @@ uninit(me_ctx);
 
 ## More in depth 
 
-### [Block matching (Adaptative Rood Pattern Search)](https://en.wikipedia.org/wiki/Block-matching_algorithm#cite_note-8)
+### <a href="https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495"> Block matching (Adaptative Rood Pattern Search) </a>
 
  - header :
-    <a href="https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495">
     ```c
     bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2)
     ```
-    </a>
 
  - example :
       ```c
@@ -130,16 +128,14 @@ uninit(me_ctx);
 
 
 
-### [Lucas Kanade algorithm](https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method)
+### [Lucas Kanade algorithm](https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39)
 
 #### Simple case
 
  - header :
-    <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39">
     ```c
     bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h);
     ```
-    </a>
    
  - example : 
 
@@ -175,12 +171,9 @@ We can get more detailed output by using a motion vector struct composed of `V=(
    } MotionVector16_t;
   ```
   - headers:
-    <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a7ad704813ba20d078981b59a8dbd6c2e">
     ```c
     bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h);
     ```
-    </a>
-  
   - example :
 
     ```c
@@ -221,20 +214,6 @@ We can get more detailed output by using a motion vector struct composed of `V=(
 
  - [ Motion vector stream for testing](https://github.com/thomas-pegot/camera_web_server)
  - [ All in one security camera ](https://github.com/thomas-pegot/ESP32-CAM_Motion)
-
-## TODOs 
-
- - [ ]  Add function to filter non relevant vector from optical flow :
-    - [ ] remove isolated vector (by using a cluster min of vector parameter)
-    - [ ] remove vector whose direction are too spread compared to the avge vector from cluster.
-
- - [x] Alternate motion detection methods implementation:
-    - [x] block matching algorithm
-      - [x] Adaptative Rood Pattern Search
-      - [x] Enhanced Predictive Zonal Search
-    - [ ] Lucas Kanade DoG (Difference of gaussian)
-
-
 
 
 ## Refs

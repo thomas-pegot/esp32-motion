@@ -1,4 +1,7 @@
-/** @file */
+/** @file deflicker.c
+ * Deflickering algorithm
+ * @author Thomas Pegot
+ */
 
 #include "convolution.h"
 #include "deflicker.h"
@@ -10,13 +13,18 @@
 static queue_t queue = { .brightness = {0.0f}, .available = 0 };
 static queue_t *q = &queue;
 
-
+/** @brief Fast clipping */
 static uint8_t clip_uint8(int a)
 {
      if (a&(~0xFF)) return (-a)>>31;
      else           return a;
 }
 
+/** @brief calculate brightness as the average pixel val
+*   @param img pointer to img
+*   @param size size of the image
+*   @return average (float)
+*/
 float calc_brightness(uint8_t *img, int size) {
     int i;
     float sum = 0;
@@ -27,6 +35,9 @@ float calc_brightness(uint8_t *img, int size) {
     return sum / (float)size;
 }
 
+/** @brief calculate brightness ratio related to previous brightness
+*   @return ratio (float)
+*/
 float get_factor() {
     int i;
     float sum = 0.0f;
@@ -37,6 +48,12 @@ float get_factor() {
     return sum / q->brightness[MAXSIZE - 1];
 }
 
+/** @brief perform deflickering
+*   @param img uint8 pointer to image
+*   @param w width
+*   @param h height
+*   @return true if deflickering else return false (not enough image queued)
+*/
 bool deflicker(uint8_t *img, int w, int h) {
 
     const int size = w * h;

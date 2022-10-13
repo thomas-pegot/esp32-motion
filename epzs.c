@@ -1,8 +1,9 @@
-/** @file */
-
-/* Taken from https://github.com/FFmpeg/FFmpeg/tree/master/libavfilter 
-* and rearranged
+/** @file epzs.c
+*   @brief Contain EPZS ttps://github.com/FFmpeg/FFmpeg/tree/master/libavfilter 
+*   
+*   It has been arranged to suite my motion lib
 */
+
 
 #include "motion.h"
 #include <string.h>

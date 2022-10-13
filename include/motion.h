@@ -1,4 +1,7 @@
-/** @file */
+/** @file motion.g
+*   motion header
+*   @author Thomas Pegot
+*/
 
 #ifndef MOTION_H
 #define MOTION_H
@@ -11,11 +14,13 @@ extern "C"{
 #include <stdbool.h>
 #include <stdlib.h>
 
+/** return max as the same type of input */
 #define mmax(a,b) \
    ({ __typeof__ (a) _a = (a); \
        __typeof__ (b) _b = (b); \
      _a > _b ? _a : _b; })
 
+/** return min as the same type of input */
 #define mmin(a,b) \
    ({ __typeof__ (a) _a = (a); \
        __typeof__ (b) _b = (b); \
@@ -65,14 +70,18 @@ typedef struct MotionEstContext{
 	uint8_t *data_cur,					///< current image
 	        *data_ref;       			///< prev image
 	int method;		  					///< motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)
+	int max;							///< max motion vector mag²
 	int width,							///< images width 
 	    height, 						///< images height
+	
+    /**
+     * @name Block Matching (EPZS, ARPS) element related 
+     * @{
+     */
 	    b_width,     					///< blocks width
 		b_height, 					    ///< blocks height
 		b_count;   	  					///< nb of blocks
 	
-	//int xmin, xmax, ymin, ymax; // area mv
-
 	int mbSize,							///< macro block size
 	    log2_mbSize; 					///< log2 of macro block size
 	int search_param; 					///< parameter p in ARPS
@@ -82,8 +91,9 @@ typedef struct MotionEstContext{
 	MotionEstPredictor preds[2];		///< predictor for EPZS
 
 	MotionVector16_t *mv_table[3];      ///< motion vectors of current & prev 2 frames
-	int max;							///< max motion vector mag²
+	/** @} */
 
+	/** pointer to motion estimation function */
 	uint64_t (*get_cost) (struct MotionEstContext *self, int x_mb, int y_mb, int x_mv, int y_mv);
 	bool (*motion_func) (struct MotionEstContext *self);	
 } MotionEstContext;

@@ -1,4 +1,6 @@
-/** @file */
+/** @file deflicker.h
+*  Took from ffmpeg but simplified
+*/
 
 #ifndef DEFLICKER_H
 #define DEFLICKER_H
@@ -7,11 +9,12 @@
 
 typedef unsigned char uint8_t;
 
+/** @struct queue
+*   @brief simple queue 
+*/
 typedef struct queue {
-    float brightness[MAXSIZE];  // rolling brightness
-
+    float brightness[MAXSIZE];  ///< rolling brightness
     int available;
-
 } queue_t;  
 
 float get_factor();
