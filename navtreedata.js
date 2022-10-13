@@ -23,7 +23,7 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "ESP32 motion", "index.html", [
-    [ "<a href=\"https://thomas-pegot.github.io/esp32-motion\">Motion estimation lib (ESP32cam)</a>", "index.html", null ],
+    [ "Motion estimation lib (ESP32cam)", "index.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
