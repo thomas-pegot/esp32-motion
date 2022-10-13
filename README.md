@@ -1,4 +1,7 @@
-# [Motion estimation lib (ESP32cam)](https://thomas-pegot.github.io/esp32-motion)
+# Motion estimation lib (ESP32cam)
+
+   More information in [Doxygen documentation](https://thomas-pegot.github.io/esp32-motion)
+
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/thomas-pegot/camera_web_server)
 <H3>Contents :</H3>
 
@@ -13,7 +16,6 @@
     - [Simple case](#simple-case)
   - [More control :](#more-control-)
 - [Example project](#example-project)
-- [TODOs](#todos)
 - [Refs](#refs)
 
 
