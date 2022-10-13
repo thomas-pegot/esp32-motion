@@ -105,13 +105,18 @@ $(document).ready(function(){initNavTree('deflicker_8c.html',''); initResizable(
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ac68860e711d3ad288386735125354838"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="deflicker_8c.html#ac68860e711d3ad288386735125354838">calc_brightness</a> (<a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img, int size)</td></tr>
+<tr class="memdesc:ac68860e711d3ad288386735125354838"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculate brightness as the average pixel val  <a href="deflicker_8c.html#ac68860e711d3ad288386735125354838">More...</a><br /></td></tr>
 <tr class="separator:ac68860e711d3ad288386735125354838"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52621e7c3e6c02b23b8c10f1cdad1842"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="deflicker_8c.html#a52621e7c3e6c02b23b8c10f1cdad1842">get_factor</a> ()</td></tr>
+<tr class="memdesc:a52621e7c3e6c02b23b8c10f1cdad1842"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculate brightness ratio related to previous brightness  <a href="deflicker_8c.html#a52621e7c3e6c02b23b8c10f1cdad1842">More...</a><br /></td></tr>
 <tr class="separator:a52621e7c3e6c02b23b8c10f1cdad1842"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99860dcea040d2909bdd0b6604ea44af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="deflicker_8c.html#a99860dcea040d2909bdd0b6604ea44af">deflicker</a> (<a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img, int w, int h)</td></tr>
+<tr class="memdesc:a99860dcea040d2909bdd0b6604ea44af"><td class="mdescLeft">&#160;</td><td class="mdescRight">perform deflickering  <a href="deflicker_8c.html#a99860dcea040d2909bdd0b6604ea44af">More...</a><br /></td></tr>
 <tr class="separator:a99860dcea040d2909bdd0b6604ea44af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Deflickering algorithm </p><dl class="section author"><dt>Author</dt><dd>Thomas Pegot </dd></dl>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="ac68860e711d3ad288386735125354838"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac68860e711d3ad288386735125354838">&#9670;&nbsp;</a></span>calc_brightness()</h2>
 
@@ -137,6 +142,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>calculate brightness as the average pixel val </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">img</td><td>pointer to img </td></tr>
+    <tr><td class="paramname">size</td><td>size of the image </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>average (float) </dd></dl>
 
 </div>
 </div>
@@ -172,6 +187,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>perform deflickering </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">img</td><td>uint8 pointer to image </td></tr>
+    <tr><td class="paramname">w</td><td>width </td></tr>
+    <tr><td class="paramname">h</td><td>height </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if deflickering else return false (not enough image queued) </dd></dl>
+
 </div>
 </div>
 <a id="a52621e7c3e6c02b23b8c10f1cdad1842"></a>
@@ -188,6 +214,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>calculate brightness ratio related to previous brightness </p>
+<dl class="section return"><dt>Returns</dt><dd>ratio (float) </dd></dl>
 
 </div>
 </div>

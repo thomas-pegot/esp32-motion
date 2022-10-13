@@ -1,8 +1,8 @@
 var struct_motion_est_context =
 [
-    [ "b_count", "group___a_l_g_o___g_r_o_u_p.html#ga76f07866ff6ee681791119992024df8d", null ],
-    [ "b_height", "group___a_l_g_o___g_r_o_u_p.html#ga1ae40565713d21d90b2299c84aec95c7", null ],
-    [ "b_width", "group___a_l_g_o___g_r_o_u_p.html#gaa71dbb874747ccf2efd25fb4d578b1b7", null ],
+    [ "b_count", "group___a_l_g_o___g_r_o_u_p.html#gaab7658f46e2a467d8c3388beb167dafe", null ],
+    [ "b_height", "group___a_l_g_o___g_r_o_u_p.html#ga44d496eba18487b94de71f6026750166", null ],
+    [ "b_width", "group___a_l_g_o___g_r_o_u_p.html#gafc618996d7b063c49ea7fa540dd1008f", null ],
     [ "data_cur", "group___a_l_g_o___g_r_o_u_p.html#gabba50cddea7d5bc8500223ecbabf8730", null ],
     [ "data_ref", "group___a_l_g_o___g_r_o_u_p.html#gab139a1f94dbed6189499a4e9b78f82fc", null ],
     [ "get_cost", "group___a_l_g_o___g_r_o_u_p.html#ga873b506420978fe62a2f576a140ab489", null ],

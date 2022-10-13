@@ -104,6 +104,7 @@ $(document).ready(function(){initNavTree('deflicker_8h.html',''); initResizable(
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqueue.html">queue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">simple queue  <a href="structqueue.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -121,11 +122,15 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a52621e7c3e6c02b23b8c10f1cdad1842"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="deflicker_8h.html#a52621e7c3e6c02b23b8c10f1cdad1842">get_factor</a> ()</td></tr>
+<tr class="memdesc:a52621e7c3e6c02b23b8c10f1cdad1842"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculate brightness ratio related to previous brightness  <a href="deflicker_8h.html#a52621e7c3e6c02b23b8c10f1cdad1842">More...</a><br /></td></tr>
 <tr class="separator:a52621e7c3e6c02b23b8c10f1cdad1842"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99860dcea040d2909bdd0b6604ea44af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="deflicker_8h.html#a99860dcea040d2909bdd0b6604ea44af">deflicker</a> (<a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img, int w, int h)</td></tr>
+<tr class="memdesc:a99860dcea040d2909bdd0b6604ea44af"><td class="mdescLeft">&#160;</td><td class="mdescRight">perform deflickering  <a href="deflicker_8h.html#a99860dcea040d2909bdd0b6604ea44af">More...</a><br /></td></tr>
 <tr class="separator:a99860dcea040d2909bdd0b6604ea44af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Took from ffmpeg but simplified </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a2a37b4217917105aac7557862ccc19c3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2a37b4217917105aac7557862ccc19c3">&#9670;&nbsp;</a></span>MAXSIZE</h2>
 
@@ -202,6 +207,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>perform deflickering </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">img</td><td>uint8 pointer to image </td></tr>
+    <tr><td class="paramname">w</td><td>width </td></tr>
+    <tr><td class="paramname">h</td><td>height </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if deflickering else return false (not enough image queued) </dd></dl>
+
 </div>
 </div>
 <a id="a52621e7c3e6c02b23b8c10f1cdad1842"></a>
@@ -218,6 +234,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>calculate brightness ratio related to previous brightness </p>
+<dl class="section return"><dt>Returns</dt><dd>ratio (float) </dd></dl>
 
 </div>
 </div>

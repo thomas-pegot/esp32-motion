@@ -150,8 +150,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">BLOCK_MATCHING_EPZS </td><td class="markdownTableBodyNone">3 </td><td class="markdownTableBodyNone">EPZS (out 16-bit vector)  </td></tr>
 </table>
-<p>Next allocate motion vectors: <a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">@code{c} init_context(me_ctx); @endcode </a></p>
-<h2>Estimate motion :</h2>
+<p>Next <a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">allocate motion</a> vectors: </p><div class="fragment"><div class="line"><a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga307035191f24ff24a02add340d8b4efa">init_context</a>(me_ctx);</div>
+</div><!-- fragment --><h2>Estimate motion :</h2>
 <p>Now you can call <a href="https://thomas-pegot.github.io/esp32-motion/motion_8c.html#a8ba35bcbf89a11452927cc1ce2710edd"><code>motion_estimation</code></a> method and pass current and previous images buffer.</p>
 <div class="fragment"><div class="line"><span class="keywordflow">if</span>(!<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a>(me_ctx, (<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *)img_prev, (<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *)img_cur))</div>
 <div class="line">    Serial.println(<span class="stringliteral">&quot;motion estimtion failed!&quot;</span>)!</div>
@@ -162,17 +162,17 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <h2>Free memory :</h2>
 <div class="fragment"><div class="line"><a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gaa1377b3e199556519cb8a43a11dd24bf">uninit</a>(me_ctx);</div>
 </div><!-- fragment --><h1>More in depth</h1>
-<h2><a href="https://en.wikipedia.org/wiki/Block-matching_algorithm#cite_note-8">Block matching (Adaptative Rood Pattern Search)</a></h2>
+<h2><a href="https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495">Block matching (Adaptative Rood Pattern Search) </a></h2>
 <ul>
-<li>header : <a href="https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495">```c bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2) ``` </a></li>
+<li>header : ```c bool <a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gab67e09e5e540362dd4b2977bfecfa225" title="Adaptative Rood Pattern Search method.">motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2)</a> ```</li>
 <li><p class="startli">example : ```c</p>
 <p class="startli">// image_buf image you capture from a stream or else int N = w * h; int max; uint8_t <em>image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); <a class="el" href="struct_motion_vector16__t.html" title="MotionVector 2D with amplitude squared (for speed)">MotionVector16_t</a> *vecor_motion = (<a class="el" href="struct_motion_vector16__t.html" title="MotionVector 2D with amplitude squared (for speed)">MotionVector16_t</a></em>)calloc(N, sizeof(MotionVector16_t)); while(1) { capture(img_buf); // Your algorithm if(!motionEstARPS(image_buf, image_buf_next, w, h, 8, 6, vector_motion, 256, &amp;max)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N); display(vector_motion); Serial.printf("max motion: %u \n", a); } free(image_buf_next); free(image_buf); free(image_motion); ```</p>
 </li>
 </ul>
-<h2><a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method">Lucas Kanade algorithm</a></h2>
+<h2><a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39">Lucas Kanade algorithm</a></h2>
 <h3>Simple case</h3>
 <ul>
-<li>header : <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39">```c bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h); ``` </a></li>
+<li>header : ```c bool <a class="el" href="group___a_l_g_o___g_r_o_u_p.html#ga2228c954598efba02837f168f0cf9132" title="Implement LK optical flow 8bit version Magnitude.">LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h)</a>; ```</li>
 <li><p class="startli">example :</p>
 <p class="startli">```c</p>
 <p class="startli">// image_buf image you capture from a stream or else int N = w * h; uint8_t *image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); while(1) { capture(img_buf); // Your algorithm if(!LK_optical_flow8(image_buf, image_buf_next, image_motion, w, h)) { Serial.printf("motion failed!"); break; } memcpy(image_buf_next, image_buf, N); display(image_motion); } free(image_buf_next); free(image_buf); free(image_motion); ```</p>
@@ -186,7 +186,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="line">   uint16_t mag2; <span class="comment">// squared magnitude</span></div>
 <div class="line">} <a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a>;</div>
 </div><!-- fragment --><ul>
-<li>headers: <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a7ad704813ba20d078981b59a8dbd6c2e">```c bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h); ``` </a></li>
+<li>headers: ```c bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h); ```</li>
 <li><p class="startli">example :</p>
 <p class="startli">```c</p>
 <p class="startli">// image_buf image you capture from a stream or else int N = w * h; uint8_t <em>image_buf_next = calloc(N, 1); uint8_t *image_motion = malloc(N); <a class="el" href="struct_motion_vector16__t.html" title="MotionVector 2D with amplitude squared (for speed)">MotionVector16_t</a></em> vector = (MotionVector16_t*) calloc(count, sizeof(MotionVector16_t));</p>
@@ -199,23 +199,6 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <p><a href="https://github.com/thomas-pegot/camera_web_server">Motion vector stream for testing</a></p><ul>
 <li><a href="https://github.com/thomas-pegot/ESP32-CAM_Motion">All in one security camera</a></li>
 </ul>
-<h1>TODOs</h1>
-<ul>
-<li>[ ] Add function to filter non relevant vector from optical flow :<ul>
-<li>[ ] remove isolated vector (by using a cluster min of vector parameter)</li>
-<li>[ ] remove vector whose direction are too spread compared to the avge vector from cluster.</li>
-</ul>
-</li>
-<li>[x] Alternate motion detection methods implementation:<ul>
-<li>[x] block matching algorithm<ul>
-<li>[x] Adaptative Rood Pattern Search</li>
-<li>[x] Enhanced Predictive Zonal Search</li>
-</ul>
-</li>
-<li>[ ] Lucas Kanade DoG (Difference of gaussian)</li>
-</ul>
-</li>
-</ul>
 <h1>Refs</h1>
 <ul>
 <li>convolution credits to <a href="http://www.songho.ca/dsp/convolution/convolution.html">http://www.songho.ca/dsp/convolution/convolution.html</a></li>
@@ -224,14 +207,15 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga8ba35bcbf89a11452927cc1ce2710edd"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a></div><div class="ttdeci">bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur)</div><div class="ttdoc">motion estimation wrapper</div><div class="ttdef"><b>Definition:</b> motion.c:127</div></div>
-<div class="ttc" id="astruct_motion_vector16__t_html"><div class="ttname"><a href="struct_motion_vector16__t.html">MotionVector16_t</a></div><div class="ttdoc">MotionVector 2D with amplitude squared (for speed)</div><div class="ttdef"><b>Definition:</b> motion.h:42</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gaa1377b3e199556519cb8a43a11dd24bf"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gaa1377b3e199556519cb8a43a11dd24bf">uninit</a></div><div class="ttdeci">void uninit(MotionEstContext *ctx)</div><div class="ttdef"><b>Definition:</b> motion.c:27</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga42bbfda998ebcff6218f13097a2b751a"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a></div><div class="ttdeci">#define LK_OPTICAL_FLOW</div><div class="ttdef"><b>Definition:</b> motion.h:32</div></div>
-<div class="ttc" id="astruct_motion_est_context_html"><div class="ttname"><a href="struct_motion_est_context.html">MotionEstContext</a></div><div class="ttdoc">Exhaustive struct representing all parameter needed for all motion estimation type.</div><div class="ttdef"><b>Definition:</b> motion.h:63</div></div>
-<div class="ttc" id="adeflicker_8h_html_aba7bc1797add20fe3efdf37ced1182c5"><div class="ttname"><a href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a></div><div class="ttdeci">unsigned char uint8_t</div><div class="ttdef"><b>Definition:</b> deflicker.h:8</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gadcc9a19ad3119f823a658f6a49a24e64"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64">MotionEstContext::method</a></div><div class="ttdeci">int method</div><div class="ttdoc">motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)</div><div class="ttdef"><b>Definition:</b> motion.h:67</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga4cac996d722232e12c7ba86c65dd048e"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga4cac996d722232e12c7ba86c65dd048e">BLOCK_MATCHING_ARPS</a></div><div class="ttdeci">#define BLOCK_MATCHING_ARPS</div><div class="ttdef"><b>Definition:</b> motion.h:33</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga8ba35bcbf89a11452927cc1ce2710edd"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a></div><div class="ttdeci">bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur)</div><div class="ttdoc">motion estimation wrapper</div><div class="ttdef"><b>Definition:</b> motion.c:154</div></div>
+<div class="ttc" id="astruct_motion_vector16__t_html"><div class="ttname"><a href="struct_motion_vector16__t.html">MotionVector16_t</a></div><div class="ttdoc">MotionVector 2D with amplitude squared (for speed)</div><div class="ttdef"><b>Definition:</b> motion.h:47</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gaa1377b3e199556519cb8a43a11dd24bf"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gaa1377b3e199556519cb8a43a11dd24bf">uninit</a></div><div class="ttdeci">void uninit(MotionEstContext *ctx)</div><div class="ttdoc">deallocate motion vector table</div><div class="ttdef"><b>Definition:</b> motion.c:37</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga42bbfda998ebcff6218f13097a2b751a"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a></div><div class="ttdeci">#define LK_OPTICAL_FLOW</div><div class="ttdef"><b>Definition:</b> motion.h:37</div></div>
+<div class="ttc" id="astruct_motion_est_context_html"><div class="ttname"><a href="struct_motion_est_context.html">MotionEstContext</a></div><div class="ttdoc">Exhaustive struct representing all parameter needed for all motion estimation type.</div><div class="ttdef"><b>Definition:</b> motion.h:68</div></div>
+<div class="ttc" id="adeflicker_8h_html_aba7bc1797add20fe3efdf37ced1182c5"><div class="ttname"><a href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a></div><div class="ttdeci">unsigned char uint8_t</div><div class="ttdef"><b>Definition:</b> deflicker.h:10</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gadcc9a19ad3119f823a658f6a49a24e64"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64">MotionEstContext::method</a></div><div class="ttdeci">int method</div><div class="ttdoc">motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)</div><div class="ttdef"><b>Definition:</b> motion.h:72</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga307035191f24ff24a02add340d8b4efa"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga307035191f24ff24a02add340d8b4efa">init_context</a></div><div class="ttdeci">bool init_context(MotionEstContext *ctx)</div><div class="ttdoc">Init &amp; allocate context ctx accordingly to the method used.</div><div class="ttdef"><b>Definition:</b> motion.c:65</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga4cac996d722232e12c7ba86c65dd048e"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga4cac996d722232e12c7ba86c65dd048e">BLOCK_MATCHING_ARPS</a></div><div class="ttdeci">#define BLOCK_MATCHING_ARPS</div><div class="ttdef"><b>Definition:</b> motion.h:38</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
