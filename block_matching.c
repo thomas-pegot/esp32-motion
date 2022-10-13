@@ -1,4 +1,7 @@
-/** @file */
+/** @file block_matching.c
+*   Block matching algo
+*   @author Thomas Pegot
+*/
 
 #include "motion.h"
 #include <stdbool.h>

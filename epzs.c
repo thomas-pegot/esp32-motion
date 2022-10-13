@@ -1,7 +1,9 @@
-/** @file */
-
-/* Taken from https://github.com/FFmpeg/FFmpeg/tree/master/libavfilter 
+/** @file epzs.c
+*   @brief Contain EPZS ttps://github.com/FFmpeg/FFmpeg/tree/master/libavfilter 
+*   
+*   It has been arranged to suite my motion lib
 */
+
 
 #include "motion.h"
 #include <string.h>
@@ -100,6 +102,11 @@ uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int *mv)
     return cost_min;
 }
 
+/** @brief Enhance Predictive Zonal Search block matching algo.
+ * 
+ * @param me_ctx     : Motion estimation context with me_ctx->method = 'BLOCK_MATCHING_EPZS'
+ * 
+ * @return big if true */
 bool motionEstEPZS(MotionEstContext *me_ctx)
 {
     int mb_y, mb_x;

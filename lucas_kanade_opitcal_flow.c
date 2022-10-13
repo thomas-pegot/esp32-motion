@@ -1,4 +1,9 @@
-/** @file */
+/** @file lucas_kanade_optical_flow.c
+*   @brief Lucas Kanade implementation of optical flow in 16 and 8 bit
+*
+*   
+*   @author Thomas Pegot 
+*/
 
 #include "motion.h"
 #include "convolution.h"
@@ -16,20 +21,20 @@
 static const char *TAG = "LK_OPTICAL_FLOW";
 #endif
 
-static const float NoiseThreshold = 0.01;// Lucas Kanade noise threshold
+static const float NoiseThreshold = 0.01; /* Lucas Kanade noise threshold */
 static const int half_window = WINDOW / 2;
 static const int window_squared = WINDOW * WINDOW;
 static const int log2_window = (int const)ceil(log2(WINDOW));
 
-// define 5x5 Gaussian kernel flattened
+/** define 5x5 Gaussian kernel flattened */
 static const float kernel[WINDOW * WINDOW] = {1 / 256.0f, 4 / 256.0f, 6 / 256.0f, 4 / 256.0f, 1 / 256.0f, 4 / 256.0f, 16 / 256.0f,
 	24 / 256.0f, 16 / 256.0f, 4 / 256.0f, 6 / 256.0f, 24 / 256.0f, 36 / 256.0f, 24 / 256.0f, 6 / 256.0f, 4 / 256.0f,
 	16 / 256.0f, 24 / 256.0f, 16 / 256.0f, 4 / 256.0f, 1 / 256.0f, 4 / 256.0f, 6 / 256.0f, 4 / 256.0f, 1 / 256.0f};
 
-// Separable Gaussian kernel
+/** Separable Gaussian kernel */
 static const float Kernel_isotropic[WINDOW] = {1.0 / 16.0, 4.0 / 16.0, 6.0 / 16.0, 4.0 / 16.0, 1.0 / 16.0 };
 
-// Differentiate Lucas Kanade kernel https://www.cs.toronto.edu/~fleet/research/Papers/ijcv-94.pdf
+/* Differentiate Lucas Kanade kernel https://www.cs.toronto.edu/~fleet/research/Papers/ijcv-94.pdf */
 static const float Kernel_Dxy[WINDOW] = {-1.0 / 12.0, 8.0 / 12, 0, -8.0 / 12.0, 1.0 / 12.0};
 
 static void *_malloc(size_t size) {
@@ -39,7 +44,7 @@ static void *_malloc(size_t size) {
     return heap_caps_malloc(size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
 }
 
-/// Optical flow Lucas-Kanade
+
 /** @brief Implement LK optical flow source from wiki and matlab : https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method   \n
  *
  * This method is based on *Taylor series* resolution: \n
@@ -74,7 +79,7 @@ static void *_malloc(size_t size) {
  * @param src1 pointer to grayscale buffer image instant t. 
  * @param src2 pointer to grayscale buffer image instant t+1.
  * @param V [out] vector (vx, vy) and squared magnitude
- * @return True if success False if failed somewhere*/
+ * @return Big if True*/
 bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *V, int w, int h, int *mag_max2) {
 
 	assert(src1 != NULL);
@@ -94,7 +99,7 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 		return false;
 	}
 
-	// init input
+	/* init input */
 	for(i = N; i--; ) {
 		const float tmp_fX = src1[i];
 		fx[i] = tmp_fX;
@@ -108,19 +113,19 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 	}	
 	mv = &V[0];
 
-	// Derivate Dx : 1D convolution horizontal
+	/* Derivate Dx : 1D convolution horizontal */
 	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) {
 		ESP_LOGE(TAG, "convH failed!");
 		return false;
 	}
 	
-	// Derivate Dy : 1D convolution vertical
+	/* Derivate Dy : 1D convolution vertical */
 	if(!convV(fy, image2, w, h, Kernel_Dxy, 5)) {
 		ESP_LOGE(TAG, "convV failed!");
 		return false;
 	}
 
-	// ##Isotropic smooth
+	/* Isotropic smooth */
 	if(!convolve2DSeparable(image1, fx, w, h, Kernel_isotropic, 5, Kernel_isotropic, 5)) {
 		ESP_LOGE(TAG, "convolve2DSeparable failed!") ;
 		return false;

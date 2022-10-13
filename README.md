@@ -1,4 +1,7 @@
-# [Motion estimation lib (ESP32cam)](https://thomas-pegot.github.io/esp32-motion)
+# Motion estimation lib (ESP32cam)
+
+   More information in [Doxygen documentation](https://thomas-pegot.github.io/esp32-motion)
+
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/thomas-pegot/camera_web_server)
 <H3>Contents :</H3>
 
@@ -13,7 +16,6 @@
     - [Simple case](#simple-case)
   - [More control :](#more-control-)
 - [Example project](#example-project)
-- [TODOs](#todos)
 - [Refs](#refs)
 
 
@@ -58,12 +60,12 @@ table of correspondance :
 |BLOCK_MATCHING_ARPS| 2 | ARPS (out 16-bit vector)|
 |BLOCK_MATCHING_EPZS| 3 | EPZS (out 16-bit vector)|
 
-Next allocate motion vectors:
-<a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">
+Next 
+<a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">allocate motion</a> vectors:
 ```c
 init_context(me_ctx);
 ```
-</a>
+
   
 ### Estimate motion :
 
@@ -95,73 +97,71 @@ uninit(me_ctx);
 
 ## More in depth 
 
-### [Block matching (Adaptative Rood Pattern Search)](https://en.wikipedia.org/wiki/Block-matching_algorithm#cite_note-8)
+### Block matching (Adaptative Rood Pattern Search)
 
- - header :
-    <a href="https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495">
-    ```c
-    bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2)
-    ```
-    </a>
+ [header:](https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495)
 
- - example :
-      ```c
-      
-    // image_buf image you capture from a stream or else
-    int N = w * h;
-    int max;
-    uint8_t *image_buf_next = calloc(N, 1); 
-    uint8_t *image_motion = malloc(N); 
-    MotionVector16_t *vecor_motion = (MotionVector16_t*)calloc(N, sizeof(MotionVector16_t));
-    while(1) {
-            capture(img_buf); // Your algorithm
-            if(!motionEstARPS(image_buf, image_buf_next, w, h, 8, 6, vector_motion, 256, &max)) {
-                Serial.printf("motion failed!");
-                break;
-            }
-            memcpy(image_buf_next, image_buf, N);
-            display(vector_motion);
-            Serial.printf("max motion: %u \n", a);
-    }
-    free(image_buf_next);
-    free(image_buf);
-    free(image_motion);
-    ```
+  ```c
+  bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2)
+  ```
 
+  example :
+
+  ```c  
+  // image_buf image you capture from a stream or else
+  int N = w * h;
+  int max;
+  uint8_t *image_buf_next = calloc(N, 1); 
+  uint8_t *image_motion = malloc(N); 
+  MotionVector16_t *vecor_motion = (MotionVector16_t*)calloc(N, sizeof(MotionVector16_t));
+  while(1) {
+          capture(img_buf); // Your algorithm
+          if(!motionEstARPS(image_buf, image_buf_next, w, h, 8, 6, vector_motion, 256, &max)) {
+              Serial.printf("motion failed!");
+              break;
+          }
+          memcpy(image_buf_next, image_buf, N);
+          display(vector_motion);
+          Serial.printf("max motion: %u \n", a);
+  }
+  free(image_buf_next);
+  free(image_buf);
+  free(image_motion);
+  ```
 
 
-### [Lucas Kanade algorithm](https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method)
+
+### Lucas Kanade algorithm
 
 #### Simple case
 
- - header :
-    <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39">
-    ```c
-    bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h);
-    ```
-    </a>
-   
- - example : 
+[header:](https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39)
 
-    ```c
-    
-    // image_buf image you capture from a stream or else
-    int N = w * h;
-    uint8_t *image_buf_next = calloc(N, 1); 
-    uint8_t *image_motion = malloc(N); 
-    while(1) {
-            capture(img_buf); // Your algorithm
-            if(!LK_optical_flow8(image_buf, image_buf_next, image_motion, w, h)) {
-                Serial.printf("motion failed!");
-                break;
-            }
-            memcpy(image_buf_next, image_buf, N);
-            display(image_motion);
-    }
-    free(image_buf_next);
-    free(image_buf);
-    free(image_motion);
-    ```
+  ```c
+  bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *V, int w, int h);
+  ```
+   
+ example : 
+
+  ```c
+  
+  // image_buf image you capture from a stream or else
+  int N = w * h;
+  uint8_t *image_buf_next = calloc(N, 1); 
+  uint8_t *image_motion = malloc(N); 
+  while(1) {
+          capture(img_buf); // Your algorithm
+          if(!LK_optical_flow8(image_buf, image_buf_next, image_motion, w, h)) {
+              Serial.printf("motion failed!");
+              break;
+          }
+          memcpy(image_buf_next, image_buf, N);
+          display(image_motion);
+  }
+  free(image_buf_next);
+  free(image_buf);
+  free(image_motion);
+  ```
 
 ### More control :
 
@@ -174,67 +174,52 @@ We can get more detailed output by using a motion vector struct composed of `V=(
       uint16_t mag2; // squared magnitude
    } MotionVector16_t;
   ```
-  - headers:
-    <a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a7ad704813ba20d078981b59a8dbd6c2e">
-    ```c
-    bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h);
-    ```
-    </a>
+  header:
+
+  ```c
+  bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h);
+  ```
+
+  example :
+
+  ```c
+  // image_buf image you capture from a stream or else
+  int N = w * h;
+  uint8_t *image_buf_next = calloc(N, 1); 
+  uint8_t *image_motion = malloc(N); 
+  MotionVector16_t* vector = (MotionVector16_t*) calloc(count, sizeof(MotionVector16_t));
+
+  float max = 0;
+  int half_window = (int)WINDOW / 2.0; // WINDOW >> 1
+
+  while(1) {
+          capture(img_buf); // Your algorithm
+          if(!LK_optical_flow(image_buf, image_buf_next, vector, w, h)) {
+              Serial.printf("motion failed!");
+              break;
+          }
+          memcpy(image_buf_next, image_buf, N);
+
+          // Extract max squared magnitude
+          mv = &vector[half_window * w + half_window];
+          for(int i = h - WINDOW; i--; ) { // same as for(int i = half_window; i < h - half_window; i++) but faster
+              for(int j = half_window; j < w - half_window; j++, mv++) {
+                  if (mv->mag2 > max)  
+                      max = mv->mag2;
+              }
+              mv += WINDOW;
+          }
+          Serial.printf("max motion = %u", (short)max);
+  }
+  free(vector);
+  free(image_buf);
+  free(image_buf_next);
+  ```
   
-  - example :
-
-    ```c
-    
-    // image_buf image you capture from a stream or else
-    int N = w * h;
-    uint8_t *image_buf_next = calloc(N, 1); 
-    uint8_t *image_motion = malloc(N); 
-    MotionVector16_t* vector = (MotionVector16_t*) calloc(count, sizeof(MotionVector16_t));
-
-    float max = 0;
-    int half_window = (int)WINDOW / 2.0; // WINDOW >> 1
-
-    while(1) {
-            capture(img_buf); // Your algorithm
-            if(!LK_optical_flow(image_buf, image_buf_next, vector, w, h)) {
-                Serial.printf("motion failed!");
-                break;
-            }
-            memcpy(image_buf_next, image_buf, N);
-
-            // Extract max squared magnitude
-            mv = &vector[half_window * w + half_window];
-            for(int i = h - WINDOW; i--; ) { // same as for(int i = half_window; i < h - half_window; i++) but faster
-                for(int j = half_window; j < w - half_window; j++, mv++) {
-                    if (mv->mag2 > max)  
-                        max = mv->mag2;
-                }
-                mv += WINDOW;
-            }
-            Serial.printf("max motion = %u", (short)max);
-    }
-    free(vector);
-    free(image_buf);
-    free(image_buf_next);
-    ```
 ## Example project
 
  - [ Motion vector stream for testing](https://github.com/thomas-pegot/camera_web_server)
  - [ All in one security camera ](https://github.com/thomas-pegot/ESP32-CAM_Motion)
-
-## TODOs 
-
- - [ ]  Add function to filter non relevant vector from optical flow :
-    - [ ] remove isolated vector (by using a cluster min of vector parameter)
-    - [ ] remove vector whose direction are too spread compared to the avge vector from cluster.
-
- - [x] Alternate motion detection methods implementation:
-    - [x] block matching algorithm
-      - [x] Adaptative Rood Pattern Search
-      - [x] Enhanced Predictive Zonal Search
-    - [ ] Lucas Kanade DoG (Difference of gaussian)
-
-
 
 
 ## Refs

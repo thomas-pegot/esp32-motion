@@ -1,6 +1,9 @@
-/** @file */
+/** @file convolution.c
+* Code extracted from : http://www.songho.ca/dsp/convolution/convolution.html
+* And modified such as it perform a composition of 1D convolution horiz + vertical
+* for separable filter
+*/
 
-// Code extracted from : http://www.songho.ca/dsp/convolution/convolution.html
 
 #include "convolution.h"
 #include <stdbool.h>

@@ -3,7 +3,7 @@ name: publish
 on:
   push:
     branches:
-      - main
+      - doc
   workflow_dispatch:
 
 jobs:

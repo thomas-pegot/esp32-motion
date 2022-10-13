@@ -1,4 +1,8 @@
-/** @file */
+/** @file motion.c
+ *  @brief   
+ *
+ *  @author Thomas Pegot
+ */
 
 #include "motion.h"
 #include <math.h>
@@ -16,6 +20,9 @@ static const char *TAG = "motion";
 
 static int mv_allocated = 0;
 
+/** @brief  Safely free address
+	@param arg : address to be freed
+ */
 static void freep(void *arg) {
         void *val;
 
@@ -24,6 +31,9 @@ static void freep(void *arg) {
         free(val);
 }
 
+/** @brief  deallocate motion vector table
+	@param ctx : motion estimation context object
+ */
 void uninit(MotionEstContext *ctx) {
     int i;
     ctx->data_ref = NULL;
@@ -37,6 +47,8 @@ void uninit(MotionEstContext *ctx) {
     mv_allocated = 0;
 }
 
+/** @brief  allocate DRAM that is byte-addressable 
+*/
 static void *_calloc(size_t nb, size_t size) {
     void *res = calloc(nb, size);
     
@@ -48,6 +60,7 @@ static void *_calloc(size_t nb, size_t size) {
 
 /** @brief Init & allocate context ctx accordingly to the method used 
 	@param ctx : motion estimation context object
+    @return big if true
  */
 bool init_context(MotionEstContext *ctx) {
     int i;
@@ -106,15 +119,27 @@ bool init_context(MotionEstContext *ctx) {
     return 1;
 }
 
+/** @brief LK optical flow wrapper taking only MotionEstContext as input
+*   @param c MotionEstContext
+*   @return LK_optical_flow
+*/
 static bool LK_optical_flow_wrapper(MotionEstContext *c) {
     return LK_optical_flow(c->data_ref, c->data_cur, c->mv_table[0], c->width,
                  c->height, &c->max);
 }
 
+/** @brief LK optical flow8b wrapper taking only MotionEstContext as input
+*   @param c MotionEstContext
+*   @return LK_optical_flow8
+*/
 static bool LK_optical_flow8_wrapper(MotionEstContext *c) {
     return LK_optical_flow8(c->data_ref, c->data_cur, c->data_ref, c->width, c->height);
 }
 
+/** @brief ARPS wrapper taking only MotionEstContext as input
+*   @param c MotionEstContext
+*   @return LK_optical_flow
+*/
 static bool motionEstARPS_wrapper(MotionEstContext *c) {
     // Zero-Motion Prejudgement threshold
     int zmp_threshold = c->mbSize << (c->log2_mbSize + 1);
@@ -123,7 +148,9 @@ static bool motionEstARPS_wrapper(MotionEstContext *c) {
      c->mbSize, c->search_param, c->mv_table[0], zmp_threshold, &c->max);
 }
 
-/** @brief Wrapper to specified method defined in ctx MotionEstContext*/
+/** @brief Wrapper to specified method defined in ctx MotionEstContext
+*   @return pointer to function ctx->motion_func
+*/
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur) {
     ctx->data_cur = img_cur;
     ctx->data_ref = img_prev;
@@ -148,6 +175,7 @@ bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cu
     return ctx->motion_func(ctx);
 }
 
+/** @brief compute motion estimation compensation SAD (sum absolute diff)*/
 uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv) {
     uint8_t *data_ref = me_ctx->data_ref;
     uint8_t *data_cur = me_ctx->data_cur;
