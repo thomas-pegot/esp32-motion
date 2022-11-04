@@ -179,7 +179,7 @@ bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cu
 uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv) {
     uint8_t *data_ref = me_ctx->data_ref;
     uint8_t *data_cur = me_ctx->data_cur;
-    int linesize = me_ctx->width;
+    int linesize = me_ctx->width; //linesize;
     uint64_t sad = 0;
     int i, j;
 

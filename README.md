@@ -5,18 +5,19 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/thomas-pegot/camera_web_server)
 <H3>Contents :</H3>
 
-- [Introduction](#introduction)
-- [Basic usage](#basic-usage)
-  - [Declaration and initialisation :](#declaration-and-initialisation-)
-  - [Estimate motion :](#estimate-motion-)
-  - [Free memory :](#free-memory-)
-- [More in depth](#more-in-depth)
-  - [Block matching (Adaptative Rood Pattern Search)](#block-matching-adaptative-rood-pattern-search)
-  - [Lucas Kanade algorithm](#lucas-kanade-algorithm)
-    - [Simple case](#simple-case)
-  - [More control :](#more-control-)
-- [Example project](#example-project)
-- [Refs](#refs)
+- [Motion estimation lib (ESP32cam)](#motion-estimation-lib-esp32cam)
+  - [Introduction](#introduction)
+  - [Basic usage](#basic-usage)
+    - [Declaration and initialisation :](#declaration-and-initialisation-)
+    - [Estimate motion :](#estimate-motion-)
+    - [Free memory :](#free-memory-)
+  - [More in depth](#more-in-depth)
+    - [Block matching (Adaptative Rood Pattern Search)](#block-matching-adaptative-rood-pattern-search)
+    - [Lucas Kanade algorithm](#lucas-kanade-algorithm)
+      - [Simple case](#simple-case)
+    - [More control :](#more-control-)
+  - [Example project](#example-project)
+  - [Refs](#refs)
 
 
 ## Introduction
@@ -39,11 +40,11 @@ At the moment, I have implemented Lucas-kanade, ARPS and EPZS.
 First thing first create a [_motion estimation context_](https://thomas-pegot.github.io/esp32-motion/struct_motion_est_context.html) :
 
 ```c
-MotionEstContext *me_ctx = {.method = LK_OPTICAL_FLOW,    // algorithm used
+MotionEstContext me_ctx = {.method = LK_OPTICAL_FLOW,    // algorithm used
                            .width  = 96,  .height = 96 // size of your image
                            };
 
-MotionEstContext *me_ctx2 = {
+MotionEstContext me_ctx2 = {
 .method = BLOCK_MATCHING_ARPS,  // algo used 
                   .mbSize = 8,  // block size for block matching algo
             .search_param = 7,  // search parameter value for block matching algo
@@ -63,7 +64,7 @@ table of correspondance :
 Next 
 <a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">allocate motion</a> vectors:
 ```c
-init_context(me_ctx);
+init_context(&me_ctx);
 ```
 
   
@@ -72,7 +73,7 @@ init_context(me_ctx);
 Now you can call [`motion_estimation`](https://thomas-pegot.github.io/esp32-motion/motion_8c.html#a8ba35bcbf89a11452927cc1ce2710edd) method and pass current and previous images buffer.
 
 ```c
-if(!motion_estimation(me_ctx, (uint8_t *)img_prev, (uint8_t *)img_cur))
+if(!motion_estimation(&me_ctx, (uint8_t *)img_prev, (uint8_t *)img_cur))
     Serial.println("motion estimtion failed!")!
 ```
 
@@ -91,7 +92,7 @@ EZPS algorithm need previous motion vectors as a way of prediction to the next g
 ### Free memory :
 
 ```c
-uninit(me_ctx);
+uninit(&me_ctx);
 ```
 
 

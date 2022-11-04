@@ -73,7 +73,7 @@ typedef struct MotionEstContext{
 	int max;							///< max motion vector mag²
 	int width,							///< images width 
 	    height, 						///< images height
-	
+		linewidth,						///< images width * depth (= width * 3 if rgb)	
     /**
      * @name Block Matching (EPZS, ARPS) element related 
      * @{
