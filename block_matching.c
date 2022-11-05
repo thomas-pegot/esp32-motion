@@ -36,15 +36,7 @@ int costFuncSAD(const uint8_t *currentImg, const uint8_t *refImg,
 }
 
 
-/** @brief Compute motion compensated image's PSNR  \n
- *  \f[ text{PSNR} = 10 \log_{10}\frac {(\text{peak to peak value of original data})^2}{\text{MSE}}  \f]
- * @param imgP      : original image of size w * h
- * @param imgComp   : compensated image of size w * h
- * @param w         : width of image
- * @param h         : height of image
- * @param n         : the peak value of possible of any pixel in the img
- * 
- * @return motion compensated image's psnr  **/
+
 float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp,\
  size_t w, size_t h, const int n) {
     float err = 0.0f;
@@ -57,15 +49,7 @@ float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp,\
     return 10.0f * log10f(n * n / mse);
 }
 
-/** @brief Computes motion compensated image using the given motion vectors
- * 
- * @param imgI       : reference images
- * @param motionVect : the motion vectors of size = w/mbSize * h/mbSize
- * @param w          : width of image
- * @param h          : height of image
- * @param mbSize     : size of the macroblock 
- * 
- * @return motion compensated image of size w * h **/
+
 uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
       size_t w, size_t h, size_t mbSize) {
     // we start off from the top left of the image
@@ -109,21 +93,6 @@ uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
                         {0, 1},
                         {1, 1}};
 
-/** @brief Computes motion vectors using Adaptive Rood Pattern Search method
- * 
- * @param imgP   : image of which we want to find motion vectors 
- * @param imgI   : reference image 
- * @param w      : width of image
- * @param h      : height of image
- * @param mbSize : Size of the macroblock (mbSize, mbSize)
- * @param p      : Search parameter
- * @param zmp_T  : Zero-Motion Prejudgement threshold enable if set superior at 0. 
- * improve performance at cost of precision if wrong thresold value.
- * 
- * @param [output] motionVect :  motion vector for each integral macroblock in imgP.  size = w * h/mbSize²
- * @param [output] ARPScomputation :  the avg number of points searched for a macroblock 
- * @return success/fail
- **/
 bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize,
  int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2) {
 

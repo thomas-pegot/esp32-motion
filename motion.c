@@ -7,7 +7,7 @@
 #include "motion.h"
 #include <math.h>
 #include <assert.h>
-#include <string.h> //malloc, strcpy
+#include <string.h>
 #include "esp_heap_caps.h"
 
 #if defined(ARDUINO_ARCH_ESP32) && defined(CONFIG_ARDUHAL_ESP_LOG)
@@ -31,9 +31,7 @@ static void freep(void *arg) {
         free(val);
 }
 
-/** @brief  deallocate motion vector table
-	@param ctx : motion estimation context object
- */
+
 void uninit(MotionEstContext *ctx) {
     int i;
     ctx->data_ref = NULL;
@@ -58,10 +56,6 @@ static void *_calloc(size_t nb, size_t size) {
     return heap_caps_calloc(nb, size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
 }
 
-/** @brief Init & allocate context ctx accordingly to the method used 
-	@param ctx : motion estimation context object
-    @return big if true
- */
 bool init_context(MotionEstContext *ctx) {
     int i;
     if(mv_allocated)
@@ -148,9 +142,6 @@ static bool motionEstARPS_wrapper(MotionEstContext *c) {
      c->mbSize, c->search_param, c->mv_table[0], zmp_threshold, &c->max);
 }
 
-/** @brief Wrapper to specified method defined in ctx MotionEstContext
-*   @return pointer to function ctx->motion_func
-*/
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur) {
     ctx->data_cur = img_cur;
     ctx->data_ref = img_prev;
@@ -175,7 +166,6 @@ bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cu
     return ctx->motion_func(ctx);
 }
 
-/** @brief compute motion estimation compensation SAD (sum absolute diff)*/
 uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv) {
     uint8_t *data_ref = me_ctx->data_ref;
     uint8_t *data_cur = me_ctx->data_cur;

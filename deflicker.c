@@ -35,9 +35,6 @@ float calc_brightness(uint8_t *img, int size) {
     return sum / (float)size;
 }
 
-/** @brief calculate brightness ratio related to previous brightness
-*   @return ratio (float)
-*/
 float get_factor() {
     int i;
     float sum = 0.0f;
@@ -48,12 +45,6 @@ float get_factor() {
     return sum / q->brightness[MAXSIZE - 1];
 }
 
-/** @brief perform deflickering
-*   @param img uint8 pointer to image
-*   @param w width
-*   @param h height
-*   @return true if deflickering else return false (not enough image queued)
-*/
 bool deflicker(uint8_t *img, int w, int h) {
 
     const int size = w * h;

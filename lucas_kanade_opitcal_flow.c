@@ -44,42 +44,6 @@ static void *_malloc(size_t size) {
     return heap_caps_malloc(size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
 }
 
-
-/** @brief Implement LK optical flow source from wiki and matlab : https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method   \n
- *
- * This method is based on *Taylor series* resolution: \n
- *
- * \f[ I(x+\Delta x,y+\Delta y,t+\Delta t) = I(x,y,t) + \frac{\partial I}{\partial x}\,\Delta x+\frac{\partial I}{\partial y}\,\Delta y+\frac{\partial I}{\partial t} \, \Delta t+{} \f]
- * Which can be rewritten:  \n
- *
- * \f[ \frac{\partial I}{\partial x}V_x+\frac{\partial I}{\partial y}V_y+\frac{\partial I}{\partial t} = 0 \f]
- * Lucas Kanade reorder this equation as matrix such as:
-    \f[ A = \begin{bmatrix}
-	I_x(q_1) & I_y(q_1) \\[10pt]
-	I_x(q_2) & I_y(q_2) \\[10pt]
-	\vdots & \vdots \\[10pt]
-	I_x(q_n) & I_y(q_n) 
-	\end{bmatrix}
-	\quad\quad\quad
-	v = 
-	\begin{bmatrix}
-	V_x\\[10pt]
-	V_y
-	\end{bmatrix}
-	\quad\quad\quad
-	b = 
-	\begin{bmatrix}
-	-I_t(q_1) \\[10pt]
-	-I_t(q_2) \\[10pt]
-	\vdots \\[10pt]
-	-I_t(q_n)
-	\end{bmatrix} \f]
-	
- * Then the solution can be reduced as : \f$ A^T A v=A^T b \f$ or \f$ \mathrm{v}=(A^T A)^{-1}A^T b \f$
- * @param src1 pointer to grayscale buffer image instant t. 
- * @param src2 pointer to grayscale buffer image instant t+1.
- * @param V [out] vector (vx, vy) and squared magnitude
- * @return Big if True*/
 bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *V, int w, int h, int *mag_max2) {
 
 	assert(src1 != NULL);
@@ -194,12 +158,6 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 	return true;
 }
 
-
-/** @brief Implement LK optical flow 8bit version Magnitude
- * @param src1 pointer to grayscale buffer image instant t. 
- * @param src2 pointer to grayscale buffer image instant t+1.
- * @param out [out] image 8bit depth output of squared magnitude
- * @return True if success False if failed somewhere*/
 bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *out, int w, int h) {
 	const int N = w * h;
 	uint16_t *tmpMagArray = (uint16_t*)calloc(N, sizeof(uint16_t));

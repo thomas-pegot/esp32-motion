@@ -51,13 +51,14 @@ if (x >= x_min && x <= x_max && y >= y_min && y <= y_max)\
 
 static const int8_t dia1[4][2]  = {{-1, 0}, { 0,-1}, { 1, 0}, { 0, 1}};
 
-/* @brief from https://github.com/FFmpeg/FFmpeg/tree/master/libavfilter
-   two subsets of predictors are used
-   me->pred_x|y is set to median of current frame's left, top, top-right
-   set 1: me->preds[0] has: (0, 0), left, top, top-right, collocated block in prev frame
-   set 2: me->preds[1] has: accelerator mv, top, left, right, bottom adj mb of prev frame
-*/
-uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int *mv)
+/** 
+ * @brief from https://github.com/FFmpeg/FFmpeg/tree/master/libavfilter
+ *  two subsets of predictors are used
+ *  me->pred_x|y is set to median of current frame's left, top, top-right
+ *  set 1: me->preds[0] has: (0, 0), left, top, top-right, collocated block in prev frame
+ *  set 2: me->preds[1] has: accelerator mv, top, left, right, bottom adj mb of prev frame
+ */
+static uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int *mv)
 {
     int x, y;
     int x_min = mmax(0, x_mb - me_ctx->search_param);
@@ -101,13 +102,6 @@ uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int *mv)
     return cost_min;
 }
 
-/** @brief Enhance Predictive Zonal Search block matching algo.
- * 
- *  Implemented from article DOI: 10.15406/oajs.2017.01.00002
- * 
- * @param me_ctx     : Motion estimation context with me_ctx->method = 'BLOCK_MATCHING_EPZS'
- * 
- * @return big if true */
 bool motionEstEPZS(MotionEstContext *me_ctx)
 {
     int mb_y, mb_x;
