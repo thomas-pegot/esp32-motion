@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['window_154',['WINDOW',['../motion_8h.html#a58dde5b4c75245b4660a165318cac36b',1,'motion.h']]]
+  ['lk_5foptical_5fflow_151',['LK_OPTICAL_FLOW',['../motion_8h.html#a42bbfda998ebcff6218f13097a2b751a',1,'motion.h']]],
+  ['lk_5foptical_5fflow_5f8bit_152',['LK_OPTICAL_FLOW_8BIT',['../motion_8h.html#acd51ce5bd1b2e154555271d0f45ac4b6',1,'motion.h']]]
 ];

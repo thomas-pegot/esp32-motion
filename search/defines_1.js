@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['cost_5fmv_148',['COST_MV',['../epzs_8c.html#a0a3642d22fdaf9fa293189fe23b29dea',1,'epzs.c']]],
-  ['cost_5fp_5fmv_149',['COST_P_MV',['../epzs_8c.html#ad66763fcdfdc3c448aa53716c77b6603',1,'epzs.c']]]
+  ['block_5fmatching_5farps_147',['BLOCK_MATCHING_ARPS',['../motion_8h.html#a4cac996d722232e12c7ba86c65dd048e',1,'motion.h']]],
+  ['block_5fmatching_5fepzs_148',['BLOCK_MATCHING_EPZS',['../motion_8h.html#a13b7f7d520ed0639d65413732d674d98',1,'motion.h']]]
 ];

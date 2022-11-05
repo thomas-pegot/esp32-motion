@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['vector16_5ft_72',['Vector16_t',['../struct_vector16__t.html',1,'']]],
-  ['vx_73',['vx',['../group___a_l_g_o___g_r_o_u_p.html#ga646e962a4c3d8abe93fbf19b22b5e0c0',1,'MotionVector16_t::vx()'],['../group___a_l_g_o___g_r_o_u_p.html#ga7c34b595c63fcf1e6f7e0107919d0851',1,'MotionVector8_t::vx()']]],
-  ['vy_74',['vy',['../group___a_l_g_o___g_r_o_u_p.html#gadbd8e89f61b942f7ccba42ed93b34fda',1,'MotionVector16_t::vy()'],['../group___a_l_g_o___g_r_o_u_p.html#ga0d1322977426266744fc2c72548f246b',1,'MotionVector8_t::vy()']]]
+  ['uint8_5ft_70',['uint8_t',['../deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5',1,'deflicker.h']]],
+  ['uninit_71',['uninit',['../motion_8h.html#aa1377b3e199556519cb8a43a11dd24bf',1,'uninit(MotionEstContext *ctx):&#160;motion.c'],['../motion_8c.html#aa1377b3e199556519cb8a43a11dd24bf',1,'uninit(MotionEstContext *ctx):&#160;motion.c']]]
 ];

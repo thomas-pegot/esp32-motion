@@ -1,59 +1,11 @@
 var group___a_l_g_o___g_r_o_u_p =
 [
-    [ "Vector16_t", "struct_vector16__t.html", [
-      [ "x", "group___a_l_g_o___g_r_o_u_p.html#gae1c2d516777e6b42af0d281c9ecc7375", null ],
-      [ "y", "group___a_l_g_o___g_r_o_u_p.html#gaf77b1a54442f2443cf64a4766f916bcd", null ]
-    ] ],
-    [ "MotionVector16_t", "struct_motion_vector16__t.html", [
-      [ "mag2", "group___a_l_g_o___g_r_o_u_p.html#ga455d7d824573c7567e5b10baf69fa99d", null ],
-      [ "vx", "group___a_l_g_o___g_r_o_u_p.html#ga646e962a4c3d8abe93fbf19b22b5e0c0", null ],
-      [ "vy", "group___a_l_g_o___g_r_o_u_p.html#gadbd8e89f61b942f7ccba42ed93b34fda", null ]
-    ] ],
-    [ "MotionVector8_t", "struct_motion_vector8__t.html", [
-      [ "vx", "group___a_l_g_o___g_r_o_u_p.html#ga7c34b595c63fcf1e6f7e0107919d0851", null ],
-      [ "vy", "group___a_l_g_o___g_r_o_u_p.html#ga0d1322977426266744fc2c72548f246b", null ]
-    ] ],
-    [ "MotionEstPredictor", "struct_motion_est_predictor.html", [
-      [ "mvs", "group___a_l_g_o___g_r_o_u_p.html#gabebc0e880b936580933f38d58239e2c5", null ],
-      [ "nb", "group___a_l_g_o___g_r_o_u_p.html#gab310c6afcc676eab3930dce2650511c0", null ]
-    ] ],
-    [ "MotionEstContext", "struct_motion_est_context.html", [
-      [ "b_count", "group___a_l_g_o___g_r_o_u_p.html#gaab7658f46e2a467d8c3388beb167dafe", null ],
-      [ "b_height", "group___a_l_g_o___g_r_o_u_p.html#ga44d496eba18487b94de71f6026750166", null ],
-      [ "b_width", "group___a_l_g_o___g_r_o_u_p.html#gafc618996d7b063c49ea7fa540dd1008f", null ],
-      [ "data_cur", "group___a_l_g_o___g_r_o_u_p.html#gabba50cddea7d5bc8500223ecbabf8730", null ],
-      [ "data_ref", "group___a_l_g_o___g_r_o_u_p.html#gab139a1f94dbed6189499a4e9b78f82fc", null ],
-      [ "get_cost", "group___a_l_g_o___g_r_o_u_p.html#ga873b506420978fe62a2f576a140ab489", null ],
-      [ "height", "group___a_l_g_o___g_r_o_u_p.html#gad12fc34ce789bce6c8a05d8a17138534", null ],
-      [ "log2_mbSize", "group___a_l_g_o___g_r_o_u_p.html#gaf7bf1c35e8b0955496fcc92dcd3165c0", null ],
-      [ "max", "group___a_l_g_o___g_r_o_u_p.html#gae1e1dde676c120fa6d10f3bb2c14059e", null ],
-      [ "mbSize", "group___a_l_g_o___g_r_o_u_p.html#ga3c36258fb799ca3c417c0cb54201b0b0", null ],
-      [ "method", "group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64", null ],
-      [ "motion_func", "group___a_l_g_o___g_r_o_u_p.html#ga39fec975bf311f28b25f382081df44f9", null ],
-      [ "mv_table", "group___a_l_g_o___g_r_o_u_p.html#gafa96721b41560c6c57b19fd53395e47a", null ],
-      [ "name", "group___a_l_g_o___g_r_o_u_p.html#ga9997d8ee2df51d18efed254a5aa016fd", null ],
-      [ "pred_x", "group___a_l_g_o___g_r_o_u_p.html#ga2510699d4bd87d84d7f48ad19c44b923", null ],
-      [ "pred_y", "group___a_l_g_o___g_r_o_u_p.html#gaa369e260adb36d7f81456e9441983ecf", null ],
-      [ "preds", "group___a_l_g_o___g_r_o_u_p.html#ga08f145570c138274b3aea7c821299429", null ],
-      [ "search_param", "group___a_l_g_o___g_r_o_u_p.html#gadfcdaef4a0870c73aa315f4c3bffa8e3", null ],
-      [ "width", "group___a_l_g_o___g_r_o_u_p.html#ga2474a5474cbff19523a51eb1de01cda4", null ]
-    ] ],
-    [ "BLOCK_MATCHING_ARPS", "group___a_l_g_o___g_r_o_u_p.html#ga4cac996d722232e12c7ba86c65dd048e", null ],
-    [ "BLOCK_MATCHING_EPZS", "group___a_l_g_o___g_r_o_u_p.html#ga13b7f7d520ed0639d65413732d674d98", null ],
-    [ "LK_OPTICAL_FLOW", "group___a_l_g_o___g_r_o_u_p.html#ga42bbfda998ebcff6218f13097a2b751a", null ],
-    [ "LK_OPTICAL_FLOW_8BIT", "group___a_l_g_o___g_r_o_u_p.html#gacd51ce5bd1b2e154555271d0f45ac4b6", null ],
-    [ "MotionEstContext", "group___a_l_g_o___g_r_o_u_p.html#gaa57e3c5e4be6c035e9a43836d347ca08", null ],
-    [ "MotionEstPredictor", "group___a_l_g_o___g_r_o_u_p.html#ga391f2c743c3eeb29412bed5612d6fd38", null ],
     [ "imgPSNR", "group___a_l_g_o___g_r_o_u_p.html#gaac60096222a1bd9dce72594f8394ea6b", null ],
-    [ "init_context", "group___a_l_g_o___g_r_o_u_p.html#ga307035191f24ff24a02add340d8b4efa", null ],
     [ "LK_optical_flow", "group___a_l_g_o___g_r_o_u_p.html#ga6016829c94a054f83ef3d7f5dfaae76f", null ],
-    [ "LK_optical_flow8", "group___a_l_g_o___g_r_o_u_p.html#ga2228c954598efba02837f168f0cf9132", null ],
-    [ "me_comp_sad", "group___a_l_g_o___g_r_o_u_p.html#ga89d0e1cf3392bbc4d4c76eb43aa3d28b", null ],
-    [ "motion_estimation", "group___a_l_g_o___g_r_o_u_p.html#ga8ba35bcbf89a11452927cc1ce2710edd", null ],
+    [ "LK_optical_flow8", "group___a_l_g_o___g_r_o_u_p.html#gaa2ec7e1d55cc43268bab231ede5ca955", null ],
     [ "motionComp", "group___a_l_g_o___g_r_o_u_p.html#gab20800573c64806040b0a171f72351de", null ],
     [ "motionEstARPS", "group___a_l_g_o___g_r_o_u_p.html#gab67e09e5e540362dd4b2977bfecfa225", null ],
     [ "motionEstEPZS", "group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1", null ],
-    [ "uninit", "group___a_l_g_o___g_r_o_u_p.html#gaa1377b3e199556519cb8a43a11dd24bf", null ],
     [ "b_count", "group___a_l_g_o___g_r_o_u_p.html#gaab7658f46e2a467d8c3388beb167dafe", null ],
     [ "b_height", "group___a_l_g_o___g_r_o_u_p.html#ga44d496eba18487b94de71f6026750166", null ],
     [ "b_width", "group___a_l_g_o___g_r_o_u_p.html#gafc618996d7b063c49ea7fa540dd1008f", null ],

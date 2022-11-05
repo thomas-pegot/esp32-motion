@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('epzs_8c.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 
-<p>Contain EPZS ttps://github.com/FFmpeg/FFmpeg/tree/master/libavfilter.  
+<p>Implementation from article DOI: 10.15406/oajs.2017.01.00002.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="motion_8h_source.html">motion.h</a>&quot;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
@@ -116,15 +116,13 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa2320d382d580905731b4cc266acb641"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epzs_8c.html#aa2320d382d580905731b4cc266acb641">me_search_epzs</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx, int x_mb, int y_mb, int *mv)</td></tr>
-<tr class="separator:aa2320d382d580905731b4cc266acb641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae2365b293dadd7e0d7e97ce3e88febd1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1">motionEstEPZS</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx)</td></tr>
 <tr class="memdesc:gae2365b293dadd7e0d7e97ce3e88febd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enhance Predictive Zonal Search block matching algo.  <a href="group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1">More...</a><br /></td></tr>
 <tr class="separator:gae2365b293dadd7e0d7e97ce3e88febd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Contain EPZS ttps://github.com/FFmpeg/FFmpeg/tree/master/libavfilter. </p>
-<p>It has been arranged to suite my motion lib </p>
+<div class="textblock"><p>Implementation from article DOI: 10.15406/oajs.2017.01.00002. </p>
+<dl class="section author"><dt>Author</dt><dd>Thomas Pegot </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a1f4f07498361a68bf88ebc69faa0fa58"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1f4f07498361a68bf88ebc69faa0fa58">&#9670;&nbsp;</a></span>ADD_PRED</h2>
@@ -245,51 +243,10 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="aa2320d382d580905731b4cc266acb641"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2320d382d580905731b4cc266acb641">&#9670;&nbsp;</a></span>me_search_epzs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t me_search_epzs </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *&#160;</td>
-          <td class="paramname"><em>me_ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>x_mb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>y_mb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>mv</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga08f145570c138274b3aea7c821299429"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga08f145570c138274b3aea7c821299429">MotionEstContext::preds</a></div><div class="ttdeci">MotionEstPredictor preds[2]</div><div class="ttdoc">predictor for EPZS</div><div class="ttdef"><b>Definition:</b> motion.h:91</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gab310c6afcc676eab3930dce2650511c0"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gab310c6afcc676eab3930dce2650511c0">MotionEstPredictor::nb</a></div><div class="ttdeci">int nb</div><div class="ttdef"><b>Definition:</b> motion.h:61</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga08f145570c138274b3aea7c821299429"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga08f145570c138274b3aea7c821299429">MotionEstContext::preds</a></div><div class="ttdeci">MotionEstPredictor preds[2]</div><div class="ttdoc">predictor for EPZS</div><div class="ttdef"><b>Definition:</b> motion.h:100</div></div>
+<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gab310c6afcc676eab3930dce2650511c0"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gab310c6afcc676eab3930dce2650511c0">MotionEstPredictor::nb</a></div><div class="ttdeci">int nb</div><div class="ttdef"><b>Definition:</b> motion.h:69</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
