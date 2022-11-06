@@ -12,6 +12,11 @@
 #define mid_pred mid_pred
 static inline int mid_pred(int a, int b, int c)
 {
+    return (b > a) == (a > c) ? a : (b > a) != (b > c) ? b : c;
+}
+#endif
+/*
+{
     if(a>b){
         if(c>b){
             if(c>a) b=a;
@@ -24,23 +29,19 @@ static inline int mid_pred(int a, int b, int c)
         }
     }
     return b;
-}
-#endif
-
-#define COST_MV(x, y)\
-do {\
-    cost = me_ctx->get_cost(me_ctx, x_mb, y_mb, x, y);\
-    if (cost < cost_min) {\
-        cost_min = cost;\
-        mv[0] = x;\
-        mv[1] = y;\
-    }\
-} while(0)
+}*/
 
 #define COST_P_MV(x, y)\
-if (x >= x_min && x <= x_max && y >= y_min && y <= y_max)\
-    COST_MV(x, y);
-
+do {\
+    if (x >= x_min && x <= x_max && y >= y_min && y <= y_max) {\
+        cost = me_ctx->get_cost(me_ctx, x_mb, y_mb, x, y);\
+        if (cost < cost_min) {\
+            cost_min = cost;\
+            mv[0] = x;\
+            mv[1] = y;\
+        }\
+    }\
+} while(0)
 
 #define ADD_PRED(preds, px, py)\
     do {\
@@ -57,6 +58,13 @@ static const int8_t dia1[4][2]  = {{-1, 0}, { 0,-1}, { 1, 0}, { 0, 1}};
  *  me->pred_x|y is set to median of current frame's left, top, top-right
  *  set 1: me->preds[0] has: (0, 0), left, top, top-right, collocated block in prev frame
  *  set 2: me->preds[1] has: accelerator mv, top, left, right, bottom adj mb of prev frame
+ * 
+ *  @note In OG article DOI: 10.15406/oajs.2017.01.00002 :
+ *        three subsets of predictors are used
+ *         - set A (me->pred_x|y): is set to median of current frame's left, top, top-right
+ *         - set B (set 1): (0, 0), left, top, top-right
+ *         - set C (set 2): collocated block in prev fram
+ *         ffmpeg version seems to have better result though
  */
 static uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int *mv)
 {
@@ -70,25 +78,26 @@ static uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int
 
     MotionEstPredictor *preds = me_ctx->preds;
 
-    cost_min = UINT64_MAX;
+    cost_min = UINT_FAST64_MAX; // T1 = 256
 
+    /*------------------------ Adaptative early termination ------------------------------*/
+    /* @note in OG article :
+            Set A : if cost < 256      => return
+            Set B : if cost < cost_min => return
+            Set C : if cost < cost_min => return
+    */
+    // Set A  (median predictor)
     COST_P_MV(x_mb + me_ctx->pred_x, y_mb + me_ctx->pred_y);
 
-    if(cost_min < 256)
-        return cost_min;
-
-    for (i = 0; i < preds[0].nb; i++)
+    // Set B or Set 1
+    for (i = 0; i < preds[0].nb; i++) 
         COST_P_MV(x_mb + preds[0].mvs[i][0], y_mb + preds[0].mvs[i][1]);
-
-    if(cost_min < 256)
-        return cost_min; 
-
+    
+    // Set C or Set 2
     for (i = 0; i < preds[1].nb; i++)
         COST_P_MV(x_mb + preds[1].mvs[i][0], y_mb + preds[1].mvs[i][1]);
 
-    if(cost_min < 256)
-        return cost_min;
-
+    /*-------------------------- Motion vector refinement --------------------------------*/
     do {
         
         x = mv[0];
@@ -122,21 +131,29 @@ bool motionEstEPZS(MotionEstContext *me_ctx)
             preds[0].nb = 0;
             preds[1].nb = 0;
 
+            //======================== Start predictor selection ===================================
+            /*-----------------------------    Set  B  -------------------------------------------*/
+            // (0,0) motion vextor for set B
             ADD_PRED(preds[0], 0, 0);
+
             //left mb in current frame
             if (mb_x > 0)
                 ADD_PRED(preds[0], me_ctx->mv_table[0][mb_i - 1].vx, me_ctx->mv_table[0][mb_i - 1].vy);
 
             //top mb in current frame
-            if (mb_y > 0)
+            if (mb_y > 0) { 
                 ADD_PRED(preds[0], me_ctx->mv_table[0][mb_i - me_ctx->b_width].vx, me_ctx->mv_table[0][mb_i - me_ctx->b_width].vy);
 
             //top-right mb in current frame
-            if (mb_y > 0 && mb_x + 1 < me_ctx->b_width)
-                ADD_PRED(preds[0], me_ctx->mv_table[0][mb_i - me_ctx->b_width + 1].vx, me_ctx->mv_table[0][mb_i - me_ctx->b_width + 1].vy);
+            //if (mb_y > 0 && mb_x + 1 < me_ctx->b_width)
+                if ((mb_x + 1) < me_ctx->b_width)
+                    ADD_PRED(preds[0], me_ctx->mv_table[0][mb_i - me_ctx->b_width + 1].vx, me_ctx->mv_table[0][mb_i - me_ctx->b_width + 1].vy);
+            }
 
+            /*-----------------------------    Set  A  -------------------------------------------*/
             //median predictor
             if (preds[0].nb == 4) {
+                //                             left         ,      top           ,    top-right
                 me_ctx->pred_x = mid_pred(preds[0].mvs[1][0], preds[0].mvs[2][0], preds[0].mvs[3][0]);
                 me_ctx->pred_y = mid_pred(preds[0].mvs[1][1], preds[0].mvs[2][1], preds[0].mvs[3][1]);
             } else if (preds[0].nb == 3) {
@@ -149,10 +166,16 @@ bool motionEstEPZS(MotionEstContext *me_ctx)
                 me_ctx->pred_x = 0;
                 me_ctx->pred_y = 0;
             }
+
             //collocated mb in prev frame
             ADD_PRED(preds[0], me_ctx->mv_table[1][mb_i].vx, me_ctx->mv_table[1][mb_i].vy);
 
+            /*-----------------------------    Set C   -------------------------------------------*/
+
+            //ADD_PRED(preds[1], me_ctx->mv_table[1][mb_i].vx, me_ctx->mv_table[1][mb_i].vy);
             //accelerator motion vector of collocated block in prev frame
+            /* @note: OG article didn't mention it
+             */
             ADD_PRED(preds[1], me_ctx->mv_table[1][mb_i].vx + (me_ctx->mv_table[1][mb_i].vx - me_ctx->mv_table[2][mb_i].vx),
                                 me_ctx->mv_table[1][mb_i].vy + (me_ctx->mv_table[1][mb_i].vy - me_ctx->mv_table[2][mb_i].vy));
 
@@ -171,7 +194,10 @@ bool motionEstEPZS(MotionEstContext *me_ctx)
             //bottom mb in prev frame
             if (mb_y + 1 < me_ctx->b_height)
                 ADD_PRED(preds[1], me_ctx->mv_table[1][mb_i + me_ctx->b_width].vx, me_ctx->mv_table[1][mb_i + me_ctx->b_width].vy);
-                
+            
+            
+            //======================== End predictor selection ===================================
+
             me_search_epzs(me_ctx, x_mb, y_mb, mv);
             me_ctx->mv_table[0][mb_i].vx = (int16_t) mv[0] - x_mb;
             me_ctx->mv_table[0][mb_i].vy = (int16_t) mv[1] - y_mb;

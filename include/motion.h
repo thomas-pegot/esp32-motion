@@ -95,11 +95,11 @@ typedef struct MotionEstContext{
 	    log2_mbSize; 					///< log2 of macro block size
 	int search_param; 					///< parameter p in ARPS
 
-	int pred_x,							///< median predictor
-		pred_y;                         ///< median predictor
-	MotionEstPredictor preds[2];		///< predictor for EPZS
+	int pred_x,							///< median predictor x in Set A
+		pred_y;                         ///< median predictor y in Set A
+	MotionEstPredictor preds[2];		///< predictor for EPZS ([1] : Set B, [2] : Set C)
 
-	MotionVector16_t *mv_table[3];      ///< motion vectors of current & prev 2 frames
+	MotionVector16_t *mv_table[3];      ///< motion vectors of current & prev
 	/** @} */
 
 	/** pointer to motion estimation function */
@@ -122,9 +122,8 @@ bool init_context(MotionEstContext *ctx);
  *  - Will call motion estimation algo accordingly (motionEstARPS, motionEstEPS, LK...)
  *  - current Motion Vector will be saved in mv_table[0].
  * 
- * @note Some algo will save previous motion into mv_table[1] and mv_table[2]
+ * Example usage :
  * 
- * 	Example usage :
  * @code{c}
  * MotionEstContext * motion(uint8_t *img_prev, uint8_t *img_cur, size_t w, size_t h)
  * {
@@ -143,6 +142,7 @@ bool init_context(MotionEstContext *ctx);
  *     return &me_ctx;
  * }
  * @endcode
+ * @note  Some algo will save previous motion into mv_table[1] and mv_table[2]
  * 
  * @param ctx Motion vectors will be saved in (MotionVector16_t) ctx->mv_table[0]
  * 
@@ -151,13 +151,17 @@ bool init_context(MotionEstContext *ctx);
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur);
 
 /**
- * @brief motion estimation compasation sum absolute difference
+ * @brief omputes the Sum of Absolute Difference (SAD) for the given two blocks
+ * \f[ SAD = \sum_{i=0}^{mbSize}\sum_{j=0}^{mbSize} |Cur_{ij}-Ref_{ij}| \f]
+ * 
+ *  Used as cost function for EPZS algorithm. 
+ *  @todo Change ARPS algo such as it uses this function instead of its own
  * 
  * @param me_ctx 
- * @param x_mb 
- * @param y_mb 
- * @param x_mv 
- * @param y_mv 
+ * @param x_mb curr frame x located MB (MacroBlock)
+ * @param y_mb curr frame y located MB
+ * @param x_mv prev frame x located MB
+ * @param y_mv prev frame y located MB
  * @return uint64_t 
  */
 uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv);
@@ -200,16 +204,11 @@ uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int
 	\end{bmatrix} \f]
 	
  * Then the solution can be reduced as : \f$ A^T A v=A^T b \f$ or \f$ \mathrm{v}=(A^T A)^{-1}A^T b \f$
- * @param[in] src1  pointer to grayscale buffer image instant t. 
- * @param[in] src2  pointer to grayscale buffer image instant t+1.
- * @param[out] v    vector (vx, vy) and squared magnitude
- * @param[in] w     width
- * @param[in] h     height
- * @param[out] max  max squared magnitude of all motion vector
+ * @param me_ctx    Motion estimation context with me_ctx->method = 'LK_OPTICAL_FLOW'
  * 
  * @return          Big if True
  */
-bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *v, int w, int h, int *max);
+bool LK_optical_flow(MotionEstContext *);
 
 /**
  * @brief Lucas Kanade optical 8 bit version 
@@ -230,23 +229,11 @@ bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *v, int 
 /**
  * @brief Perform Adaptive Rood Pattern Search algorithm
  * 
- * @param imgP    image of which we want to find motion vectors 
- * @param imgI    reference image 
- * @param w       width of image
- * @param h       height of image
- * @param mbSize  Size of the macroblock (mbSize, mbSize)
- * @param p       Search parameter
- * @param zmp_T   Zero-Motion Prejudgement threshold enable if set superior at 0. 
- * improve performance at cost of precision if wrong thresold value.
- * 
- * @param [out] motionVect      motion vector for each integral macroblock in imgP.  size = w * h/mbSize²
- * @param [out] max             max squared magnitude of all motion vectors
- * @param [out] ARPScomputation @todo the avg number of points searched for a macroblock 
+ * @param me_ctx    Motion estimation context with me_ctx->method = 'BLOCK_MATCHING_ARPS'
  * 
  * @return Big if true
  */
-bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize,
- 		int p, MotionVector16_t *motionVect, int zmp_T, int *max);
+bool motionEstARPS(MotionEstContext *) ;
 
 /**
  * @brief Enhance Predictive Zonal Search block matching algo.
@@ -254,13 +241,13 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
  * Implemented from article DOI: 10.15406/oajs.2017.01.00002
  * 
  * @note : `me_search_epzs` function is taken from ffmpeg libavfilter and rearrange accordingly
- * @todo : I bypassed some error by a little trick `if cost_min < 256` (if I remember). this might cause
- * 		   artifacts. I have to investigate on this.. 
+ *         ffmpeg version of EPZS perform better than the one from the paper. The difference is
+ *         related to the definition of predictors set A,B and C. More details in `me_search_eps` note.
  * 
  * @param me_ctx     Motion estimation context with me_ctx->method = 'BLOCK_MATCHING_EPZS'
  * 
  * @return           big if true 
- * */
+ */
 bool motionEstEPZS(MotionEstContext *);
 
 /** @} */
@@ -278,8 +265,6 @@ bool motionEstEPZS(MotionEstContext *);
  */
 uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect, size_t w, size_t h, 
 		size_t mbSize);
-/** Compute PSNR of image compensated */
-float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp, size_t w, size_t h, const int n);
 
 #ifdef __cplusplus
 }

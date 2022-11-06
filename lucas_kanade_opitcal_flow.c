@@ -22,7 +22,7 @@ static const char *TAG = "LK_OPTICAL_FLOW";
 #endif
 
 static const float NoiseThreshold = 0.01; /* Lucas Kanade noise threshold */
-static const int half_window = WINDOW / 2;
+static const int half_window = WINDOW << 1;
 static const int window_squared = WINDOW * WINDOW;
 static const int log2_window = (int const)ceil(log2(WINDOW));
 
@@ -44,19 +44,17 @@ static void *_malloc(size_t size) {
     return heap_caps_malloc(size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
 }
 
-bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t *V, int w, int h, int *mag_max2) {
-
-	assert(src1 != NULL);
-	assert(src2 != NULL);
+bool LK_optical_flow(MotionEstContext *ctx) {
+	const int w = ctx->width;
+	const int h = ctx->height;
 	const int N = w * h;
-	MotionVector16_t *mv = V;
 	float *image1 = (float*)_malloc(N * sizeof(float)),
 		*image2 = (float*)_malloc(N * sizeof(float)),
 		*fx = (float*)_malloc(N * sizeof(float)),
 		*ft = (float*)_malloc(N * sizeof(float)),
 		*fy = (float*)_malloc(N * sizeof(float));
 	int i, j, m;
-	*mag_max2 = 0;
+	ctx->max = 0;
 
 	if(!fx || !fy || !ft || !image1 || !image2) {
 		ESP_LOGE(TAG, "allocation failed!");
@@ -65,17 +63,15 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 
 	/* init input */
 	for(i = N; i--; ) {
-		const float tmp_fX = src1[i];
+		const float tmp_fX = ctx->data_ref[i];
 		fx[i] = tmp_fX;
-		ft[i] = src2[i] - tmp_fX;  /* Gradient computation: I_{t+1} - I_{t} */
-		fy[i] = tmp_fX;   /* fy initialisation as smoothed input = fx */
+		ft[i] = ctx->data_cur[i] - tmp_fX;  /* Gradient computation: I_{t+1} - I_{t} */
+		fy[i] = tmp_fX;   					/* fy initialisation as smoothed input = fx */
 
-		mv->mag2 = 0;
-		mv->vx = 0;
-		mv->vy = 0;
-		mv++;
-	}	
-	mv = &V[0];
+		ctx->mv_table[0][i].vx = 0;
+		ctx->mv_table[0][i].vy = 0;
+		ctx->mv_table[0][i].mag2 = 0;
+	}
 
 	/* Derivate Dx : 1D convolution horizontal */
 	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) {
@@ -141,12 +137,12 @@ bool LK_optical_flow(const uint8_t *src1, const uint8_t *src2, MotionVector16_t 
 				//optical flow : [Vx Vy] = inv[AtA] . Atb
 				const float vx = iAtA[0][0] * Atb0 + iAtA[0][1] * Atb1;
 				const float vy = iAtA[1][0] * Atb0 + iAtA[1][1] * Atb1;	
-				mv = &V[i * w + j];
+				MotionVector16_t *mv = &ctx->mv_table[0][i * w + j];
 				mv->vx = (int16_t)vx;
 				mv->vy = (int16_t)vy;
 				mv->mag2 = (uint16_t)(vx * vx + vy * vy);	
-				if(*mag_max2 < mv->mag2)
-					*mag_max2 = mv->mag2;		
+				if(ctx->max < mv->mag2)
+					ctx->max = mv->mag2;		
 			} 
 		}
     }

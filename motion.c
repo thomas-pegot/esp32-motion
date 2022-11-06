@@ -33,6 +33,8 @@ static void freep(void *arg) {
 
 
 void uninit(MotionEstContext *ctx) {
+    if(ctx == NULL)
+        return;
     int i;
     ctx->data_ref = NULL;
     ctx->data_cur = NULL;
@@ -43,6 +45,7 @@ void uninit(MotionEstContext *ctx) {
     for (i = 0; i < 3; i++)
         freep(&ctx->mv_table[i]);
     mv_allocated = 0;
+    ctx = NULL;
 }
 
 /** @brief  allocate DRAM that is byte-addressable 
@@ -117,11 +120,12 @@ bool init_context(MotionEstContext *ctx) {
 *   @param c MotionEstContext
 *   @return LK_optical_flow
 */
+/*
 static bool LK_optical_flow_wrapper(MotionEstContext *c) {
     return LK_optical_flow(c->data_ref, c->data_cur, c->mv_table[0], c->width,
                  c->height, &c->max);
 }
-
+*/
 /** @brief LK optical flow8b wrapper taking only MotionEstContext as input
 *   @param c MotionEstContext
 *   @return LK_optical_flow8
@@ -130,31 +134,19 @@ static bool LK_optical_flow8_wrapper(MotionEstContext *c) {
     return LK_optical_flow8(c->data_ref, c->data_cur, c->data_ref, c->width, c->height);
 }
 
-/** @brief ARPS wrapper taking only MotionEstContext as input
-*   @param c MotionEstContext
-*   @return LK_optical_flow
-*/
-static bool motionEstARPS_wrapper(MotionEstContext *c) {
-    // Zero-Motion Prejudgement threshold
-    int zmp_threshold = c->mbSize << (c->log2_mbSize + 1);
-
-    return motionEstARPS(c->data_cur, c->data_ref, c->b_width << c->log2_mbSize, c->b_height << c->log2_mbSize,
-     c->mbSize, c->search_param, c->mv_table[0], zmp_threshold, &c->max);
-}
-
 bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur) {
     ctx->data_cur = img_cur;
     ctx->data_ref = img_prev;
 
     switch (ctx->method)
     {
-    case LK_OPTICAL_FLOW        : ctx->motion_func = &LK_optical_flow_wrapper;
+    case LK_OPTICAL_FLOW        : ctx->motion_func = &LK_optical_flow;
         strcpy(ctx->name, "lucas kanade");
         break;
     case LK_OPTICAL_FLOW_8BIT   : ctx->motion_func = &LK_optical_flow8_wrapper;
         strcpy(ctx->name, "lucas kanade 8b");
         break;
-    case BLOCK_MATCHING_ARPS    : ctx->motion_func = &motionEstARPS_wrapper;
+    case BLOCK_MATCHING_ARPS    : ctx->motion_func = &motionEstARPS;
         strcpy(ctx->name, "ARPS");
         break;    
     case BLOCK_MATCHING_EPZS    : ctx->motion_func = &motionEstEPZS;
@@ -169,7 +161,7 @@ bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cu
 uint64_t me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv) {
     uint8_t *data_ref = me_ctx->data_ref;
     uint8_t *data_cur = me_ctx->data_cur;
-    int linesize = me_ctx->width; //linesize;
+    const int linesize = me_ctx->width; //linesize;
     uint64_t sad = 0;
     int i, j;
 

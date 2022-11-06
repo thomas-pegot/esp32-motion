@@ -35,9 +35,8 @@ int costFuncSAD(const uint8_t *currentImg, const uint8_t *refImg,
     return err;
 }
 
-
-
-float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp,\
+/*
+static float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp,\
  size_t w, size_t h, const int n) {
     float err = 0.0f;
 
@@ -48,7 +47,7 @@ float imgPSNR(const uint8_t *imgP, const uint8_t *imgComp,\
     const float mse = err / (float)w / (float)h;
     return 10.0f * log10f(n * n / mse);
 }
-
+*/
 
 uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
       size_t w, size_t h, size_t mbSize) {
@@ -93,10 +92,18 @@ uint8_t *motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect,\
                         {0, 1},
                         {1, 1}};
 
-bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize,
- int p, MotionVector16_t *MotionVect, int zmp_T, int *max_mag2) {
+bool motionEstARPS(MotionEstContext *c) {
+    // Loading all param
+    const uint8_t *imgP = c->data_cur;
+    const uint8_t *imgI = c->data_ref;
+    const size_t w = (size_t)c->b_width<<c->log2_mbSize;    
+    const size_t h = (size_t)c->b_height<<c->log2_mbSize;
+    const size_t mbSize = (size_t)c->mbSize;
+    const int p = c->search_param;
+    MotionVector16_t *vectors = c->mv_table[0];
 
-    MotionVector16_t *vectors = MotionVect;
+    // Zero-Motion Prejudgement threshold
+    int zmp_T = c->mbSize << (c->log2_mbSize + 1);
 
     // Error window used to computed Minimal Matching Error
     uint costs[6] = {UINT32_MAX}; 
@@ -112,7 +119,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
     memset(checkArray, 0, sizeof(checkArray[0][0]) * pow(2 * p + 1, 2));
 
     //int computations = 0;
-    *max_mag2 = 0;
+    c->max = 0;
     //mbCount will keep track of how many blocks we have evaluated
     //int mbCount = 0;
 
@@ -260,7 +267,7 @@ bool motionEstARPS(const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h,
             vectors->vx = y - i;
             vectors->vy = x - j;
             vectors->mag2 = powf(vectors->vx, 2) + powf(vectors->vx, 2);
-            *max_mag2 = mmax(*max_mag2, vectors->mag2);
+            c->max = mmax(c->max, vectors->mag2);
             vectors++;
             memset(costs, UINT32_MAX, 6 * sizeof(int));
             memset(checkArray, 0, sizeof(checkArray[0][0]) * pow(2 * p + 1, 2));
