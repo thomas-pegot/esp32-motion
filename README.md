@@ -11,12 +11,12 @@
     - [Declaration and initialisation :](#declaration-and-initialisation-)
     - [Estimate motion :](#estimate-motion-)
     - [Free memory :](#free-memory-)
-  - [More in depth](#more-in-depth)
-    - [Block matching (Adaptative Rood Pattern Search)](#block-matching-adaptative-rood-pattern-search)
-    - [Lucas Kanade algorithm](#lucas-kanade-algorithm)
-      - [Simple case](#simple-case)
-    - [More control :](#more-control-)
   - [Example project](#example-project)
+  - [More in depth (_depreciated_)](#more-in-depth-depreciated)
+    - [Block matching (Adaptative Rood Pattern Search) (_depreciated_)](#block-matching-adaptative-rood-pattern-search-depreciated)
+    - [Lucas Kanade algorithm (_depreciated_)](#lucas-kanade-algorithm-depreciated)
+      - [Simple case (_depreciated_)](#simple-case-depreciated)
+    - [More control (_depreciated_)](#more-control-depreciated)
   - [Refs](#refs)
 
 
@@ -30,7 +30,7 @@ _Motion estimation_ is the process of finding motion vectors that define the tra
  - pixel recursive algorithm (RANSAC)
  - phase correlation (FFT based)
 
-At the moment, I have implemented Lucas-kanade, ARPS and EPZS.
+At the moment, I have implemented Lucas-kanade, ARPS and EPZS (FFMPEG + AVC/MPEG4 paper).
 
 
 ## Basic usage
@@ -61,8 +61,7 @@ table of correspondance :
 |BLOCK_MATCHING_ARPS| 2 | ARPS (out 16-bit vector)|
 |BLOCK_MATCHING_EPZS| 3 | EPZS (out 16-bit vector)|
 
-Next 
-<a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">allocate motion</a> vectors:
+Next <a href="https://thomas-pegot.github.io/esp32-motion/motion_8h.html#a307035191f24ff24a02add340d8b4efa">allocate motion</a> vectors:
 ```c
 init_context(&me_ctx);
 ```
@@ -94,11 +93,21 @@ EZPS algorithm need previous motion vectors as a way of prediction to the next g
 ```c
 uninit(&me_ctx);
 ```
+## Example project
+
+ - [ Motion vector stream for testing](https://github.com/thomas-pegot/camera_web_server)
+ - [ All in one security camera ](https://github.com/thomas-pegot/ESP32-CAM_Motion)
 
 
-## More in depth 
+---
 
-### Block matching (Adaptative Rood Pattern Search)
+```diff 
+- Below is depreciated
+```
+
+## More in depth (_depreciated_)
+
+### Block matching (Adaptative Rood Pattern Search) (_depreciated_)
 
  [header:](https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495)
 
@@ -132,9 +141,9 @@ uninit(&me_ctx);
 
 
 
-### Lucas Kanade algorithm
+### Lucas Kanade algorithm (_depreciated_)
 
-#### Simple case
+#### Simple case (_depreciated_)
 
 [header:](https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39)
 
@@ -164,7 +173,7 @@ uninit(&me_ctx);
   free(image_motion);
   ```
 
-### More control :
+### More control (_depreciated_)
 
 We can get more detailed output by using a motion vector struct composed of `V=(vx, vy)` motion vector and `mag2` the squared magnitude:
 
@@ -216,13 +225,9 @@ We can get more detailed output by using a motion vector struct composed of `V=(
   free(image_buf);
   free(image_buf_next);
   ```
-  
-## Example project
-
- - [ Motion vector stream for testing](https://github.com/thomas-pegot/camera_web_server)
- - [ All in one security camera ](https://github.com/thomas-pegot/ESP32-CAM_Motion)
-
 
 ## Refs
   - convolution credits to  http://www.songho.ca/dsp/convolution/convolution.html
-  - EPZS credits to https://github.com/FFmpeg/FFmpeg/
+  - EPZS credits to :
+    -  https://github.com/FFmpeg/FFmpeg/
+    -  [DOI: 10.15406/oajs.2017.01.00002](https://doi.org/10.15406/oajs.2017.01.00002)

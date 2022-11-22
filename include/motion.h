@@ -119,7 +119,7 @@ bool init_context(MotionEstContext *ctx);
 /**
  * @brief motion estimation wrapper
  *  - Will update ctx->name representation of the motion estimation algo used.
- *  - Will call motion estimation algo accordingly (motionEstARPS, motionEstEPS, LK...)
+ *  - Will call motion estimation algo accordingly (motionEstARPS, motionEstEPZS, LK...)
  *  - current Motion Vector will be saved in mv_table[0].
  * 
  * Example usage :
