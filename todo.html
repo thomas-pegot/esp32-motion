@@ -94,10 +94,10 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt>Global <a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gab67e09e5e540362dd4b2977bfecfa225">motionEstARPS</a>  (const uint8_t *imgP, const uint8_t *imgI, size_t w, size_t h, size_t mbSize, int p, <a class="el" href="struct_motion_vector16__t.html" title="MotionVector 2D with amplitude squared (for speed)">MotionVector16_t</a> *motionVect, int zmp_T, int *max)</dt>
-<dd><a class="anchor" id="_todo000001"></a>the avg number of points searched for a macroblock  </dd>
-<dt>Global <a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1">motionEstEPZS</a>  (<a class="el" href="struct_motion_est_context.html" title="Exhaustive struct representing all parameter needed for all motion estimation type.">MotionEstContext</a> *)</dt>
-<dd><a class="anchor" id="_todo000002"></a>: I bypassed some error by a little trick <code>if cost_min &lt; 256</code> (if I remember). this might cause artifacts. I have to investigate on this.. </dd>
+<dt>Global <a class="el" href="epzs_8c.html#a78fc77765d0e60f27782eaf2daf1f907">FFMPEG</a>  </dt>
+<dd><a class="anchor" id="_todo000001"></a>: Paper result are erratic  </dd>
+<dt>Global <a class="el" href="motion_8c.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b">me_comp_sad</a>  (<a class="el" href="struct_motion_est_context.html" title="Exhaustive struct representing all parameter needed for all motion estimation type.">MotionEstContext</a> *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv)</dt>
+<dd><a class="anchor" id="_todo000002"></a>Change ARPS algo such as it uses this function instead of its own</dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

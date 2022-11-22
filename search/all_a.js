@@ -1,5 +1,26 @@
 var searchData=
 [
-  ['name_59',['name',['../group___a_l_g_o___g_r_o_u_p.html#ga9997d8ee2df51d18efed254a5aa016fd',1,'MotionEstContext']]],
-  ['nb_60',['nb',['../group___a_l_g_o___g_r_o_u_p.html#gab310c6afcc676eab3930dce2650511c0',1,'MotionEstPredictor']]]
+  ['motion_20estimation_20lib_20_28esp32cam_29_35',['Motion estimation lib (ESP32cam)',['../index.html',1,'']]],
+  ['mag2_36',['mag2',['../group___a_l_g_o___g_r_o_u_p.html#ga455d7d824573c7567e5b10baf69fa99d',1,'MotionVector16_t']]],
+  ['max_37',['max',['../group___a_l_g_o___g_r_o_u_p.html#gae1e1dde676c120fa6d10f3bb2c14059e',1,'MotionEstContext']]],
+  ['maxsize_38',['MAXSIZE',['../deflicker_8h.html#a2a37b4217917105aac7557862ccc19c3',1,'deflicker.h']]],
+  ['mbsize_39',['mbSize',['../group___a_l_g_o___g_r_o_u_p.html#ga3c36258fb799ca3c417c0cb54201b0b0',1,'MotionEstContext']]],
+  ['me_5fcomp_5fsad_40',['me_comp_sad',['../motion_8h.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b',1,'me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv):&#160;motion.c'],['../motion_8c.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b',1,'me_comp_sad(MotionEstContext *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv):&#160;motion.c']]],
+  ['method_41',['method',['../group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64',1,'MotionEstContext']]],
+  ['mid_5fpred_42',['mid_pred',['../epzs_8c.html#a6948a24017ba60d76640f7587429a9f6',1,'epzs.c']]],
+  ['mmax_43',['mmax',['../motion_8h.html#a9493c4e06606c94612e05c772d5c9b2a',1,'motion.h']]],
+  ['mmin_44',['mmin',['../motion_8h.html#ad7cf61b6843c3ed06b7b1399d5e2fd21',1,'motion.h']]],
+  ['motion_2ec_45',['motion.c',['../motion_8c.html',1,'']]],
+  ['motion_2eh_46',['motion.h',['../motion_8h.html',1,'']]],
+  ['motion_5festimation_47',['motion_estimation',['../motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd',1,'motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur):&#160;motion.c'],['../motion_8c.html#a8ba35bcbf89a11452927cc1ce2710edd',1,'motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur):&#160;motion.c']]],
+  ['motion_5ffunc_48',['motion_func',['../group___a_l_g_o___g_r_o_u_p.html#ga39fec975bf311f28b25f382081df44f9',1,'MotionEstContext']]],
+  ['motioncomp_49',['motionComp',['../group___a_l_g_o___g_r_o_u_p.html#gab20800573c64806040b0a171f72351de',1,'motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect, size_t w, size_t h, size_t mbSize):&#160;block_matching.c'],['../group___a_l_g_o___g_r_o_u_p.html#gab20800573c64806040b0a171f72351de',1,'motionComp(const uint8_t *imgI, const MotionVector16_t *motionVect, size_t w, size_t h, size_t mbSize):&#160;block_matching.c']]],
+  ['motionestarps_50',['motionEstARPS',['../group___a_l_g_o___g_r_o_u_p.html#ga1fafc3138f38f56ba9d01a031bf32d84',1,'motionEstARPS(MotionEstContext *c):&#160;block_matching.c'],['../group___a_l_g_o___g_r_o_u_p.html#ga1fafc3138f38f56ba9d01a031bf32d84',1,'motionEstARPS(MotionEstContext *):&#160;block_matching.c']]],
+  ['motionestcontext_51',['MotionEstContext',['../struct_motion_est_context.html',1,'MotionEstContext'],['../motion_8h.html#aa57e3c5e4be6c035e9a43836d347ca08',1,'MotionEstContext():&#160;motion.h']]],
+  ['motionestepzs_52',['motionEstEPZS',['../group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1',1,'motionEstEPZS(MotionEstContext *me_ctx):&#160;epzs.c'],['../group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1',1,'motionEstEPZS(MotionEstContext *):&#160;epzs.c']]],
+  ['motionestpredictor_53',['MotionEstPredictor',['../struct_motion_est_predictor.html',1,'MotionEstPredictor'],['../motion_8h.html#a391f2c743c3eeb29412bed5612d6fd38',1,'MotionEstPredictor():&#160;motion.h']]],
+  ['motionvector16_5ft_54',['MotionVector16_t',['../struct_motion_vector16__t.html',1,'']]],
+  ['motionvector8_5ft_55',['MotionVector8_t',['../struct_motion_vector8__t.html',1,'']]],
+  ['mv_5ftable_56',['mv_table',['../group___a_l_g_o___g_r_o_u_p.html#gafa96721b41560c6c57b19fd53395e47a',1,'MotionEstContext']]],
+  ['mvs_57',['mvs',['../group___a_l_g_o___g_r_o_u_p.html#gabebc0e880b936580933f38d58239e2c5',1,'MotionEstPredictor']]]
 ];

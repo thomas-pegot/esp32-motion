@@ -14,14 +14,13 @@ var motion_8h =
     [ "WINDOW", "motion_8h.html#a58dde5b4c75245b4660a165318cac36b", null ],
     [ "MotionEstContext", "motion_8h.html#aa57e3c5e4be6c035e9a43836d347ca08", null ],
     [ "MotionEstPredictor", "motion_8h.html#a391f2c743c3eeb29412bed5612d6fd38", null ],
-    [ "imgPSNR", "group___a_l_g_o___g_r_o_u_p.html#gaac60096222a1bd9dce72594f8394ea6b", null ],
     [ "init_context", "motion_8h.html#a307035191f24ff24a02add340d8b4efa", null ],
-    [ "LK_optical_flow", "group___a_l_g_o___g_r_o_u_p.html#ga6016829c94a054f83ef3d7f5dfaae76f", null ],
+    [ "LK_optical_flow", "group___a_l_g_o___g_r_o_u_p.html#ga0d253b397f3be474b400789bfbdadb0d", null ],
     [ "LK_optical_flow8", "group___a_l_g_o___g_r_o_u_p.html#gaa2ec7e1d55cc43268bab231ede5ca955", null ],
     [ "me_comp_sad", "motion_8h.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b", null ],
     [ "motion_estimation", "motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd", null ],
     [ "motionComp", "group___a_l_g_o___g_r_o_u_p.html#gab20800573c64806040b0a171f72351de", null ],
-    [ "motionEstARPS", "group___a_l_g_o___g_r_o_u_p.html#gab67e09e5e540362dd4b2977bfecfa225", null ],
+    [ "motionEstARPS", "group___a_l_g_o___g_r_o_u_p.html#ga1fafc3138f38f56ba9d01a031bf32d84", null ],
     [ "motionEstEPZS", "group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1", null ],
     [ "uninit", "motion_8h.html#aa1377b3e199556519cb8a43a11dd24bf", null ]
 ];

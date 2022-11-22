@@ -1,10 +1,9 @@
 var group___a_l_g_o___g_r_o_u_p =
 [
-    [ "imgPSNR", "group___a_l_g_o___g_r_o_u_p.html#gaac60096222a1bd9dce72594f8394ea6b", null ],
-    [ "LK_optical_flow", "group___a_l_g_o___g_r_o_u_p.html#ga6016829c94a054f83ef3d7f5dfaae76f", null ],
+    [ "LK_optical_flow", "group___a_l_g_o___g_r_o_u_p.html#ga0d253b397f3be474b400789bfbdadb0d", null ],
     [ "LK_optical_flow8", "group___a_l_g_o___g_r_o_u_p.html#gaa2ec7e1d55cc43268bab231ede5ca955", null ],
     [ "motionComp", "group___a_l_g_o___g_r_o_u_p.html#gab20800573c64806040b0a171f72351de", null ],
-    [ "motionEstARPS", "group___a_l_g_o___g_r_o_u_p.html#gab67e09e5e540362dd4b2977bfecfa225", null ],
+    [ "motionEstARPS", "group___a_l_g_o___g_r_o_u_p.html#ga1fafc3138f38f56ba9d01a031bf32d84", null ],
     [ "motionEstEPZS", "group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1", null ],
     [ "b_count", "group___a_l_g_o___g_r_o_u_p.html#gaab7658f46e2a467d8c3388beb167dafe", null ],
     [ "b_height", "group___a_l_g_o___g_r_o_u_p.html#ga44d496eba18487b94de71f6026750166", null ],

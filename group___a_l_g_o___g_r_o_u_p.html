@@ -103,9 +103,6 @@ Functions</h2></td></tr>
 <tr class="memdesc:gab20800573c64806040b0a171f72351de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute motion compensated image's PSNR <br  />
 .  <a href="group___a_l_g_o___g_r_o_u_p.html#gab20800573c64806040b0a171f72351de">More...</a><br /></td></tr>
 <tr class="separator:gab20800573c64806040b0a171f72351de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaac60096222a1bd9dce72594f8394ea6b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gaac60096222a1bd9dce72594f8394ea6b">imgPSNR</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgP, const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgComp, size_t w, size_t h, const int n)</td></tr>
-<tr class="memdesc:gaac60096222a1bd9dce72594f8394ea6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute PSNR of image compensated.  <a href="group___a_l_g_o___g_r_o_u_p.html#gaac60096222a1bd9dce72594f8394ea6b">More...</a><br /></td></tr>
-<tr class="separator:gaac60096222a1bd9dce72594f8394ea6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -155,16 +152,16 @@ Variables</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
 Algorithm methods</h2></td></tr>
-<tr class="memitem:ga6016829c94a054f83ef3d7f5dfaae76f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#ga6016829c94a054f83ef3d7f5dfaae76f">LK_optical_flow</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src1, const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src2, <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *v, int w, int h, int *max)</td></tr>
-<tr class="memdesc:ga6016829c94a054f83ef3d7f5dfaae76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement LK optical flow source from wiki and matlab : <a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method">https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method</a> <br  />
-.  <a href="group___a_l_g_o___g_r_o_u_p.html#ga6016829c94a054f83ef3d7f5dfaae76f">More...</a><br /></td></tr>
-<tr class="separator:ga6016829c94a054f83ef3d7f5dfaae76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d253b397f3be474b400789bfbdadb0d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#ga0d253b397f3be474b400789bfbdadb0d">LK_optical_flow</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *)</td></tr>
+<tr class="memdesc:ga0d253b397f3be474b400789bfbdadb0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement LK optical flow source from wiki and matlab : <a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method">https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method</a> <br  />
+.  <a href="group___a_l_g_o___g_r_o_u_p.html#ga0d253b397f3be474b400789bfbdadb0d">More...</a><br /></td></tr>
+<tr class="separator:ga0d253b397f3be474b400789bfbdadb0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa2ec7e1d55cc43268bab231ede5ca955"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gaa2ec7e1d55cc43268bab231ede5ca955">LK_optical_flow8</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src1, const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src2, <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *v, int w, int h)</td></tr>
 <tr class="memdesc:gaa2ec7e1d55cc43268bab231ede5ca955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lucas Kanade optical 8 bit version.  <a href="group___a_l_g_o___g_r_o_u_p.html#gaa2ec7e1d55cc43268bab231ede5ca955">More...</a><br /></td></tr>
 <tr class="separator:gaa2ec7e1d55cc43268bab231ede5ca955"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab67e09e5e540362dd4b2977bfecfa225"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gab67e09e5e540362dd4b2977bfecfa225">motionEstARPS</a> (const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgP, const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgI, size_t w, size_t h, size_t mbSize, int p, <a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *motionVect, int zmp_T, int *max)</td></tr>
-<tr class="memdesc:gab67e09e5e540362dd4b2977bfecfa225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform Adaptive Rood Pattern Search algorithm.  <a href="group___a_l_g_o___g_r_o_u_p.html#gab67e09e5e540362dd4b2977bfecfa225">More...</a><br /></td></tr>
-<tr class="separator:gab67e09e5e540362dd4b2977bfecfa225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1fafc3138f38f56ba9d01a031bf32d84"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#ga1fafc3138f38f56ba9d01a031bf32d84">motionEstARPS</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *)</td></tr>
+<tr class="memdesc:ga1fafc3138f38f56ba9d01a031bf32d84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform Adaptive Rood Pattern Search algorithm.  <a href="group___a_l_g_o___g_r_o_u_p.html#ga1fafc3138f38f56ba9d01a031bf32d84">More...</a><br /></td></tr>
+<tr class="separator:ga1fafc3138f38f56ba9d01a031bf32d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae2365b293dadd7e0d7e97ce3e88febd1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1">motionEstEPZS</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *)</td></tr>
 <tr class="memdesc:gae2365b293dadd7e0d7e97ce3e88febd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enhance Predictive Zonal Search block matching algo.  <a href="group___a_l_g_o___g_r_o_u_p.html#gae2365b293dadd7e0d7e97ce3e88febd1">More...</a><br /></td></tr>
 <tr class="separator:gae2365b293dadd7e0d7e97ce3e88febd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,70 +187,22 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
 <tr class="memdesc:gadfcdaef4a0870c73aa315f4c3bffa8e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">parameter p in ARPS  <a href="group___a_l_g_o___g_r_o_u_p.html#gadfcdaef4a0870c73aa315f4c3bffa8e3">More...</a><br /></td></tr>
 <tr class="separator:gadfcdaef4a0870c73aa315f4c3bffa8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2510699d4bd87d84d7f48ad19c44b923"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#ga2510699d4bd87d84d7f48ad19c44b923">pred_x</a></td></tr>
-<tr class="memdesc:ga2510699d4bd87d84d7f48ad19c44b923"><td class="mdescLeft">&#160;</td><td class="mdescRight">median predictor  <a href="group___a_l_g_o___g_r_o_u_p.html#ga2510699d4bd87d84d7f48ad19c44b923">More...</a><br /></td></tr>
+<tr class="memdesc:ga2510699d4bd87d84d7f48ad19c44b923"><td class="mdescLeft">&#160;</td><td class="mdescRight">median predictor x in Set A  <a href="group___a_l_g_o___g_r_o_u_p.html#ga2510699d4bd87d84d7f48ad19c44b923">More...</a><br /></td></tr>
 <tr class="separator:ga2510699d4bd87d84d7f48ad19c44b923"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa369e260adb36d7f81456e9441983ecf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gaa369e260adb36d7f81456e9441983ecf">pred_y</a></td></tr>
-<tr class="memdesc:gaa369e260adb36d7f81456e9441983ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">median predictor  <a href="group___a_l_g_o___g_r_o_u_p.html#gaa369e260adb36d7f81456e9441983ecf">More...</a><br /></td></tr>
+<tr class="memdesc:gaa369e260adb36d7f81456e9441983ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">median predictor y in Set A  <a href="group___a_l_g_o___g_r_o_u_p.html#gaa369e260adb36d7f81456e9441983ecf">More...</a><br /></td></tr>
 <tr class="separator:gaa369e260adb36d7f81456e9441983ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga08f145570c138274b3aea7c821299429"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_motion_est_predictor.html">MotionEstPredictor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#ga08f145570c138274b3aea7c821299429">preds</a> [2]</td></tr>
-<tr class="memdesc:ga08f145570c138274b3aea7c821299429"><td class="mdescLeft">&#160;</td><td class="mdescRight">predictor for EPZS  <a href="group___a_l_g_o___g_r_o_u_p.html#ga08f145570c138274b3aea7c821299429">More...</a><br /></td></tr>
+<tr class="memdesc:ga08f145570c138274b3aea7c821299429"><td class="mdescLeft">&#160;</td><td class="mdescRight">predictor for EPZS ([1] : Set B, [2] : Set C)  <a href="group___a_l_g_o___g_r_o_u_p.html#ga08f145570c138274b3aea7c821299429">More...</a><br /></td></tr>
 <tr class="separator:ga08f145570c138274b3aea7c821299429"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafa96721b41560c6c57b19fd53395e47a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_l_g_o___g_r_o_u_p.html#gafa96721b41560c6c57b19fd53395e47a">mv_table</a> [3]</td></tr>
-<tr class="memdesc:gafa96721b41560c6c57b19fd53395e47a"><td class="mdescLeft">&#160;</td><td class="mdescRight">motion vectors of current &amp; prev 2 frames  <a href="group___a_l_g_o___g_r_o_u_p.html#gafa96721b41560c6c57b19fd53395e47a">More...</a><br /></td></tr>
+<tr class="memdesc:gafa96721b41560c6c57b19fd53395e47a"><td class="mdescLeft">&#160;</td><td class="mdescRight">motion vectors of current &amp; prev  <a href="group___a_l_g_o___g_r_o_u_p.html#gafa96721b41560c6c57b19fd53395e47a">More...</a><br /></td></tr>
 <tr class="separator:gafa96721b41560c6c57b19fd53395e47a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gaac60096222a1bd9dce72594f8394ea6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaac60096222a1bd9dce72594f8394ea6b">&#9670;&nbsp;</a></span>imgPSNR()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float imgPSNR </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *&#160;</td>
-          <td class="paramname"><em>imgP</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *&#160;</td>
-          <td class="paramname"><em>imgComp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>w</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>h</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>n</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute PSNR of image compensated. </p>
-
-</div>
-</div>
-<a id="ga6016829c94a054f83ef3d7f5dfaae76f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6016829c94a054f83ef3d7f5dfaae76f">&#9670;&nbsp;</a></span>LK_optical_flow()</h2>
+<a id="ga0d253b397f3be474b400789bfbdadb0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0d253b397f3be474b400789bfbdadb0d">&#9670;&nbsp;</a></span>LK_optical_flow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,43 +210,9 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
         <tr>
           <td class="memname">bool LK_optical_flow </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *&#160;</td>
-          <td class="paramname"><em>src1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *&#160;</td>
-          <td class="paramname"><em>src2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *&#160;</td>
-          <td class="paramname"><em>v</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>w</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>h</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>max</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -317,12 +232,7 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
 </p>
 <p>Then the solution can be reduced as : \( A^T A v=A^T b \) or \( \mathrm{v}=(A^T A)^{-1}A^T b \) </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">src1</td><td>pointer to grayscale buffer image instant t. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">src2</td><td>pointer to grayscale buffer image instant t+1. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">v</td><td>vector (vx, vy) and squared magnitude </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>width </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>height </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">max</td><td>max squared magnitude of all motion vector</td></tr>
+    <tr><td class="paramname">me_ctx</td><td>Motion estimation context with me_ctx-&gt;method = 'LK_OPTICAL_FLOW'</td></tr>
   </table>
   </dd>
 </dl>
@@ -454,8 +364,8 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
 
 </div>
 </div>
-<a id="gab67e09e5e540362dd4b2977bfecfa225"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab67e09e5e540362dd4b2977bfecfa225">&#9670;&nbsp;</a></span>motionEstARPS()</h2>
+<a id="ga1fafc3138f38f56ba9d01a031bf32d84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1fafc3138f38f56ba9d01a031bf32d84">&#9670;&nbsp;</a></span>motionEstARPS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -463,61 +373,9 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
         <tr>
           <td class="memname">bool motionEstARPS </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *&#160;</td>
-          <td class="paramname"><em>imgP</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *&#160;</td>
-          <td class="paramname"><em>imgI</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>w</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>h</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>mbSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>p</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_motion_vector16__t.html">MotionVector16_t</a> *&#160;</td>
-          <td class="paramname"><em>motionVect</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>zmp_T</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>max</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -525,20 +383,10 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
 <p>Perform Adaptive Rood Pattern Search algorithm. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">imgP</td><td>image of which we want to find motion vectors </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">imgI</td><td>reference image </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">w</td><td>width of image </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">h</td><td>height of image </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">mbSize</td><td>Size of the macroblock (mbSize, mbSize) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">p</td><td>Search parameter </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">zmp_T</td><td>Zero-Motion Prejudgement threshold enable if set superior at 0. improve performance at cost of precision if wrong thresold value.</td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">motionVect</td><td>motion vector for each integral macroblock in imgP. size = w * h/mbSize² </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">max</td><td>max squared magnitude of all motion vectors </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ARPScomputation</td><td></td></tr>
+    <tr><td class="paramname">me_ctx</td><td>Motion estimation context with me_ctx-&gt;method = 'BLOCK_MATCHING_ARPS'</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>the avg number of points searched for a macroblock </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Big if true </dd></dl>
 
 </div>
@@ -561,8 +409,7 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
 
 <p>Enhance Predictive Zonal Search block matching algo. </p>
 <p>Implemented from article DOI: 10.15406/oajs.2017.01.00002</p>
-<dl class="section note"><dt>Note</dt><dd>: <code>me_search_epzs</code> function is taken from ffmpeg libavfilter and rearrange accordingly </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>: I bypassed some error by a little trick <code>if cost_min &lt; 256</code> (if I remember). this might cause artifacts. I have to investigate on this.. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>: <code>me_search_epzs</code> function is taken from ffmpeg libavfilter and rearrange accordingly ffmpeg version of EPZS perform better than the one from the paper. The difference is related to the definition of predictors set A,B and C. More details in <code>me_search_eps</code> note.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">me_ctx</td><td>Motion estimation context with me_ctx-&gt;method = 'BLOCK_MATCHING_EPZS'</td></tr>
@@ -791,7 +638,7 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>motion vectors of current &amp; prev 2 frames </p>
+<p>motion vectors of current &amp; prev </p>
 
 </div>
 </div>
@@ -852,7 +699,7 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>median predictor </p>
+<p>median predictor x in Set A </p>
 
 </div>
 </div>
@@ -868,7 +715,7 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>median predictor </p>
+<p>median predictor y in Set A </p>
 
 </div>
 </div>
@@ -884,7 +731,7 @@ Block Matching (EPZS, ARPS) element related</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>predictor for EPZS </p>
+<p>predictor for EPZS ([1] : Set B, [2] : Set C) </p>
 
 </div>
 </div>

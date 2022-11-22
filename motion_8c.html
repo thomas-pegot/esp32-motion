@@ -117,7 +117,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a8ba35bcbf89a11452927cc1ce2710edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">motion estimation wrapper  <a href="motion_8c.html#a8ba35bcbf89a11452927cc1ce2710edd">More...</a><br /></td></tr>
 <tr class="separator:a8ba35bcbf89a11452927cc1ce2710edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="motion_8c.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b">me_comp_sad</a> (<a class="el" href="struct_motion_est_context.html">MotionEstContext</a> *me_ctx, int x_mb, int y_mb, int x_mv, int y_mv)</td></tr>
-<tr class="memdesc:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="mdescLeft">&#160;</td><td class="mdescRight">motion estimation compasation sum absolute difference  <a href="motion_8c.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b">More...</a><br /></td></tr>
+<tr class="memdesc:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="mdescLeft">&#160;</td><td class="mdescRight">omputes the Sum of Absolute Difference (SAD) for the given two blocks  <a href="motion_8c.html#a89d0e1cf3392bbc4d4c76eb43aa3d28b">More...</a><br /></td></tr>
 <tr class="separator:a89d0e1cf3392bbc4d4c76eb43aa3d28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -198,14 +198,18 @@ Thomas Pegot </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>motion estimation compasation sum absolute difference </p>
+<p>omputes the Sum of Absolute Difference (SAD) for the given two blocks </p>
+<p class="formulaDsp">
+\[ SAD = \sum_{i=0}^{mbSize}\sum_{j=0}^{mbSize} |Cur_{ij}-Ref_{ij}| \]
+</p>
+<p>Used as cost function for EPZS algorithm. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Change ARPS algo such as it uses this function instead of its own</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">me_ctx</td><td></td></tr>
-    <tr><td class="paramname">x_mb</td><td></td></tr>
-    <tr><td class="paramname">y_mb</td><td></td></tr>
-    <tr><td class="paramname">x_mv</td><td></td></tr>
-    <tr><td class="paramname">y_mv</td><td></td></tr>
+    <tr><td class="paramname">x_mb</td><td>curr frame x located MB (MacroBlock) </td></tr>
+    <tr><td class="paramname">y_mb</td><td>curr frame y located MB </td></tr>
+    <tr><td class="paramname">x_mv</td><td>prev frame x located MB </td></tr>
+    <tr><td class="paramname">y_mv</td><td>prev frame y located MB </td></tr>
   </table>
   </dd>
 </dl>
@@ -248,11 +252,11 @@ Thomas Pegot </dd></dl>
 <p>motion estimation wrapper </p>
 <ul>
 <li>Will update ctx-&gt;name representation of the motion estimation algo used.</li>
-<li>Will call motion estimation algo accordingly (motionEstARPS, motionEstEPS, LK...)</li>
+<li>Will call motion estimation algo accordingly (motionEstARPS, motionEstEPZS, LK...)</li>
 <li>current Motion Vector will be saved in mv_table[0].</li>
 </ul>
-<dl class="section note"><dt>Note</dt><dd>Some algo will save previous motion into mv_table[1] and mv_table[2] <pre class="fragment">Example usage :
-</pre> <div class="fragment"><div class="line"><a class="code" href="struct_motion_est_context.html">MotionEstContext</a> * motion(<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img_prev, <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img_cur, <span class="keywordtype">size_t</span> w, <span class="keywordtype">size_t</span> h)</div>
+<p>Example usage :</p>
+<div class="fragment"><div class="line"><a class="code" href="struct_motion_est_context.html">MotionEstContext</a> * motion(<a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img_prev, <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *img_cur, <span class="keywordtype">size_t</span> w, <span class="keywordtype">size_t</span> h)</div>
 <div class="line">{</div>
 <div class="line">    <span class="comment">// Generate a motion context configuration </span></div>
 <div class="line">    <a class="code" href="struct_motion_est_context.html">MotionEstContext</a> me_ctx = {.<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64">method</a> = <a class="code" href="motion_8h.html#a42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a>,    <span class="comment">// algorithm used</span></div>
@@ -268,7 +272,7 @@ Thomas Pegot </dd></dl>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> &amp;me_ctx;</div>
 <div class="line">}</div>
-</div><!-- fragment --></dd></dl>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>Some algo will save previous motion into mv_table[1] and mv_table[2]</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ctx</td><td>Motion vectors will be saved in (<a class="el" href="struct_motion_vector16__t.html" title="MotionVector 2D with amplitude squared (for speed)">MotionVector16_t</a>) ctx-&gt;mv_table[0]</td></tr>
@@ -302,8 +306,8 @@ Thomas Pegot </dd></dl>
 <div class="ttc" id="astruct_motion_est_context_html"><div class="ttname"><a href="struct_motion_est_context.html">MotionEstContext</a></div><div class="ttdoc">Exhaustive struct representing all parameter needed for all motion estimation type.</div><div class="ttdef"><b>Definition:</b> motion.h:77</div></div>
 <div class="ttc" id="adeflicker_8h_html_aba7bc1797add20fe3efdf37ced1182c5"><div class="ttname"><a href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a></div><div class="ttdeci">unsigned char uint8_t</div><div class="ttdef"><b>Definition:</b> deflicker.h:10</div></div>
 <div class="ttc" id="amotion_8h_html_a42bbfda998ebcff6218f13097a2b751a"><div class="ttname"><a href="motion_8h.html#a42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a></div><div class="ttdeci">#define LK_OPTICAL_FLOW</div><div class="ttdef"><b>Definition:</b> motion.h:37</div></div>
-<div class="ttc" id="amotion_8h_html_a307035191f24ff24a02add340d8b4efa"><div class="ttname"><a href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">init_context</a></div><div class="ttdeci">bool init_context(MotionEstContext *ctx)</div><div class="ttdoc">Init &amp; allocate context ctx accordingly to the method used.</div><div class="ttdef"><b>Definition:</b> motion.c:59</div></div>
-<div class="ttc" id="amotion_8h_html_a8ba35bcbf89a11452927cc1ce2710edd"><div class="ttname"><a href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a></div><div class="ttdeci">bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur)</div><div class="ttdoc">motion estimation wrapper</div><div class="ttdef"><b>Definition:</b> motion.c:145</div></div>
+<div class="ttc" id="amotion_8h_html_a307035191f24ff24a02add340d8b4efa"><div class="ttname"><a href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">init_context</a></div><div class="ttdeci">bool init_context(MotionEstContext *ctx)</div><div class="ttdoc">Init &amp; allocate context ctx accordingly to the method used.</div><div class="ttdef"><b>Definition:</b> motion.c:62</div></div>
+<div class="ttc" id="amotion_8h_html_a8ba35bcbf89a11452927cc1ce2710edd"><div class="ttname"><a href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a></div><div class="ttdeci">bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur)</div><div class="ttdoc">motion estimation wrapper</div><div class="ttdef"><b>Definition:</b> motion.c:137</div></div>
 <div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gadcc9a19ad3119f823a658f6a49a24e64"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64">MotionEstContext::method</a></div><div class="ttdeci">int method</div><div class="ttdoc">motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)</div><div class="ttdef"><b>Definition:</b> motion.h:81</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
