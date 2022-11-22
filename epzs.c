@@ -1,12 +1,18 @@
 /** @file epzs.c
-*   @brief Implementation from article DOI: 10.15406/oajs.2017.01.00002
+*   @brief Implementation of EPZS from : 
+              - from article DOI: 10.15406/oajs.2017.01.00002 (FFMPEG set to 0)
+              - from library ffmpeg libavfilter (FFMPEG set to 1)
 *   @author Thomas Pegot
 */
-
 
 #include "motion.h"
 #include <string.h>
 #include <math.h>
+
+/** @brief if 1 will use FFMPEG version else it is from paper MPG4/AVC
+ * @todo : Paper result are erratic
+*/
+#define FFMPEG 0
 
 #ifndef mid_pred
 #define mid_pred mid_pred
@@ -15,21 +21,6 @@ static inline int mid_pred(int a, int b, int c)
     return (b > a) == (a > c) ? a : (b > a) != (b > c) ? b : c;
 }
 #endif
-/*
-{
-    if(a>b){
-        if(c>b){
-            if(c>a) b=a;
-            else    b=c;
-        }
-    }else{
-        if(b>c){
-            if(c>a) b=c;
-            else    b=a;
-        }
-    }
-    return b;
-}*/
 
 #define COST_P_MV(x, y)\
 do {\
@@ -50,8 +41,6 @@ do {\
         preds.nb++;\
     } while(0)
 
-static const int8_t dia1[4][2]  = {{-1, 0}, { 0,-1}, { 1, 0}, { 0, 1}};
-
 /** 
  * @brief from https://github.com/FFmpeg/FFmpeg/tree/master/libavfilter
  *  two subsets of predictors are used
@@ -68,6 +57,7 @@ static const int8_t dia1[4][2]  = {{-1, 0}, { 0,-1}, { 1, 0}, { 0, 1}};
  */
 static uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int *mv)
 {
+    static const int8_t dia1[4][2]  = {{-1, 0}, { 0,-1}, { 1, 0}, { 0, 1}};
     int x, y;
     int x_min = mmax(0, x_mb - me_ctx->search_param);
     int y_min = mmax(0, y_mb - me_ctx->search_param);
@@ -78,34 +68,47 @@ static uint64_t me_search_epzs(MotionEstContext *me_ctx, int x_mb, int y_mb, int
 
     MotionEstPredictor *preds = me_ctx->preds;
 
-    cost_min = UINT_FAST64_MAX; // T1 = 256
+    cost_min = UINT_FAST64_MAX;
 
     /*------------------------ Adaptative early termination ------------------------------*/
     /* @note in OG article :
-            Set A : if cost < 256      => return
-            Set B : if cost < cost_min => return
-            Set C : if cost < cost_min => return
+           - Set A : if cost < 256      => return
+           - Set B : if cost < T_A      => return
+           - Set C : if cost < T_A      => return
     */
+
     // Set A  (median predictor)
     COST_P_MV(x_mb + me_ctx->pred_x, y_mb + me_ctx->pred_y);
+#if !FFMPEG
+    if(cost_min < 256)
+        return cost_min;
+    uint64_t T_A = cost_min;
+#endif
 
     // Set B or Set 1
     for (i = 0; i < preds[0].nb; i++) 
         COST_P_MV(x_mb + preds[0].mvs[i][0], y_mb + preds[0].mvs[i][1]);
-    
+#if !FFMPEG
+    if(cost_min < T_A)
+        return cost_min;
+#endif    
+
     // Set C or Set 2
     for (i = 0; i < preds[1].nb; i++)
         COST_P_MV(x_mb + preds[1].mvs[i][0], y_mb + preds[1].mvs[i][1]);
+#if !FFMPEG
+    if(cost_min < T_A)
+        return cost_min;
+#endif
 
     /*-------------------------- Motion vector refinement --------------------------------*/
     do {
-        
         x = mv[0];
         y = mv[1];
-
-        for (i = 0; i < 4; i++)
-            COST_P_MV(x + dia1[i][0], y + dia1[i][1]);
-
+        COST_P_MV(x + dia1[0][0], y + dia1[0][1]);
+        COST_P_MV(x + dia1[1][0], y + dia1[1][1]);
+        COST_P_MV(x + dia1[2][0], y + dia1[2][1]);
+        COST_P_MV(x + dia1[3][0], y + dia1[3][1]);
     } while (x != mv[0] || y != mv[1]);
 
     return cost_min;
@@ -171,14 +174,15 @@ bool motionEstEPZS(MotionEstContext *me_ctx)
             ADD_PRED(preds[0], me_ctx->mv_table[1][mb_i].vx, me_ctx->mv_table[1][mb_i].vy);
 
             /*-----------------------------    Set C   -------------------------------------------*/
-
-            //ADD_PRED(preds[1], me_ctx->mv_table[1][mb_i].vx, me_ctx->mv_table[1][mb_i].vy);
-            //accelerator motion vector of collocated block in prev frame
-            /* @note: OG article didn't mention it
+#if FFMPEG
+            /* @note: FFMPEG accelerator MV of collocated block in previous frame: $V_{t-1} + \delta V$
              */
             ADD_PRED(preds[1], me_ctx->mv_table[1][mb_i].vx + (me_ctx->mv_table[1][mb_i].vx - me_ctx->mv_table[2][mb_i].vx),
                                 me_ctx->mv_table[1][mb_i].vy + (me_ctx->mv_table[1][mb_i].vy - me_ctx->mv_table[2][mb_i].vy));
-
+#else
+            //Paper version: C contains the motion vector of the collocated block in the previous fram : $V_{t-1}$
+            ADD_PRED(preds[1], me_ctx->mv_table[1][mb_i].vx, me_ctx->mv_table[1][mb_i].vy);
+#endif
             //left mb in prev frame
             if (mb_x > 0)
                 ADD_PRED(preds[1], me_ctx->mv_table[1][mb_i - 1].vx, me_ctx->mv_table[1][mb_i - 1].vy);
