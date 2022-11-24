@@ -21,6 +21,9 @@
 static const char *TAG = "LK_OPTICAL_FLOW";
 #endif
 
+/** don't include Gaussian smooth for faster result (can allow if a denoise is already done in JPEG decomp)*/
+#define NOSMOOTH 1
+
 static const float NoiseThreshold = 0.01; /* Lucas Kanade noise threshold */
 static const int half_window = WINDOW << 1;
 static const int window_squared = WINDOW * WINDOW;
@@ -48,15 +51,21 @@ bool LK_optical_flow(MotionEstContext *ctx) {
 	const int w = ctx->width;
 	const int h = ctx->height;
 	const int N = w * h;
-	float *image1 = (float*)_malloc(N * sizeof(float)),
-		*image2 = (float*)_malloc(N * sizeof(float)),
-		*fx = (float*)_malloc(N * sizeof(float)),
+	float *image1 = (float*)_malloc(N * sizeof(float));   // temp image
+#if !NOSMOOTH
+	float *image2 = (float*)_malloc(N * sizeof(float)); // temp image
+	if(!image2) {
+		ESP_LOGE(TAG, "allocation failed!");
+		return false;
+	}
+#endif
+	float *fx = (float*)_malloc(N * sizeof(float)),
 		*ft = (float*)_malloc(N * sizeof(float)),
 		*fy = (float*)_malloc(N * sizeof(float));
 	int i, j, m;
 	ctx->max = 0;
 
-	if(!fx || !fy || !ft || !image1 || !image2) {
+	if(!fx || !fy || !ft || !image1) {
 		ESP_LOGE(TAG, "allocation failed!");
 		return false;
 	}
@@ -73,6 +82,21 @@ bool LK_optical_flow(MotionEstContext *ctx) {
 		ctx->mv_table[0][i].mag2 = 0;
 	}
 
+#if NOSMOOTH
+	/* Derivate Dx : 1D convolution horizontal */
+	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) {
+		ESP_LOGE(TAG, "convH failed!");
+		return false;
+	}
+	memcpy(fx, image1, N * sizeof(float));
+
+	/* Derivate Dy : 1D convolution vertical */
+	if(!convV(fy, image1, w, h, Kernel_Dxy, 5)) {
+		ESP_LOGE(TAG, "convV failed!");
+		return false;
+	}
+	memcpy(fy, image1, N * sizeof(float));
+#else
 	/* Derivate Dx : 1D convolution horizontal */
 	if(!convH(fx, image1, w, h, Kernel_Dxy, 5)) {
 		ESP_LOGE(TAG, "convH failed!");
@@ -102,6 +126,7 @@ bool LK_optical_flow(MotionEstContext *ctx) {
 	}
 	
 	memcpy(ft, image2, N * sizeof(float));
+#endif
 
 	// Lucas Kanade optical flow algorithm
 	for(i = half_window; i < h - half_window; ++i) {
@@ -147,10 +172,10 @@ bool LK_optical_flow(MotionEstContext *ctx) {
 		}
     }
 
-	free(fx); free(image1);
-	free(fy); free(image2);
-	free(ft);
-
+	free(fx); free(image1); free(ft); free(fy); 
+#if !NOSMOOTH
+	free(image2);
+#endif
 	return true;
 }
 
