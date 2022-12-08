@@ -104,16 +104,9 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <li><a href="#free-memory-">Free memory :</a></li>
 </ul>
 </li>
+<li><a href="#macros-optional">Macros (optional)</a></li>
 <li><a href="#example-project">Example project</a></li>
-<li><a href="#more-in-depth-depreciated">More in depth (<em>depreciated</em>)</a><ul>
-<li><a href="#block-matching-adaptative-rood-pattern-search-depreciated">Block matching (Adaptative Rood Pattern Search) (<em>depreciated</em>)</a></li>
-<li><a href="#lucas-kanade-algorithm-depreciated">Lucas Kanade algorithm (<em>depreciated</em>)</a><ul>
-<li><a href="#simple-case-depreciated">Simple case (<em>depreciated</em>)</a></li>
-</ul>
-</li>
-<li><a href="#more-control-depreciated">More control (<em>depreciated</em>)</a></li>
-</ul>
-</li>
+<li><a href="#todos">TODOs</a></li>
 <li><a href="#refs">Refs</a></li>
 </ul>
 </li>
@@ -164,100 +157,19 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!-- fragment --><p>EZPS algorithm need previous motion vectors as a way of prediction to the next generated.</p>
 <h2>Free memory :</h2>
 <div class="fragment"><div class="line"><a class="code" href="motion_8h.html#aa1377b3e199556519cb8a43a11dd24bf">uninit</a>(&amp;me_ctx);</div>
-</div><!-- fragment --><h1>Example project</h1>
+</div><!-- fragment --><h1>Macros (optional)</h1>
+<p>In <code><a class="el" href="epzs_8c.html" title="Implementation of EPZS from :">epzs.c</a></code> changing <code>#define FFMPEG 0</code> to <code>1</code> will use <a href="https://github.com/FFmpeg/FFmpeg/">ffmpeg</a> version instead of <a href="https://doi.org/10.15406/oajs.2017.01.00002">paper</a></p>
+<p>In <code>lucas_kanade_optical_flow.c</code> changing <code>#define NOSMOOTH 1</code> to <code>0</code> will enable isotropic smooth causing an increase in latency.</p>
+<h1>Example project</h1>
 <ul>
 <li><a href="https://github.com/thomas-pegot/camera_web_server">Motion vector stream for testing</a></li>
 <li><a href="https://github.com/thomas-pegot/ESP32-CAM_Motion">All in one security camera</a></li>
 </ul>
-<hr  />
-<div class="fragment"><div class="line">- Below is depreciated</div>
-</div><!-- fragment --><h1>More in depth (<em>depreciated</em>)</h1>
-<h2>Block matching (Adaptative Rood Pattern Search) (<em>depreciated</em>)</h2>
-<p><a href="https://thomas-pegot.github.io/esp32-motion/block__matching_8c.html#a58f37a2a134b9ff537305104c3f15495">header:</a></p>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga1fafc3138f38f56ba9d01a031bf32d84">motionEstARPS</a>(<span class="keyword">const</span> <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgP, <span class="keyword">const</span> <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *imgI, <span class="keywordtype">size_t</span> w, <span class="keywordtype">size_t</span> h, <span class="keywordtype">size_t</span> <a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga3c36258fb799ca3c417c0cb54201b0b0">mbSize</a>, <span class="keywordtype">int</span> p, <a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a> *MotionVect, <span class="keywordtype">int</span> zmp_T, <span class="keywordtype">int</span> *max_mag2)</div>
-</div><!-- fragment --><p>example :</p>
-<div class="fragment"><div class="line"><span class="comment">// image_buf image you capture from a stream or else</span></div>
-<div class="line"><span class="keywordtype">int</span> N = w * h;</div>
-<div class="line"><span class="keywordtype">int</span> <a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gae1e1dde676c120fa6d10f3bb2c14059e">max</a>;</div>
-<div class="line"><a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *image_buf_next = calloc(N, 1); </div>
-<div class="line"><a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *image_motion = malloc(N); </div>
-<div class="line"><a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a> *vecor_motion = (<a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a>*)calloc(N, <span class="keyword">sizeof</span>(<a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a>));</div>
-<div class="line"><span class="keywordflow">while</span>(1) {</div>
-<div class="line">        capture(img_buf); <span class="comment">// Your algorithm</span></div>
-<div class="line">        <span class="keywordflow">if</span>(!<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga1fafc3138f38f56ba9d01a031bf32d84">motionEstARPS</a>(image_buf, image_buf_next, w, h, 8, 6, vector_motion, 256, &amp;<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gae1e1dde676c120fa6d10f3bb2c14059e">max</a>)) {</div>
-<div class="line">            Serial.printf(<span class="stringliteral">&quot;motion failed!&quot;</span>);</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        }</div>
-<div class="line">        memcpy(image_buf_next, image_buf, N);</div>
-<div class="line">        display(vector_motion);</div>
-<div class="line">        Serial.printf(<span class="stringliteral">&quot;max motion: %u \n&quot;</span>, a);</div>
-<div class="line">}</div>
-<div class="line">free(image_buf_next);</div>
-<div class="line">free(image_buf);</div>
-<div class="line">free(image_motion);</div>
-</div><!-- fragment --><h2>Lucas Kanade algorithm (<em>depreciated</em>)</h2>
-<h3>Simple case (<em>depreciated</em>)</h3>
-<p><a href="https://thomas-pegot.github.io/esp32-motion/lucas__kanade__opitcal__flow_8c.html#a22663424a50db0dd70de24dd8b176f39">header:</a></p>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gaa2ec7e1d55cc43268bab231ede5ca955">LK_optical_flow8</a>(<span class="keyword">const</span> <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src1, <span class="keyword">const</span> <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src2, <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *V, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h);</div>
-</div><!-- fragment --><p>example :</p>
-<div class="fragment"><div class="line"><span class="comment">// image_buf image you capture from a stream or else</span></div>
-<div class="line"><span class="keywordtype">int</span> N = w * h;</div>
-<div class="line"><a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *image_buf_next = calloc(N, 1); </div>
-<div class="line"><a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *image_motion = malloc(N); </div>
-<div class="line"><span class="keywordflow">while</span>(1) {</div>
-<div class="line">        capture(img_buf); <span class="comment">// Your algorithm</span></div>
-<div class="line">        <span class="keywordflow">if</span>(!<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#gaa2ec7e1d55cc43268bab231ede5ca955">LK_optical_flow8</a>(image_buf, image_buf_next, image_motion, w, h)) {</div>
-<div class="line">            Serial.printf(<span class="stringliteral">&quot;motion failed!&quot;</span>);</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        }</div>
-<div class="line">        memcpy(image_buf_next, image_buf, N);</div>
-<div class="line">        display(image_motion);</div>
-<div class="line">}</div>
-<div class="line">free(image_buf_next);</div>
-<div class="line">free(image_buf);</div>
-<div class="line">free(image_motion);</div>
-</div><!-- fragment --><h2>More control (<em>depreciated</em>)</h2>
-<p>We can get more detailed output by using a motion vector struct composed of <code>V=(vx, vy)</code> motion vector and <code>mag2</code> the squared magnitude:</p>
-<div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line">   int16_t vx,</div>
-<div class="line">           vy;</div>
-<div class="line">   uint16_t mag2; <span class="comment">// squared magnitude</span></div>
-<div class="line">} <a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a>;</div>
-</div><!-- fragment --><p>header:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga0d253b397f3be474b400789bfbdadb0d">LK_optical_flow</a>(<span class="keyword">const</span> <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src1, <span class="keyword">const</span> <a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *src2, <a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a> *v, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h);</div>
-</div><!-- fragment --><p>example :</p>
-<div class="fragment"><div class="line"><span class="comment">// image_buf image you capture from a stream or else</span></div>
-<div class="line"><span class="keywordtype">int</span> N = w * h;</div>
-<div class="line"><a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *image_buf_next = calloc(N, 1); </div>
-<div class="line"><a class="code" href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a> *image_motion = malloc(N); </div>
-<div class="line"><a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a>* vector = (<a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a>*) calloc(count, <span class="keyword">sizeof</span>(<a class="code" href="struct_motion_vector16__t.html">MotionVector16_t</a>));</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">float</span> max = 0;</div>
-<div class="line"><span class="keywordtype">int</span> half_window = (int)<a class="code" href="motion_8h.html#a58dde5b4c75245b4660a165318cac36b">WINDOW</a> / 2.0; <span class="comment">// WINDOW &gt;&gt; 1</span></div>
-<div class="line"> </div>
-<div class="line"><span class="keywordflow">while</span>(1) {</div>
-<div class="line">        capture(img_buf); <span class="comment">// Your algorithm</span></div>
-<div class="line">        <span class="keywordflow">if</span>(!<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga0d253b397f3be474b400789bfbdadb0d">LK_optical_flow</a>(image_buf, image_buf_next, vector, w, h)) {</div>
-<div class="line">            Serial.printf(<span class="stringliteral">&quot;motion failed!&quot;</span>);</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        }</div>
-<div class="line">        memcpy(image_buf_next, image_buf, N);</div>
-<div class="line"> </div>
-<div class="line">        <span class="comment">// Extract max squared magnitude</span></div>
-<div class="line">        mv = &amp;vector[half_window * w + half_window];</div>
-<div class="line">        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = h - <a class="code" href="motion_8h.html#a58dde5b4c75245b4660a165318cac36b">WINDOW</a>; i--; ) { <span class="comment">// same as for(int i = half_window; i &lt; h - half_window; i++) but faster</span></div>
-<div class="line">            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j = half_window; j &lt; w - half_window; j++, mv++) {</div>
-<div class="line">                <span class="keywordflow">if</span> (mv-&gt;mag2 &gt; max)  </div>
-<div class="line">                    max = mv-&gt;<a class="code" href="group___a_l_g_o___g_r_o_u_p.html#ga455d7d824573c7567e5b10baf69fa99d">mag2</a>;</div>
-<div class="line">            }</div>
-<div class="line">            mv += <a class="code" href="motion_8h.html#a58dde5b4c75245b4660a165318cac36b">WINDOW</a>;</div>
-<div class="line">        }</div>
-<div class="line">        Serial.printf(<span class="stringliteral">&quot;max motion = %u&quot;</span>, (<span class="keywordtype">short</span>)max);</div>
-<div class="line">}</div>
-<div class="line">free(vector);</div>
-<div class="line">free(image_buf);</div>
-<div class="line">free(image_buf_next);</div>
-</div><!-- fragment --><h1>Refs</h1>
+<h1>TODOs</h1>
+<ul>
+<li>Implement a skip for the first frame in EPZS that use prediction of previous frame. This might the reason why EPZS can have poor result at start.</li>
+</ul>
+<h1>Refs</h1>
 <ul>
 <li>convolution credits to <a href="http://www.songho.ca/dsp/convolution/convolution.html">http://www.songho.ca/dsp/convolution/convolution.html</a></li>
 <li>EPZS credits to :<ul>
@@ -271,17 +183,9 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!-- doc-content -->
 <div class="ttc" id="amotion_8h_html_a4cac996d722232e12c7ba86c65dd048e"><div class="ttname"><a href="motion_8h.html#a4cac996d722232e12c7ba86c65dd048e">BLOCK_MATCHING_ARPS</a></div><div class="ttdeci">#define BLOCK_MATCHING_ARPS</div><div class="ttdef"><b>Definition:</b> motion.h:38</div></div>
 <div class="ttc" id="amotion_8h_html_aa1377b3e199556519cb8a43a11dd24bf"><div class="ttname"><a href="motion_8h.html#aa1377b3e199556519cb8a43a11dd24bf">uninit</a></div><div class="ttdeci">void uninit(MotionEstContext *ctx)</div><div class="ttdef"><b>Definition:</b> motion.c:35</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga3c36258fb799ca3c417c0cb54201b0b0"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga3c36258fb799ca3c417c0cb54201b0b0">MotionEstContext::mbSize</a></div><div class="ttdeci">int mbSize</div><div class="ttdoc">macro block size</div><div class="ttdef"><b>Definition:</b> motion.h:94</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gae1e1dde676c120fa6d10f3bb2c14059e"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gae1e1dde676c120fa6d10f3bb2c14059e">MotionEstContext::max</a></div><div class="ttdeci">int max</div><div class="ttdoc">max motion vector mag²</div><div class="ttdef"><b>Definition:</b> motion.h:82</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga0d253b397f3be474b400789bfbdadb0d"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga0d253b397f3be474b400789bfbdadb0d">LK_optical_flow</a></div><div class="ttdeci">bool LK_optical_flow(MotionEstContext *)</div><div class="ttdoc">Implement LK optical flow source from wiki and matlab : https://en.wikipedia.org/wiki/Lucas%E2%80%93K...</div><div class="ttdef"><b>Definition:</b> lucas_kanade_opitcal_flow.c:47</div></div>
-<div class="ttc" id="amotion_8h_html_a58dde5b4c75245b4660a165318cac36b"><div class="ttname"><a href="motion_8h.html#a58dde5b4c75245b4660a165318cac36b">WINDOW</a></div><div class="ttdeci">#define WINDOW</div><div class="ttdoc">convolution window size for lucas kanade</div><div class="ttdef"><b>Definition:</b> motion.h:30</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga455d7d824573c7567e5b10baf69fa99d"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga455d7d824573c7567e5b10baf69fa99d">MotionVector16_t::mag2</a></div><div class="ttdeci">uint16_t mag2</div><div class="ttdef"><b>Definition:</b> motion.h:51</div></div>
-<div class="ttc" id="astruct_motion_vector16__t_html"><div class="ttname"><a href="struct_motion_vector16__t.html">MotionVector16_t</a></div><div class="ttdoc">MotionVector 2D with amplitude squared (for speed)</div><div class="ttdef"><b>Definition:</b> motion.h:48</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gaa2ec7e1d55cc43268bab231ede5ca955"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gaa2ec7e1d55cc43268bab231ede5ca955">LK_optical_flow8</a></div><div class="ttdeci">bool LK_optical_flow8(const uint8_t *src1, const uint8_t *src2, uint8_t *v, int w, int h)</div><div class="ttdoc">Lucas Kanade optical 8 bit version.</div><div class="ttdef"><b>Definition:</b> lucas_kanade_opitcal_flow.c:157</div></div>
 <div class="ttc" id="astruct_motion_est_context_html"><div class="ttname"><a href="struct_motion_est_context.html">MotionEstContext</a></div><div class="ttdoc">Exhaustive struct representing all parameter needed for all motion estimation type.</div><div class="ttdef"><b>Definition:</b> motion.h:77</div></div>
 <div class="ttc" id="adeflicker_8h_html_aba7bc1797add20fe3efdf37ced1182c5"><div class="ttname"><a href="deflicker_8h.html#aba7bc1797add20fe3efdf37ced1182c5">uint8_t</a></div><div class="ttdeci">unsigned char uint8_t</div><div class="ttdef"><b>Definition:</b> deflicker.h:10</div></div>
 <div class="ttc" id="amotion_8h_html_a42bbfda998ebcff6218f13097a2b751a"><div class="ttname"><a href="motion_8h.html#a42bbfda998ebcff6218f13097a2b751a">LK_OPTICAL_FLOW</a></div><div class="ttdeci">#define LK_OPTICAL_FLOW</div><div class="ttdef"><b>Definition:</b> motion.h:37</div></div>
-<div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_ga1fafc3138f38f56ba9d01a031bf32d84"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#ga1fafc3138f38f56ba9d01a031bf32d84">motionEstARPS</a></div><div class="ttdeci">bool motionEstARPS(MotionEstContext *c)</div><div class="ttdoc">Perform Adaptive Rood Pattern Search algorithm.</div><div class="ttdef"><b>Definition:</b> block_matching.c:95</div></div>
 <div class="ttc" id="amotion_8h_html_a307035191f24ff24a02add340d8b4efa"><div class="ttname"><a href="motion_8h.html#a307035191f24ff24a02add340d8b4efa">init_context</a></div><div class="ttdeci">bool init_context(MotionEstContext *ctx)</div><div class="ttdoc">Init &amp; allocate context ctx accordingly to the method used.</div><div class="ttdef"><b>Definition:</b> motion.c:62</div></div>
 <div class="ttc" id="amotion_8h_html_a8ba35bcbf89a11452927cc1ce2710edd"><div class="ttname"><a href="motion_8h.html#a8ba35bcbf89a11452927cc1ce2710edd">motion_estimation</a></div><div class="ttdeci">bool motion_estimation(MotionEstContext *ctx, uint8_t *img_prev, uint8_t *img_cur)</div><div class="ttdoc">motion estimation wrapper</div><div class="ttdef"><b>Definition:</b> motion.c:137</div></div>
 <div class="ttc" id="agroup___a_l_g_o___g_r_o_u_p_html_gadcc9a19ad3119f823a658f6a49a24e64"><div class="ttname"><a href="group___a_l_g_o___g_r_o_u_p.html#gadcc9a19ad3119f823a658f6a49a24e64">MotionEstContext::method</a></div><div class="ttdeci">int method</div><div class="ttdoc">motion estimation method (LK_OPTICAL_FLOW, BLOCK_MATCHING_ARPS, ...)</div><div class="ttdef"><b>Definition:</b> motion.h:81</div></div>
