@@ -12,7 +12,7 @@
 /** @brief if 1 will use FFMPEG version else it is from paper MPG4/AVC
  * @todo : Paper result are erratic
 */
-#define FFMPEG 0
+#define FFMPEG 1
 
 #ifndef mid_pred
 #define mid_pred mid_pred
